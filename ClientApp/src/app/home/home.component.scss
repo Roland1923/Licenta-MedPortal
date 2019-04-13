@@ -1,0 +1,252 @@
+@import url('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css');
+
+body, html {
+    font-family: 'Source Sans Pro';
+    font-weight: 300;
+}
+
+#bg { 
+    height: 100vh;
+    background-image: url('../../assets/img/2.png'); /*  Background Image Link */   
+    background-size: cover;
+    width: 102%;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+
+.btn {
+    color: rgb(235, 235, 235);
+    border-color:rgb(235, 235, 235);
+    border-radius: 3vw !important;
+    border-width: 0.1vw;
+    line-height: 1.72857143;
+    padding: 5px 45px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.6vw;
+    margin: 6px 4px;
+    cursor: pointer;
+    background-color: transparent;
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Source Sans Pro';
+}
+
+
+.btn:hover,
+.btn:focus {
+  box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+  transform: translateY(-0.25em);
+  outline:0 !important;
+}
+
+$colors: (
+  btn: #eeeeee, 
+);
+
+// Sassrgb(252, 212, 183)les compile to a static string; CSS variables are dynamic and inherited
+  // Loop through the map and set CSS custom properties using Sass variables
+@each $button, $color in $colors {
+  .#{$button} {
+    --color: #{$color};
+    --hover: #{adjust-hue($color, 45deg)};
+  }
+}
+
+// Now every button will have different colors as set above. We get to use the same structure, only changing the custom properties.
+button {  
+  color: var(--color);
+  transition: 0.25s;
+  
+  &:hover,
+  &:focus { 
+    border-color: var(--hover);
+    color: #fff;
+  }
+}
+
+
+
+
+.title {
+    text-align: center;
+    font-size: 45px;
+    font-weight: 555;
+    margin-bottom: 0.75rem;
+    text-shadow: 0 0.1vw 0.1vw #000;
+    line-height: 1.4;
+    font-family: "Loved by the King";
+    color:rgb(235, 235, 235);
+}
+
+.container1 {
+    display: table;
+    position: absolute;
+	top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+//--------------------
+
+#logo {
+    position: relative;
+    left:2%;
+    top:1%;
+    width: 14%;
+    height: 14%;
+}
+
+@media only screen and (max-width: 1250px) {
+    #logo {
+        position: relative;
+        left:2%;
+        top:1%;
+        width: 33%;
+        height: 15%;
+    }
+}
+
+//---------------------
+
+.intro {
+    padding-top: 4vw;
+    padding-bottom: 4vw;
+    text-align: center;
+}
+
+.container2 {
+    margin-right: 14vw;
+    margin-left: 14vw;
+}
+
+.p1 {
+    color: rgb(44, 44, 44);
+    font-style: italic;
+    margin: 0;
+    padding: 0;
+    font-size: 22px;
+    line-height: 1.4;
+}
+
+//----------------------
+
+.information {
+    padding: 3vw 0 1vw 0;
+    background: #F1F1F1;
+    border-top: 1px solid #E1E1E1;
+    border-bottom: 1px solid #FAFAFA;
+
+}
+
+.container3 {
+    width: 75vw;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.container3-title {
+    margin-bottom: 10px;
+    padding: 0 0 7px 0;
+    margin: 0 0 30px 0;
+    border-bottom: 1px solid #CCC;
+    display: inline-block;
+    font-weight: 300;
+    color: #222;
+    font-size: 36px;
+}
+
+.row {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.facility {
+    background: #FFF;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.14);
+    margin-bottom: 2.7vw;
+    border-radius: 5px;
+}
+
+.facility-head {
+    position: relative;
+    border-radius: 5px 5px 0 0;
+}
+
+.facility-body {
+    height: 8vw;//148px
+    padding: 60px 20px 10px 20px;
+    font-size: 20px;
+    padding: 0;
+    margin: 0;
+    margin-top: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: center;
+    display: inline-block;
+}
+
+.img-responsive{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    max-width: 33%;
+    height: auto;
+    vertical-align: middle;
+    border: 0;
+    border-radius: 5px 5px 0 0;
+    margin: 0 auto;
+    border-bottom: 1px solid #CCC;
+}
+/*
+<p class="container3-paragraph">Highlights of some of our facilities that you can access and use</p>
+.container3-paragraph {
+    margin-bottom: 30px;
+    font-size: 16px;
+    margin: 0 0 10px;
+    box-sizing: border-box;
+}
+*/
+
+//------------------
+
+.contact {
+    padding: 50px 0;
+    background: #FFF;
+    text-align: center;
+}
+
+.contact h3 {
+    padding: 0;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 28px;
+    font-family: 'Source Sans Pro';
+    font-weight: 400;
+}
+
+.btn-round.btn-lg {
+    padding: 10px 90px;
+}
+.btn-primary {
+    color: #3472F7;
+    border-color: #3472F7;
+}
+
+.btn-round {
+    border-width: 1px;
+    border-radius: 30px !important;
+    opacity: 0.79;
+}
+
+::ng-deep footer{
+    font-size: 16px;  
+    padding: 28px 0;
+    background: #454545;
+    color: #DAE5EF;
+}
+

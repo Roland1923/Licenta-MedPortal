@@ -1,0 +1,56 @@
+c:\users\reflex\documents\visual studio 2017\Projects\MedPortal\Core\bin\Debug\netcoreapp2.0\Core.deps.json
+c:\users\reflex\documents\visual studio 2017\Projects\MedPortal\Core\bin\Debug\netcoreapp2.0\Core.dll
+c:\users\reflex\documents\visual studio 2017\Projects\MedPortal\Core\bin\Debug\netcoreapp2.0\Core.pdb
+c:\users\reflex\documents\visual studio 2017\Projects\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.csprojResolveAssemblyReference.cache
+c:\users\reflex\documents\visual studio 2017\Projects\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.csproj.CoreCompileInputs.cache
+c:\users\reflex\documents\visual studio 2017\Projects\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.AssemblyInfoInputs.cache
+c:\users\reflex\documents\visual studio 2017\Projects\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.AssemblyInfo.cs
+c:\users\reflex\documents\visual studio 2017\Projects\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.dll
+c:\users\reflex\documents\visual studio 2017\Projects\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.pdb
+C:\Users\Reflex\Desktop\MedPortal\Core\bin\Debug\netcoreapp2.0\Core.deps.json
+C:\Users\Reflex\Desktop\MedPortal\Core\bin\Debug\netcoreapp2.0\Core.dll
+C:\Users\Reflex\Desktop\MedPortal\Core\bin\Debug\netcoreapp2.0\Core.pdb
+C:\Users\Reflex\Desktop\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.csproj.CoreCompileInputs.cache
+C:\Users\Reflex\Desktop\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.AssemblyInfoInputs.cache
+C:\Users\Reflex\Desktop\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.AssemblyInfo.cs
+C:\Users\Reflex\Desktop\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.dll
+C:\Users\Reflex\Desktop\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.pdb
+C:\Users\Reflex\Desktop\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.csprojResolveAssemblyReference.cache
+C:\Users\Daniel Oana\Documents\GitHub\MedPortal\Core\bin\Debug\netcoreapp2.0\Core.deps.json
+C:\Users\Daniel Oana\Documents\GitHub\MedPortal\Core\bin\Debug\netcoreapp2.0\Core.dll
+C:\Users\Daniel Oana\Documents\GitHub\MedPortal\Core\bin\Debug\netcoreapp2.0\Core.pdb
+C:\Users\Daniel Oana\Documents\GitHub\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.csprojResolveAssemblyReference.cache
+C:\Users\Daniel Oana\Documents\GitHub\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.csproj.CoreCompileInputs.cache
+C:\Users\Daniel Oana\Documents\GitHub\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.AssemblyInfoInputs.cache
+C:\Users\Daniel Oana\Documents\GitHub\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.AssemblyInfo.cs
+C:\Users\Daniel Oana\Documents\GitHub\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.dll
+C:\Users\Daniel Oana\Documents\GitHub\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.pdb
+C:\Users\Onu\Documents\GitHub\MedPortal\Core\bin\Debug\netcoreapp2.0\Core.deps.json
+C:\Users\Onu\Documents\GitHub\MedPortal\Core\bin\Debug\netcoreapp2.0\Core.dll
+C:\Users\Onu\Documents\GitHub\MedPortal\Core\bin\Debug\netcoreapp2.0\Core.pdb
+C:\Users\Onu\Documents\GitHub\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.csprojResolveAssemblyReference.cache
+C:\Users\Onu\Documents\GitHub\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.csproj.CoreCompileInputs.cache
+C:\Users\Onu\Documents\GitHub\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.AssemblyInfoInputs.cache
+C:\Users\Onu\Documents\GitHub\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.AssemblyInfo.cs
+C:\Users\Onu\Documents\GitHub\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.dll
+C:\Users\Onu\Documents\GitHub\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.pdb
+C:\Users\user\Desktop\. NET\_Proiect\v2\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.dll
+C:\Users\user\Desktop\. NET\_Proiect\v2\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.pdb
+C:\Users\rolan\Desktop\MedPortal\Core\bin\Debug\netcoreapp2.0\Core.deps.json
+C:\Users\rolan\Desktop\MedPortal\Core\bin\Debug\netcoreapp2.0\Core.dll
+C:\Users\rolan\Desktop\MedPortal\Core\bin\Debug\netcoreapp2.0\Core.pdb
+C:\Users\rolan\Desktop\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.csprojResolveAssemblyReference.cache
+C:\Users\rolan\Desktop\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.csproj.CoreCompileInputs.cache
+C:\Users\rolan\Desktop\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.AssemblyInfoInputs.cache
+C:\Users\rolan\Desktop\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.AssemblyInfo.cs
+C:\Users\rolan\Desktop\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.dll
+C:\Users\rolan\Desktop\MedPortal\Core\obj\Debug\netcoreapp2.0\Core.pdb
+C:\Users\rolan\Desktop\Licenta2018\Core\bin\Debug\netcoreapp2.0\Core.deps.json
+C:\Users\rolan\Desktop\Licenta2018\Core\bin\Debug\netcoreapp2.0\Core.dll
+C:\Users\rolan\Desktop\Licenta2018\Core\bin\Debug\netcoreapp2.0\Core.pdb
+C:\Users\rolan\Desktop\Licenta2018\Core\obj\Debug\netcoreapp2.0\Core.csprojResolveAssemblyReference.cache
+C:\Users\rolan\Desktop\Licenta2018\Core\obj\Debug\netcoreapp2.0\Core.csproj.CoreCompileInputs.cache
+C:\Users\rolan\Desktop\Licenta2018\Core\obj\Debug\netcoreapp2.0\Core.AssemblyInfoInputs.cache
+C:\Users\rolan\Desktop\Licenta2018\Core\obj\Debug\netcoreapp2.0\Core.AssemblyInfo.cs
+C:\Users\rolan\Desktop\Licenta2018\Core\obj\Debug\netcoreapp2.0\Core.dll
+C:\Users\rolan\Desktop\Licenta2018\Core\obj\Debug\netcoreapp2.0\Core.pdb

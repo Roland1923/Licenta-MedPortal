@@ -1,0 +1,166 @@
+@import url('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css');
+
+body, html {
+    font-family: 'Source Sans Pro';
+    margin: 0;
+    padding: 0;
+}
+
+#bg { 
+    height: 100vh;
+    background-image: url('../../assets/img/1-mono.jpg'); /*  Background Image Link */   
+    background-size: cover;
+    width: 102%;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+#logo {
+    position: relative;
+    left:2%;
+    top:1%;
+    width: 14%;
+    height: 14%;
+}
+
+@media only screen and (max-width: 1250px) {
+    #logo {
+        position: relative;
+        left:2%;
+        top:1%;
+        width: 33%;
+        height: 15%;
+    }
+}
+
+::ng-deep footer {
+    font-size: 14px;  
+    padding: 21px 0;
+    background: #ffffff;
+    color: rgb(0, 0, 0);
+    text-align: center;
+}
+
+//-------------------
+
+.login-box{
+    width: 380px;
+    height: 480px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    box-sizing: border-box;
+    padding: 70px 30px;
+    border-radius: 50px 20px;
+}
+
+@media only screen and (max-width: 1250px){
+    .login-box{
+        width: 90%;
+        height: 80%;
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        top: 50%;
+        left: 50%;
+        margin-top: 10%;
+        position: absolute;
+        transform: translate(-50%,-50%);
+        box-sizing: border-box;
+        padding: 70px 30px;
+        border-radius: 50px 20px;
+    }
+}
+.avatar{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: absolute;
+    top: -50px;
+    left: calc(50% - 50px);
+}
+h1{
+    margin: 0;
+    padding: 0 0 20px;
+    text-align: center;
+    font-size: 22px;
+}
+.login-box p{
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
+.login-box input{
+    width: 100%;
+    margin-bottom: 20px;
+}
+.login-box input[type="text"], input[type="password"]
+{
+    border: none;
+    border-bottom: 1px solid #fff;
+    background: transparent;
+    outline: none;
+    height: 40px;
+    color: #fff;
+    font-size: 16px;
+}
+.login-box input[type="submit"]
+{
+    border: none;
+    outline: none;
+    height: 40px;
+    background: #fc1919;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 20px;
+}
+.login-box input[type="submit"]:hover
+{
+    cursor: pointer;
+    background: #b40000;
+}
+
+.login-box a{
+    text-decoration: none;
+    font-size: 14px;
+    color: #fff;
+}
+.login-box a:hover
+{
+    color: #e0e0e0;
+}
+
+//------------
+
+.form-footer-container {
+    width: 100%;
+    display: inline-block;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    background: transparent;
+    border-top: double white;
+    margin-top: 10px;
+}
+
+.form-footer-content {
+    width: 100%;
+    text-align: center;
+}
+
+#account-message {
+    font-size: 18px;
+    margin: 5px 0 5px 0 !important;
+    font-weight: 600;
+    line-height: 1.61803;
+}
+
+#create-account-button {
+    background: rgb(1, 184, 25);
+}
+
+#create-account-button:hover {
+    background: rgb(0, 150, 20);
+}
+

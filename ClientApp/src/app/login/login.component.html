@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600' type='text/css'>
+</head>
+
+
+<body>
+
+<div id="bg">
+    <a href="/"><img src="assets/img/logo1.png" alt="Logo" id="logo"/></a>
+
+    <div class="login-box" *ngIf="router.url === '/patient-login'">
+        <img src="assets/img/avatar.png" class="avatar" />
+            <h1>Login Here</h1>
+                <form>
+                    <p>National identification number</p>
+                    <input type="text" name="username" placeholder="Enter NIN">
+                    <p>Password</p>
+                    <input type="password" name="password" placeholder="Enter Password">
+                    <input type="submit" name="submit" value="Login">
+                    <a href="#">Forget Password</a>    
+                </form>   
+
+        <div class="form-footer-container">
+            <div class="form-footer-content">
+                <p id="account-message" class="font-primary-bold">Don't have an account?</p>
+                <a class="btn-link" href="/patient-register"><input type="submit" id="create-account-button" name="submit" value="Create an account"></a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="login-box" *ngIf="router.url === '/doctor-login'">
+        <img src="assets/img/avatar.png" class="avatar" />
+            <h1>Login Here</h1>
+                <form>
+                    <p>Doctor identification number</p>
+                    <input type="text" name="username" placeholder="Enter DIN">
+                    <p>Password</p>
+                    <input type="password" name="password" placeholder="Enter Password">
+                    <input type="submit" name="submit" value="Login">
+                    <a href="#">Forget Password</a>    
+                </form>   
+
+        <div class="form-footer-container">
+            <div class="form-footer-content">
+                <p id="account-message" class="font-primary-bold">Don't have an account?</p>
+                <a class="btn-link" href="/doctor-register"><input type="submit" id="create-account-button" name="submit" value="Create an account"></a>
+            </div>
+        </div>
+    </div>
+   
+</div>
+
+
+
+</body>
+
+</html>
