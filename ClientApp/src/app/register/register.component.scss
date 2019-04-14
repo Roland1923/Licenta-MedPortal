@@ -12,6 +12,7 @@ body, html {
     height: 100%;
     background-size: cover;
     background-repeat: no-repeat;
+    display: inline-block;
 }
 
 #logo {
@@ -41,6 +42,11 @@ body, html {
 }
 
 //-------------------
+
+.input-group-addon {
+    background: white(0, 0, 0, 0.5);
+    color: black;
+}
 
 .login-box{
     width: 30%;
@@ -78,6 +84,7 @@ body, html {
     top: -50px;
     left: calc(50% - 50px);
 }
+
 h1{
     margin: 0;
     padding: 0 0 20px;
@@ -89,12 +96,10 @@ h1{
     padding: 0;
     font-weight: bold;
 }
-.login-box input{
-    width: 100%;
-    margin-bottom: 20px;
-}
+
 .login-box input
 {
+    width: 100%;
     border: none;
     border-bottom: 1px solid #fff;
     background: transparent;
