@@ -134,3 +134,15 @@ h1{
     color: #e0e0e0;
 }
 
+//----------
+footer {
+    flex: 0 0 auto;
+    -webkit-flex: 0 0 auto;
+}
+
+.container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}

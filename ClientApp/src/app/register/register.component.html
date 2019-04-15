@@ -22,8 +22,8 @@
         <form class="form">
           <p>National Identification Number</p>
           <div class="form-group input-group ">
-            <span class="input-group-addon"><i class="fa fa-user"></i></span> 
-            <input type="number" class="form-control" placeholder="Enter NIN" aria-label="NIN"> 
+            <span class="input-group-addon"><i class="fa fa-lock"></i></span> 
+            <input type="number" class="form-control" name="nin" placeholder="Enter NIN"> 
           </div>
           
           <p>Last Name</p>
@@ -55,27 +55,125 @@
             <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
             <input type="date" name="bday">
           </div>
+
           <p>City</p>
           <div class="form-group input-group">
             <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span> 
             <input type="text" class="form-control" name="city" placeholder="Enter City">
           </div>
+
+          <p>Country</p>
+          <div class="form-group input-group"> 
+            <span class="input-group-addon"><i class="fa fa-flag"></i></span> 
+            <input type="text" class="form-control" name="country" placeholder="Enter Country">
+          </div>
           
           <p>Password</p>
           <div class="form-group input-group">
-            <span class="input-group-addon"><i class="fa fa-lock"></i></span> 
+            <span class="input-group-addon"><i class="fa fa-key"></i></span> 
             <input type="password" class="form-control" name="password" placeholder="Enter Password">
           </div>
 
           <p>Confirm Password</p>
           <div class="form-group input-group">
-            <span class="input-group-addon"><i class="fa fa-lock"></i></span> 
+            <span class="input-group-addon"><i class="fa fa-repeat"></i></span> 
             <input type="password" class="form-control" name="confirm_password" placeholder="Re-enter Password">
           </div>
 
           <input type="submit" class="form-control" name="submit" value="Register">   
         </form>   
     </div>
+
+
+
+    <div class="login-box" *ngIf="router.url === '/doctor-register'">
+      <img src="assets/img/avatar.png" class="avatar" />
+
+      <h1>Doctor Register Here</h1>
+      
+      <form class="form">
+        <p>Doctor Identification Number</p>
+        <div class="form-group input-group ">
+          <span class="input-group-addon"><i class="fa fa-lock"></i></span> 
+          <input type="number" class="form-control" name="din" placeholder="Enter DIN"> 
+        </div>
+        
+        <p>Last Name</p>
+        <div class="form-group input-group">
+          <span class="input-group-addon"><i class="fa fa-user"></i></span> 
+          <input type="text" class="form-control" name="last_name" placeholder="Enter Last Name">
+        </div>
+
+        <p>First Name</p>
+        <div class="form-group input-group">
+          <span class="input-group-addon"><i class="fa fa-user"></i></span> 
+          <input type="text" class="form-control" name="first_name" placeholder="Enter First Name">
+        </div>
+
+        <p>E-mail</p>
+        <div class="form-group input-group">
+          <span class="input-group-addon"><i class="fa fa-at"></i></span> 
+          <input type="email" class="form-control" name="email" placeholder="Enter E-mail">
+        </div>
+
+        <p>Phone Number</p>
+        <div class="form-group input-group">
+          <span class="input-group-addon"><i class="fa fa-phone"></i></span> 
+          <input type="tel" class="form-control" name="phone_number" placeholder="Enter Phone Number">
+        </div>
+
+        <p>Description</p>
+        <div class="form-group input-group"> 
+          <span class="input-group-addon"><i class="fa fa-sticky-note-o"></i></span> 
+          <input type="text" class="form-control" name="description" placeholder="Enter Description">
+        </div>
+
+        <p>Department</p>
+        <div class="form-group input-group"> 
+          <span class="input-group-addon"><i class="fa fa-id-card-o"></i></span> 
+          <input type="text" class="form-control" name="department" placeholder="Enter Department">
+        </div>
+
+        <p>Institution</p>
+        <div class="form-group input-group"> 
+          <span class="input-group-addon"><i class="fa fa-h-square"></i></span> 
+          <input type="text" class="form-control" name="institution" placeholder="Enter Institution">
+        </div>
+        
+        <p>Address</p>
+        <div class="form-group input-group"> 
+          <span class="input-group-addon"><i class="fa fa-map-marker"></i></span> 
+          <input type="text" class="form-control" name="address" placeholder="Enter Address">
+        </div>
+
+        <p>City</p>
+        <div class="form-group input-group">
+          <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span> 
+          <input type="text" class="form-control" name="city" placeholder="Enter City">
+        </div>
+
+        <p>Country</p>
+        <div class="form-group input-group"> 
+          <span class="input-group-addon"><i class="fa fa-flag"></i></span> 
+          <input type="text" class="form-control" name="country" placeholder="Enter Country">
+        </div>
+
+        <p>Password</p>
+        <div class="form-group input-group">
+          <span class="input-group-addon"><i class="fa fa-key"></i></span> 
+          <input type="password" class="form-control" name="password" placeholder="Enter Password">
+        </div>
+
+        <p>Confirm Password</p>
+        <div class="form-group input-group">
+          <span class="input-group-addon"><i class="fa fa-repeat"></i></span> 
+          <input type="password" class="form-control" name="confirm_password" placeholder="Re-enter Password">
+        </div>
+
+        <input type="submit" class="form-control" name="submit" value="Register">   
+      </form>   
+  </div>
+   
   </div>
 
 
