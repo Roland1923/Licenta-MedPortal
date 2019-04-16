@@ -7,12 +7,14 @@ import { routing } from './app-routing.module';
 
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
+import { UserService } from './shared/services/user.service';
 import { HttpClientModule } from '@angular/common/http';
 
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { FooterComponent } from './footer/footer.component';
+import { ConfigService } from './shared/services/config.service';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,7 @@ import { FooterComponent } from './footer/footer.component';
     HttpModule,
     routing
   ],
-  providers: [],
+  providers: [UserService, ConfigService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

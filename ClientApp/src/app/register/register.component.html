@@ -91,88 +91,88 @@
 
       <h1>Doctor Register Here</h1>
       
-      <form class="form">
+      <form class="form" #f="ngForm" (ngSubmit)="registerDoctor(f)">
         <p>Doctor Identification Number</p>
         <div class="form-group input-group ">
           <span class="input-group-addon"><i class="fa fa-lock"></i></span> 
-          <input type="number" class="form-control" name="din" placeholder="Enter DIN"> 
+          <input type="number" class="form-control" name="din" placeholder="Enter DIN" ngModel> 
         </div>
         
         <p>Last Name</p>
         <div class="form-group input-group">
           <span class="input-group-addon"><i class="fa fa-user"></i></span> 
-          <input type="text" class="form-control" name="last_name" placeholder="Enter Last Name">
+          <input type="text" class="form-control" placeholder="Enter Last Name" name="lastName" ngModel>
         </div>
 
         <p>First Name</p>
         <div class="form-group input-group">
           <span class="input-group-addon"><i class="fa fa-user"></i></span> 
-          <input type="text" class="form-control" name="first_name" placeholder="Enter First Name">
+          <input type="text" class="form-control" name="firstName" placeholder="Enter First Name" ngModel>
         </div>
 
         <p>E-mail</p>
         <div class="form-group input-group">
           <span class="input-group-addon"><i class="fa fa-at"></i></span> 
-          <input type="email" class="form-control" name="email" placeholder="Enter E-mail">
+          <input type="email" class="form-control" name="email" placeholder="Enter E-mail" ngModel>
         </div>
 
         <p>Phone Number</p>
         <div class="form-group input-group">
           <span class="input-group-addon"><i class="fa fa-phone"></i></span> 
-          <input type="tel" class="form-control" name="phone_number" placeholder="Enter Phone Number">
+          <input type="tel" class="form-control" name="phoneNumber" placeholder="Enter Phone Number" ngModel>
         </div>
 
         <p>Description</p>
         <div class="form-group input-group"> 
           <span class="input-group-addon"><i class="fa fa-sticky-note-o"></i></span> 
-          <input type="text" class="form-control" name="description" placeholder="Enter Description">
+          <input type="text" class="form-control" name="description" placeholder="Enter Description" ngModel>
         </div>
 
         <p>Speciality</p>
         <div class="form-group input-group"> 
           <span class="input-group-addon"><i class="fa fa-id-card-o"></i></span> 
-          <input type="text" class="form-control" name="department" placeholder="Enter Speciality">
+          <input type="text" class="form-control" name="speciality" placeholder="Enter Speciality" ngModel>
         </div>
 
         <p>Institution</p>
         <div class="form-group input-group"> 
           <span class="input-group-addon"><i class="fa fa-h-square"></i></span> 
-          <input type="text" class="form-control" name="institution" placeholder="Enter Institution">
+          <input type="text" class="form-control" name="hospital" placeholder="Enter Institution" ngModel>
         </div>
         
         <p>Address</p>
         <div class="form-group input-group"> 
           <span class="input-group-addon"><i class="fa fa-map-marker"></i></span> 
-          <input type="text" class="form-control" name="address" placeholder="Enter Address">
+          <input type="text" class="form-control" name="address" placeholder="Enter Address" ngModel> 
         </div>
 
         <p>City</p>
         <div class="form-group input-group">
           <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span> 
-          <input type="text" class="form-control" name="city" placeholder="Enter City">
+          <input type="text" class="form-control" name="city" placeholder="Enter City" ngModel>
         </div>
 
         <p>Country</p>
         <div class="form-group input-group"> 
           <span class="input-group-addon"><i class="fa fa-flag"></i></span> 
-          <input type="text" class="form-control" name="country" placeholder="Enter Country">
+          <input type="text" class="form-control" name="country" placeholder="Enter Country" ngModel>
         </div>
 
         <p>Password</p>
         <div class="form-group input-group">
           <span class="input-group-addon"><i class="fa fa-key"></i></span> 
-          <input type="password" class="form-control" name="password" placeholder="Enter Password">
+          <input type="password" class="form-control" name="password" placeholder="Enter Password" ngModel>
         </div>
 
         <p>Confirm Password</p>
         <div class="form-group input-group">
           <span class="input-group-addon"><i class="fa fa-repeat"></i></span> 
-          <input type="password" class="form-control" name="confirm_password" placeholder="Re-enter Password">
+          <input type="password" class="form-control" name="confirm_password" placeholder="Re-enter Password" ngModel>
         </div>
 
         <input type="submit" class="form-control" name="submit" value="Register">   
       </form>   
-  </div>
+    </div>
    
   </div>
 
