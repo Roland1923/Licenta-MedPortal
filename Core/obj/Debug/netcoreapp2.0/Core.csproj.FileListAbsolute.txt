@@ -54,3 +54,12 @@ C:\Users\rolan\Desktop\Licenta2018\Core\obj\Debug\netcoreapp2.0\Core.AssemblyInf
 C:\Users\rolan\Desktop\Licenta2018\Core\obj\Debug\netcoreapp2.0\Core.AssemblyInfo.cs
 C:\Users\rolan\Desktop\Licenta2018\Core\obj\Debug\netcoreapp2.0\Core.dll
 C:\Users\rolan\Desktop\Licenta2018\Core\obj\Debug\netcoreapp2.0\Core.pdb
+C:\Users\rolan\Desktop\Licenta - MedPortal\Core\bin\Debug\netcoreapp2.0\Core.deps.json
+C:\Users\rolan\Desktop\Licenta - MedPortal\Core\bin\Debug\netcoreapp2.0\Core.dll
+C:\Users\rolan\Desktop\Licenta - MedPortal\Core\bin\Debug\netcoreapp2.0\Core.pdb
+C:\Users\rolan\Desktop\Licenta - MedPortal\Core\obj\Debug\netcoreapp2.0\Core.csprojAssemblyReference.cache
+C:\Users\rolan\Desktop\Licenta - MedPortal\Core\obj\Debug\netcoreapp2.0\Core.csproj.CoreCompileInputs.cache
+C:\Users\rolan\Desktop\Licenta - MedPortal\Core\obj\Debug\netcoreapp2.0\Core.AssemblyInfoInputs.cache
+C:\Users\rolan\Desktop\Licenta - MedPortal\Core\obj\Debug\netcoreapp2.0\Core.AssemblyInfo.cs
+C:\Users\rolan\Desktop\Licenta - MedPortal\Core\obj\Debug\netcoreapp2.0\Core.dll
+C:\Users\rolan\Desktop\Licenta - MedPortal\Core\obj\Debug\netcoreapp2.0\Core.pdb

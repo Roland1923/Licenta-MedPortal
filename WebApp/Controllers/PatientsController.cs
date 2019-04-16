@@ -96,7 +96,7 @@ namespace WebApp.Apis
             string passwordHash = PasswordHashMd5.GetMd5Hash(md5Hash, patient.Password);
 
 
-            var instance = Patient.Create(patient.FirstName, patient.LastName, patient.Email, passwordHash, patient.City, patient.Birthdate, patient.PhoneNumber, null);
+            var instance = Patient.Create(patient.NIN, patient.FirstName, patient.LastName, patient.Email, passwordHash, patient.City, patient.Country, patient.Birthdate, patient.PhoneNumber, null);
 
             try
             {
@@ -135,7 +135,7 @@ namespace WebApp.Apis
             try
             {
 
-                instance.Update(patient.FirstName, patient.LastName, patient.Email, passwordHash, patient.City, patient.Birthdate, patient.PhoneNumber);
+                instance.Update(patient.NIN, patient.FirstName, patient.LastName, patient.Email, passwordHash, patient.City, patient.Country, patient.Birthdate, patient.PhoneNumber);
 
                 var status = await _repository.UpdateAsync(instance);
                 if (!status)

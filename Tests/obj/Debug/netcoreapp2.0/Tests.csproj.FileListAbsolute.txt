@@ -48,3 +48,22 @@ C:\Users\Daniel Oana\Documents\GitHub\MedPortal\Tests\obj\Debug\netcoreapp2.0\Te
 C:\Users\Daniel Oana\Documents\GitHub\MedPortal\Tests\obj\Debug\netcoreapp2.0\Tests.AssemblyInfo.cs
 C:\Users\Daniel Oana\Documents\GitHub\MedPortal\Tests\obj\Debug\netcoreapp2.0\Tests.dll
 C:\Users\Daniel Oana\Documents\GitHub\MedPortal\Tests\obj\Debug\netcoreapp2.0\Tests.pdb
+C:\Users\rolan\Desktop\Licenta - MedPortal\Tests\obj\Debug\netcoreapp2.0\Tests.csprojAssemblyReference.cache
+C:\Users\rolan\Desktop\Licenta - MedPortal\Tests\obj\Debug\netcoreapp2.0\Tests.csproj.CoreCompileInputs.cache
+C:\Users\rolan\Desktop\Licenta - MedPortal\Tests\obj\Debug\netcoreapp2.0\Tests.AssemblyInfoInputs.cache
+C:\Users\rolan\Desktop\Licenta - MedPortal\Tests\obj\Debug\netcoreapp2.0\Tests.AssemblyInfo.cs
+C:\Users\rolan\Desktop\Licenta - MedPortal\Tests\obj\Debug\netcoreapp2.0\Tests.dll
+C:\Users\rolan\Desktop\Licenta - MedPortal\Tests\obj\Debug\netcoreapp2.0\Tests.pdb
+C:\Users\rolan\Desktop\Licenta - MedPortal\Tests\bin\Debug\netcoreapp2.0\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\rolan\Desktop\Licenta - MedPortal\Tests\bin\Debug\netcoreapp2.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\rolan\Desktop\Licenta - MedPortal\Tests\bin\Debug\netcoreapp2.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\rolan\Desktop\Licenta - MedPortal\Tests\bin\Debug\netcoreapp2.0\Tests.deps.json
+C:\Users\rolan\Desktop\Licenta - MedPortal\Tests\bin\Debug\netcoreapp2.0\Tests.runtimeconfig.json
+C:\Users\rolan\Desktop\Licenta - MedPortal\Tests\bin\Debug\netcoreapp2.0\Tests.runtimeconfig.dev.json
+C:\Users\rolan\Desktop\Licenta - MedPortal\Tests\bin\Debug\netcoreapp2.0\Tests.dll
+C:\Users\rolan\Desktop\Licenta - MedPortal\Tests\bin\Debug\netcoreapp2.0\Tests.pdb
+C:\Users\rolan\Desktop\Licenta - MedPortal\Tests\bin\Debug\netcoreapp2.0\Core.dll
+C:\Users\rolan\Desktop\Licenta - MedPortal\Tests\bin\Debug\netcoreapp2.0\Infrastructure.dll
+C:\Users\rolan\Desktop\Licenta - MedPortal\Tests\bin\Debug\netcoreapp2.0\Core.pdb
+C:\Users\rolan\Desktop\Licenta - MedPortal\Tests\bin\Debug\netcoreapp2.0\Infrastructure.pdb
+C:\Users\rolan\Desktop\Licenta - MedPortal\Tests\obj\Debug\netcoreapp2.0\Tests.csproj.CopyComplete

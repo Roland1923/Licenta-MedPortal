@@ -3,6 +3,9 @@ using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
 namespace Infrastructure.Migrations
@@ -48,8 +51,6 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("BloodDonorId");
 
-                    b.HasIndex("PatientId");
-
                     b.ToTable("BloodDonors");
                 });
 
@@ -61,6 +62,10 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Address");
 
                     b.Property<string>("City");
+
+                    b.Property<string>("Country");
+
+                    b.Property<string>("DIN");
 
                     b.Property<string>("Description");
 
@@ -112,9 +117,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime>("Birthdate");
 
-                    b.Property<Guid?>("BloodDonorId");
-
                     b.Property<string>("City");
+
+                    b.Property<string>("Country");
 
                     b.Property<string>("Email");
 
@@ -122,13 +127,13 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("LastName");
 
+                    b.Property<string>("NIN");
+
                     b.Property<string>("Password");
 
                     b.Property<string>("PhoneNumber");
 
                     b.HasKey("PatientId");
-
-                    b.HasIndex("BloodDonorId");
 
                     b.ToTable("Patients");
                 });
@@ -148,11 +153,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Prescription");
 
-                    b.Property<string>("Recomandations");
+                    b.Property<string>("Recommendation");
 
                     b.HasKey("HistoryId");
-
-                    b.HasIndex("DoctorId");
 
                     b.HasIndex("PatientId");
 
@@ -161,53 +164,33 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Entities.Appointment", b =>
                 {
-                    b.HasOne("Core.Entities.Doctor", "Doctor")
+                    b.HasOne("Core.Entities.Doctor")
                         .WithMany("Appointments")
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Core.Entities.Patient", "Patient")
+                    b.HasOne("Core.Entities.Patient")
                         .WithMany("Appointments")
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Core.Entities.BloodDonor", b =>
-                {
-                    b.HasOne("Core.Entities.Patient", "Patient")
-                        .WithMany()
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Core.Entities.Feedback", b =>
                 {
-                    b.HasOne("Core.Entities.Doctor", "Doctor")
+                    b.HasOne("Core.Entities.Doctor")
                         .WithMany("Feedbacks")
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Core.Entities.Patient", "Patient")
+                    b.HasOne("Core.Entities.Patient")
                         .WithMany("Feedbacks")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Core.Entities.Patient", b =>
-                {
-                    b.HasOne("Core.Entities.BloodDonor", "BloodDonor")
-                        .WithMany()
-                        .HasForeignKey("BloodDonorId");
-                });
-
             modelBuilder.Entity("Core.Entities.PatientHistory", b =>
                 {
-                    b.HasOne("Core.Entities.Doctor", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Core.Entities.Patient", "Patient")
+                    b.HasOne("Core.Entities.Patient")
                         .WithMany("PatientHistories")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade);

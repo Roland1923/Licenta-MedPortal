@@ -13129,11 +13129,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\rolan\\Desktop\\Licenta2018\\Core\\Core.csproj",
+      "projectUniqueName": "C:\\Users\\rolan\\Desktop\\Licenta - MedPortal\\Core\\Core.csproj",
       "projectName": "Core",
-      "projectPath": "C:\\Users\\rolan\\Desktop\\Licenta2018\\Core\\Core.csproj",
+      "projectPath": "C:\\Users\\rolan\\Desktop\\Licenta - MedPortal\\Core\\Core.csproj",
       "packagesPath": "C:\\Users\\rolan\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\rolan\\Desktop\\Licenta2018\\Core\\obj\\",
+      "outputPath": "C:\\Users\\rolan\\Desktop\\Licenta - MedPortal\\Core\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

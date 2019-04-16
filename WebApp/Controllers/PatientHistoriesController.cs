@@ -10,7 +10,7 @@ using WebApp.Models;
 namespace WebApp.Apis
 {
     [Produces("application/json")]
-    [Route("api/PatientHistorys")]
+    [Route("api/PatientHistories")]
     public class PatientHistoriesController : Controller
     {
         private readonly IEditableRepository<PatientHistory> _repository;
@@ -26,7 +26,7 @@ namespace WebApp.Apis
         [NoCache]
         [ProducesResponseType(typeof(List<PatientHistory>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
-        public async Task<ActionResult> PatientHistorys()
+        public async Task<ActionResult> PatientHistories()
         {
             try
             {
@@ -40,12 +40,12 @@ namespace WebApp.Apis
         }
 
 
-        // GET api/PatientHistorys/page/10/10
+        // GET api/PatientHistories/page/10/10
         [HttpGet("page/{skip}/{take}")]
         [NoCache]
         [ProducesResponseType(typeof(List<PatientHistory>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
-        public async Task<ActionResult> PatientHistorysPage(int skip, int take)
+        public async Task<ActionResult> PatientHistoriesPage(int skip, int take)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace WebApp.Apis
         [NoCache]
         [ProducesResponseType(typeof(PatientHistory), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
-        public async Task<ActionResult> PatientHistorys(Guid id)
+        public async Task<ActionResult> PatientHistories(Guid id)
         {
             try
             {
@@ -107,7 +107,7 @@ namespace WebApp.Apis
             }
         }
 
-        // PUT api/PatientHistorys/5
+        // PUT api/PatientHistories/5
         [HttpPut("{id}")]
         //[ValidateAntiForgeryToken]
         [ProducesResponseType(typeof(ApiResponse), 200)]
@@ -139,7 +139,7 @@ namespace WebApp.Apis
             }
         }
 
-        // DELETE api/PatientHistorys/5
+        // DELETE api/PatientHistories/5
         [HttpDelete("{id}")]
         //[ValidateAntiForgeryToken]
         [ProducesResponseType(typeof(ApiResponse), 200)]

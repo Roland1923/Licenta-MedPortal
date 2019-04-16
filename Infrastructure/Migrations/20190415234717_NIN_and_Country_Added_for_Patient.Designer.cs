@@ -11,8 +11,8 @@ using System;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseService))]
-    [Migration("20171212213729_CreateDatabase")]
-    partial class CreateDatabase
+    [Migration("20190415234717_NIN_and_Country_Added_for_Patient")]
+    partial class NIN_and_Country_Added_for_Patient
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,12 +48,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<Guid>("PatientId");
 
-                    b.Property<string>("Type")
-                        .IsRequired();
+                    b.Property<string>("Type");
 
                     b.HasKey("BloodDonorId");
-
-                    b.HasIndex("PatientId");
 
                     b.ToTable("BloodDonors");
                 });
@@ -63,34 +60,29 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("DoctorId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Address")
-                        .IsRequired();
+                    b.Property<string>("Address");
 
-                    b.Property<string>("City")
-                        .IsRequired();
+                    b.Property<string>("City");
 
-                    b.Property<string>("Email")
-                        .IsRequired();
+                    b.Property<string>("Country");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(30);
+                    b.Property<string>("DIN");
 
-                    b.Property<string>("Hospital")
-                        .IsRequired();
+                    b.Property<string>("Description");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(30);
+                    b.Property<string>("Email");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(18);
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("Hospital");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<string>("Password");
 
                     b.Property<string>("PhoneNumber");
 
-                    b.Property<string>("Speciality")
-                        .IsRequired();
+                    b.Property<string>("Speciality");
 
                     b.HasKey("DoctorId");
 
@@ -102,16 +94,13 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("FeedbackId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(400);
+                    b.Property<string>("Description");
 
                     b.Property<Guid>("DoctorId");
 
                     b.Property<Guid>("PatientId");
 
-                    b.Property<string>("Rating")
-                        .IsRequired();
+                    b.Property<int>("Rating");
 
                     b.HasKey("FeedbackId");
 
@@ -129,31 +118,23 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime>("Birthdate");
 
-                    b.Property<Guid?>("BloodDonorId");
+                    b.Property<string>("City");
 
-                    b.Property<string>("City")
-                        .IsRequired();
+                    b.Property<string>("Country");
 
-                    b.Property<string>("Email")
-                        .IsRequired();
+                    b.Property<string>("Email");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(30);
+                    b.Property<string>("FirstName");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(30);
+                    b.Property<string>("LastName");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(18);
+                    b.Property<string>("NIN");
+
+                    b.Property<string>("Password");
 
                     b.Property<string>("PhoneNumber");
 
                     b.HasKey("PatientId");
-
-                    b.HasIndex("BloodDonorId");
 
                     b.ToTable("Patients");
                 });
@@ -163,22 +144,19 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("HistoryId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Description")
-                        .HasMaxLength(250);
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Description");
 
                     b.Property<Guid>("DoctorId");
 
                     b.Property<Guid>("PatientId");
 
-                    b.Property<string>("Prescription")
-                        .HasMaxLength(250);
+                    b.Property<string>("Prescription");
 
-                    b.Property<string>("Recomandations")
-                        .HasMaxLength(250);
+                    b.Property<string>("Recommendation");
 
                     b.HasKey("HistoryId");
-
-                    b.HasIndex("DoctorId");
 
                     b.HasIndex("PatientId");
 
@@ -187,53 +165,33 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Entities.Appointment", b =>
                 {
-                    b.HasOne("Core.Entities.Doctor", "Doctor")
+                    b.HasOne("Core.Entities.Doctor")
                         .WithMany("Appointments")
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Core.Entities.Patient", "Patient")
+                    b.HasOne("Core.Entities.Patient")
                         .WithMany("Appointments")
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Core.Entities.BloodDonor", b =>
-                {
-                    b.HasOne("Core.Entities.Patient", "Patient")
-                        .WithMany()
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Core.Entities.Feedback", b =>
                 {
-                    b.HasOne("Core.Entities.Doctor", "Doctor")
+                    b.HasOne("Core.Entities.Doctor")
                         .WithMany("Feedbacks")
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Core.Entities.Patient", "Patient")
+                    b.HasOne("Core.Entities.Patient")
                         .WithMany("Feedbacks")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Core.Entities.Patient", b =>
-                {
-                    b.HasOne("Core.Entities.BloodDonor", "BloodDonor")
-                        .WithMany()
-                        .HasForeignKey("BloodDonorId");
-                });
-
             modelBuilder.Entity("Core.Entities.PatientHistory", b =>
                 {
-                    b.HasOne("Core.Entities.Doctor", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Core.Entities.Patient", "Patient")
+                    b.HasOne("Core.Entities.Patient")
                         .WithMany("PatientHistories")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade);

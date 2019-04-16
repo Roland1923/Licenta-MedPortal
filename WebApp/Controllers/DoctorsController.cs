@@ -97,7 +97,7 @@ namespace WebApp.Apis
             MD5 md5Hash = MD5.Create();
             string passwordHash = PasswordHashMd5.GetMd5Hash(md5Hash, doctor.Password);
 
-            var instance = Doctor.Create(doctor.FirstName, doctor.LastName, doctor.Email, passwordHash, doctor.PhoneNumber, doctor.Description, doctor.Speciality, doctor.Hospital, doctor.City, doctor.Address);
+            var instance = Doctor.Create(doctor.DIN, doctor.FirstName, doctor.LastName, doctor.Email, passwordHash, doctor.PhoneNumber, doctor.Description, doctor.Speciality, doctor.Hospital, doctor.City, doctor.Country, doctor.Address);
 
             try
             {
@@ -135,7 +135,7 @@ namespace WebApp.Apis
             try
             {
 
-                instance.Update(doctor.FirstName, doctor.LastName, doctor.Email, passwordHash, doctor.PhoneNumber, doctor.Description,doctor.Speciality, doctor.Hospital, doctor.City, doctor.Address);
+                instance.Update(doctor.DIN, doctor.FirstName, doctor.LastName, doctor.Email, passwordHash, doctor.PhoneNumber, doctor.Description,doctor.Speciality, doctor.Hospital, doctor.City, doctor.Country, doctor.Address);
 
                 var status = await _repository.UpdateAsync(instance);
                 if (!status)

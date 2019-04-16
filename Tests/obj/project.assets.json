@@ -14262,11 +14262,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\rolan\\Desktop\\Licenta2018\\Tests\\Tests.csproj",
+      "projectUniqueName": "C:\\Users\\rolan\\Desktop\\Licenta - MedPortal\\Tests\\Tests.csproj",
       "projectName": "Tests",
-      "projectPath": "C:\\Users\\rolan\\Desktop\\Licenta2018\\Tests\\Tests.csproj",
+      "projectPath": "C:\\Users\\rolan\\Desktop\\Licenta - MedPortal\\Tests\\Tests.csproj",
       "packagesPath": "C:\\Users\\rolan\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\rolan\\Desktop\\Licenta2018\\Tests\\obj\\",
+      "outputPath": "C:\\Users\\rolan\\Desktop\\Licenta - MedPortal\\Tests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -14285,11 +14285,11 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "C:\\Users\\rolan\\Desktop\\Licenta2018\\Core\\Core.csproj": {
-              "projectPath": "C:\\Users\\rolan\\Desktop\\Licenta2018\\Core\\Core.csproj"
+            "C:\\Users\\rolan\\Desktop\\Licenta - MedPortal\\Core\\Core.csproj": {
+              "projectPath": "C:\\Users\\rolan\\Desktop\\Licenta - MedPortal\\Core\\Core.csproj"
             },
-            "C:\\Users\\rolan\\Desktop\\Licenta2018\\Infrastructure\\Infrastructure.csproj": {
-              "projectPath": "C:\\Users\\rolan\\Desktop\\Licenta2018\\Infrastructure\\Infrastructure.csproj"
+            "C:\\Users\\rolan\\Desktop\\Licenta - MedPortal\\Infrastructure\\Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\rolan\\Desktop\\Licenta - MedPortal\\Infrastructure\\Infrastructure.csproj"
             }
           }
         }
