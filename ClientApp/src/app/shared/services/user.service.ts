@@ -23,24 +23,24 @@ export class UserService extends BaseService {
   }
  
 
-  doctorRegister(din: string, firstName: string, lastName: string, email: string, password: string, phoneNumber: string, description : string, speciality: string, hospital: string, city: string, country: string, address: string): Observable<DoctorRegistration> {
+  doctorRegister(din: string, firstName: string, lastName: string, email: string, password: string, phoneNumber: string, description : string, speciality: string, hospital: string, city: string, country: string, address: string): Observable<any> {
     let body = JSON.stringify({ din, firstName, lastName , email, password, phoneNumber, description, speciality, hospital, city, country, address });
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     console.log(firstName);
     console.log(hospital);
     return this.http.post(this.baseUrl + "api/Doctors", body, options)
-      .map (res => true)
-      .catch (this.handleError);
-    }
+    .map (res => true)
+    .catch (this.handleError);
+  }
 
-    private extractData(res: Response) {
-      if (res.status < 200 || res.status >= 300) {
-            throw new Error('Bad response status: ' + res.status);
-          }
-      let body = res.json();
-      return body || { };
-   }
+  private extractData(res: Response) {
+    if (res.status < 200 || res.status >= 300) {
+      throw new Error('Bad response status: ' + res.status);
+    }
+    let body = res.json();
+    return body || { };
+  }
 
 }
 

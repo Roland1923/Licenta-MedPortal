@@ -11,11 +11,14 @@ declare var $: any;
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
+
 export class RegisterComponent implements OnInit {
 
   errors: string;  
   isRequesting: boolean;
   submitted: boolean = false;
+  doctorModel = {};
+  patientModel ={};
 
   constructor(private userService: UserService, public router: Router) { }
 
@@ -27,22 +30,35 @@ export class RegisterComponent implements OnInit {
         $('#bg').css("background-position", x + "px " + y + "px");
       });
     });
+
+    $(function(){
+      var dtToday = new Date();
+      
+      var month = (dtToday.getMonth() + 1).toString();
+      var day = dtToday.getDate().toString();
+      var year = dtToday.getFullYear().toString();
+      if(parseInt(month) < 10)
+        month = '0' + month.toString();
+      if(parseInt(day) < 10)
+        day = '0' + day.toString();
+      
+      var minDate = '1900-01-01';
+
+      var maxDate = year + '-' + month + '-' + day;
+      $('#txtDate').attr('max', maxDate);
+      $('#txtDate').attr('min', minDate);
+  });
+  
   }
+
 
   registerDoctor({ value, valid }: { value: DoctorRegistration, valid: boolean }) {
     this.submitted = true;
     this.isRequesting = true;
     this.errors = '';
 
-    if(value.password != value.confirm_password) {
-        this.errors = "Parolele nu coincid";
-        console.log(value.password);
-        console.log(value.confirm_password);
-    }
-    
-    else {
-        if (valid) {
-            this.userService.doctorRegister(value.din,
+    if (valid) {
+      this.userService.doctorRegister(value.din,
                 value.firstName,
                 value.lastName,
                 value.email,
@@ -62,7 +78,6 @@ export class RegisterComponent implements OnInit {
                         }
                     },
                     errors => this.errors = errors);
-        }
     }
   }
 
