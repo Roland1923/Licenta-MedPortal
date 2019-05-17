@@ -20,159 +20,165 @@
 
       <h1>Patient Register Here</h1>
       
-      <form #f="ngForm" (ngSubmit)="patientRegister(f)">
+      <form [formGroup]="patientRegisterForm" #f="ngForm" (ngSubmit)="registerPatient(f)">
 
         <p class="field-title">National Identification Number</p>
         <div class="form-group input-group " [ngClass]="{
-          'has-danger': nin.invalid && nin.dirty || (submitted && nin.invalid),
-          'has-success': nin.valid && nin.dirty
+          'has-danger': patientRegisterForm.get('nin').invalid && patientRegisterForm.get('nin').dirty || submitted && patientRegisterForm.get('nin').invalid,
+          'has-success': patientRegisterForm.get('nin').valid && patientRegisterForm.get('nin').dirty
         }">
           <span class="input-group-addon"><i class="fa fa-lock"></i></span> 
           <input [ngClass]="{
-            'has-danger': nin.invalid && nin.dirty || (submitted && nin.invalid),
-            'has-success': nin.valid && nin.dirty
-          }" type="number" class="form-control" name="nin" placeholder="Enter NIN" [(ngModel)]="patientModel.nin" #nin="ngModel" required>  
+            'has-danger': patientRegisterForm.get('nin').invalid && patientRegisterForm.get('nin').dirty || submitted && patientRegisterForm.get('nin').invalid,
+            'has-success': patientRegisterForm.get('nin').valid && patientRegisterForm.get('nin').dirty
+          }" type="number" class="form-control" formControlName="nin" placeholder="Enter NIN">  
         </div>
-        <label class="error-label" *ngIf="(nin.invalid && !nin.pristine) || (submitted && nin.invalid)">
-            Your NIN is required.
-        </label>  
+        <label class="error-label" *ngIf="patientRegisterForm.get('nin').invalid && patientRegisterForm.get('nin').dirty && !patientRegisterForm.get('nin').errors.ninTaken || submitted && patientRegisterForm.get('nin').invalid && !patientRegisterForm.get('nin').errors.ninTaken">
+          Your NIN is required.
+      </label>
+      <label class="error-label" *ngIf="patientRegisterForm.get('nin').errors && patientRegisterForm.get('nin').errors.ninTaken">
+          This NIN is already taken!
+      </label>
 
         <p class="field-title">Last Name</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': lastName.invalid && lastName.dirty || (submitted && lastName.invalid),
-          'has-success': lastName.valid && lastName.dirty
+          'has-danger': patientRegisterForm.get('lastName').invalid && patientRegisterForm.get('lastName').dirty || (submitted && patientRegisterForm.get('lastName').invalid),
+          'has-success': patientRegisterForm.get('lastName').valid && patientRegisterForm.get('lastName').dirty
         }">
           <span class="input-group-addon"><i class="fa fa-user"></i></span> 
           <input [ngClass]="{
-            'has-danger': lastName.invalid && lastName.dirty || (submitted && lastName.invalid),
-            'has-success': lastName.valid && lastName.dirty
-          }" type="text" class="form-control" placeholder="Enter Last Name" name="lastName" [(ngModel)]="patientModel.lastName" #lastName="ngModel" minlength="3" maxlength="30" required>
+            'has-danger': patientRegisterForm.get('lastName').invalid && patientRegisterForm.get('lastName').dirty || (submitted && patientRegisterForm.get('lastName').invalid),
+            'has-success': patientRegisterForm.get('lastName').valid && patientRegisterForm.get('lastName').dirty
+          }" type="text" class="form-control" formControlName="lastName" placeholder="Enter Last Name" >
         </div>
-        <label class="error-label" *ngIf="lastName.invalid && !lastName.pristine || (submitted && lastName.invalid)">
+        <label class="error-label" *ngIf="patientRegisterForm.get('lastName').invalid && !patientRegisterForm.get('lastName').pristine || (submitted && patientRegisterForm.get('lastName').invalid)">
             Your Last Name is required and must contain between 3 and 30 letters.
         </label>  
 
         <p class="field-title">First Name</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': firstName.invalid && firstName.dirty || (submitted && firstName.invalid),
-          'has-success': firstName.valid && firstName.dirty
+          'has-danger': patientRegisterForm.get('firstName').invalid && patientRegisterForm.get('firstName').dirty || (submitted && patientRegisterForm.get('firstName').invalid),
+          'has-success': patientRegisterForm.get('firstName').valid && patientRegisterForm.get('firstName').dirty
         }">
           <span class="input-group-addon"><i class="fa fa-user"></i></span> 
           <input [ngClass]="{
-            'has-danger': firstName.invalid && firstName.dirty || (submitted && firstName.invalid),
-            'has-success': firstName.valid && firstName.dirty
-          }" type="text" class="form-control" name="firstName" placeholder="Enter First Name" [(ngModel)]="patientModel.firstName" #firstName="ngModel" minlength="3" maxlength="30" required>
+            'has-danger': patientRegisterForm.get('firstName').invalid && patientRegisterForm.get('firstName').dirty || (submitted && patientRegisterForm.get('firstName').invalid),
+            'has-success': patientRegisterForm.get('firstName').valid && patientRegisterForm.get('firstName').dirty
+          }" type="text" class="form-control" formControlName="firstName" placeholder="Enter First Name">
         </div>
-        <label class="error-label" *ngIf="firstName.invalid && !firstName.pristine || (submitted && firstName.invalid)">
+        <label class="error-label" *ngIf="patientRegisterForm.get('firstName').invalid && !patientRegisterForm.get('firstName').pristine || (submitted && patientRegisterForm.get('firstName').invalid)">
             Your First Name is required and must contain between 3 and 30 letters.
         </label>  
 
         <p class="field-title">E-mail</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': email.invalid && email.dirty || (submitted && email.invalid),
-          'has-success': email.valid && email.dirty
+          'has-danger': patientRegisterForm.get('email').invalid && patientRegisterForm.get('email').dirty || submitted && patientRegisterForm.get('email').invalid,
+          'has-success': patientRegisterForm.get('email').valid && patientRegisterForm.get('email').dirty
         }">
-          
           <input  [ngClass]="{
-            'has-danger': email.invalid && email.dirty || (submitted && email.invalid),
-            'has-success': email.valid && email.dirty
-          }" type="email" class="form-control" name="email" placeholder="Enter E-mail" [(ngModel)]="patientModel.email" #email="ngModel" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" >
+            'has-danger': patientRegisterForm.get('email').invalid && patientRegisterForm.get('email').dirty || submitted && patientRegisterForm.get('email').invalid,
+            'has-success': patientRegisterForm.get('email').valid && patientRegisterForm.get('email').dirty
+          }" type="email" class="form-control" formControlName="email" placeholder="Enter E-mail">
           <span class="input-group-addon"><i class="fa fa-at"></i>example.com</span> 
         </div>
-        <label class="error-label" *ngIf="!email.valid && email.dirty || (submitted && !email.valid)">
-            Enter a valid E-mail.
-        </label> 
+        <label class="error-label" *ngIf="patientRegisterForm.get('email').invalid && patientRegisterForm.get('email').dirty && !patientRegisterForm.get('email').errors.patientEmailTaken || submitted && patientRegisterForm.get('email').invalid && !patientRegisterForm.get('email').errors.patientEmailTaken">
+            Enter your correct E-mail.
+        </label>
+        <label class="error-label" *ngIf="patientRegisterForm.get('email').errors && patientRegisterForm.get('email').errors.patientEmailTaken">
+            This email is already taken!
+        </label>
 
         <p class="field-title">Phone Number</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': phoneNumber.invalid && phoneNumber.dirty || (submitted && phoneNumber.invalid),
-          'has-success': phoneNumber.valid && phoneNumber.dirty
+          'has-danger': patientRegisterForm.get('phoneNumber').invalid && patientRegisterForm.get('phoneNumber').dirty || (submitted && patientRegisterForm.get('phoneNumber').invalid),
+          'has-success': patientRegisterForm.get('phoneNumber').valid && patientRegisterForm.get('phoneNumber').dirty
         }">
           <span class="input-group-addon"><i class="fa fa-phone"></i></span> 
           <input [ngClass]="{
-            'has-danger': phoneNumber.invalid && phoneNumber.dirty || (submitted && phoneNumber.invalid),
-            'has-success': phoneNumber.valid && phoneNumber.dirty
-          }" type="tel" class="form-control" name="phoneNumber" placeholder="Enter Phone Number" [(ngModel)]="patientModel.phoneNumber" #phoneNumber="ngModel" required>
+            'has-danger': patientRegisterForm.get('phoneNumber').invalid && patientRegisterForm.get('phoneNumber').dirty || (submitted && patientRegisterForm.get('phoneNumber').invalid),
+            'has-success': patientRegisterForm.get('phoneNumber').valid && patientRegisterForm.get('phoneNumber').dirty
+          }" type="tel" class="form-control" formControlName="phoneNumber" placeholder="Enter Phone Number">
         </div>
-        <label class="error-label" *ngIf="phoneNumber.invalid && !phoneNumber.pristine || (submitted && phoneNumber.invalid)">
+        <label class="error-label" *ngIf="patientRegisterForm.get('phoneNumber').errors && !patientRegisterForm.get('phoneNumber').pristine || (submitted && patientRegisterForm.get('phoneNumber').errors)">
             Your Phone Number is required.
         </label>  
         
         <p class="field-title">Birthdate</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': birthday.invalid && birthday.dirty || (submitted && birthday.invalid),
-          'has-success': birthday.valid && birthday.dirty
+          'has-danger': patientRegisterForm.get('birthday').invalid && patientRegisterForm.get('birthday').dirty || (submitted && patientRegisterForm.get('birthday').invalid),
+          'has-success': patientRegisterForm.get('birthday').valid && patientRegisterForm.get('birthday').dirty
         }"> 
           <span class="input-group-addon"><i class="fa fa-map-marker"></i></span> 
           <input [ngClass]="{
-            'has-danger': birthday.invalid && birthday.dirty || (submitted && birthday.invalid),
-            'has-success': birthday.valid && birthday.dirty
-          }" id="txtDate" type="date" name="birthday" [(ngModel)]="patientModel.birthday" #birthday="ngModel" required> 
+            'has-danger': patientRegisterForm.get('birthday').invalid && patientRegisterForm.get('birthday').dirty || (submitted && patientRegisterForm.get('birthday').invalid),
+            'has-success': patientRegisterForm.get('birthday').valid && patientRegisterForm.get('birthday').dirty
+          }" id="txtDate" type="date" formControlName="birthday"> 
         </div>
-        <label class="error-label" *ngIf="birthday.invalid && !birthday.pristine || (submitted && birthday.invalid)">
+        <label class="error-label" *ngIf="patientRegisterForm.get('birthday').invalid && !patientRegisterForm.get('birthday').pristine || (submitted && patientRegisterForm.get('birthday').invalid)">
             Your Birthdate is required.
         </label>  
    
         <p class="field-title">City</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': city.invalid && city.dirty || (submitted && city.invalid),
-          'has-success': city.valid && city.dirty
+          'has-danger': patientRegisterForm.get('city').invalid && patientRegisterForm.get('city').dirty || (submitted && patientRegisterForm.get('city').invalid),
+          'has-success': patientRegisterForm.get('city').valid && patientRegisterForm.get('city').dirty
         }">
           <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span> 
           <input [ngClass]="{
-            'has-danger': city.invalid && city.dirty || (submitted && city.invalid),
-            'has-success': city.valid && city.dirty
-          }" type="text" class="form-control" name="city" placeholder="Enter City" [(ngModel)]="patientModel.city" #city="ngModel" minlength="3" maxlength="30" required>
+            'has-danger': patientRegisterForm.get('city').invalid && patientRegisterForm.get('city').dirty || (submitted && patientRegisterForm.get('city').invalid),
+            'has-success': patientRegisterForm.get('city').valid && patientRegisterForm.get('city').dirty
+          }" type="text" class="form-control" formControlName="city" placeholder="Enter City">
         </div>
-        <label class="error-label" *ngIf="city.invalid && !city.pristine || (submitted && city.invalid)">
+        <label class="error-label" *ngIf="patientRegisterForm.get('city').invalid && !patientRegisterForm.get('city').pristine || (submitted && patientRegisterForm.get('city').invalid)">
             Your City is required and must contain between 3 and 30 letters.
         </label>  
 
         <p class="field-title">Country</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': country.invalid && country.dirty || (submitted && country.invalid),
-          'has-success': country.valid && country.dirty
+          'has-danger': patientRegisterForm.get('country').invalid && patientRegisterForm.get('country').dirty || (submitted && patientRegisterForm.get('country').invalid),
+          'has-success': patientRegisterForm.get('country').valid && patientRegisterForm.get('country').dirty
         }">
           <span class="input-group-addon"><i class="fa fa-flag"></i></span> 
           <input [ngClass]="{
-            'has-danger': country.invalid && country.dirty || (submitted && country.invalid),
-            'has-success': country.valid && country.dirty
-          }" type="text" class="form-control" name="country" placeholder="Enter Country" [(ngModel)]="patientModel.country" #country="ngModel" minlength="3" maxlength="30" required>
+            'has-danger': patientRegisterForm.get('country').invalid && patientRegisterForm.get('country').dirty || (submitted && patientRegisterForm.get('country').invalid),
+            'has-success': patientRegisterForm.get('country').valid && patientRegisterForm.get('country').dirty
+          }" type="text" class="form-control" formControlName="country" placeholder="Enter Country">
         </div>
-        <label class="error-label" *ngIf="country.invalid && !country.pristine || (submitted && country.invalid)">
+        <label class="error-label" *ngIf="patientRegisterForm.get('country').invalid && !patientRegisterForm.get('country').pristine || (submitted && patientRegisterForm.get('country').invalid)">
             Your Country is required and must contain between 3 and 30 letters.
         </label>  
 
         <p class="field-title">Password</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': password.invalid && password.dirty || (submitted && password.invalid),
-          'has-success': password.valid && password.dirty
+          'has-danger': patientRegisterForm.get('password').invalid && patientRegisterForm.get('password').dirty || (submitted && patientRegisterForm.get('password').invalid),
+          'has-success': patientRegisterForm.get('password').valid && patientRegisterForm.get('password').dirty
         }">
           <span class="input-group-addon"><i class="fa fa-key"></i></span> 
           <input [ngClass]="{
-            'has-danger': password.invalid && password.dirty || (submitted && password.invalid),
-            'has-success': password.valid && password.dirty
-          }" type="password" class="form-control" name="password" placeholder="Enter Password" [(ngModel)]="patientModel.password" #password="ngModel" minlength="6" maxlength="20" required>
+            'has-danger': patientRegisterForm.get('password').invalid && patientRegisterForm.get('password').dirty || (submitted && patientRegisterForm.get('password').invalid),
+            'has-success': patientRegisterForm.get('password').valid && patientRegisterForm.get('password').dirty
+          }" type="password" class="form-control" formControlName="password" placeholder="Enter Password">
         </div>
-        <label class="error-label" *ngIf="password.invalid && !password.pristine || (submitted && password.invalid)">
+        <label class="error-label" *ngIf="patientRegisterForm.get('password').invalid && !patientRegisterForm.get('password').pristine || (submitted && patientRegisterForm.get('password').invalid)">
             Your Password is required and must contain between 6 and 20 characters.
         </label>  
 
         <p class="field-title">Confirm Password</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': confirm_password.invalid && confirm_password.dirty || (submitted && confirm_password.invalid) || (confirm_password.valid && patientModel.password!=patientModel.confirm_password),
-          'has-success': confirm_password.valid && confirm_password.dirty && patientModel.password==patientModel.confirm_password
+          'has-danger': patientRegisterForm.get('confirm_password').invalid && patientRegisterForm.get('confirm_password').dirty || (submitted && patientRegisterForm.get('confirm_password').invalid) || (patientRegisterForm.get('confirm_password').valid && patientRegisterForm.get('password').value!=patientRegisterForm.get('confirm_password').value),
+          'has-success': patientRegisterForm.get('confirm_password').valid && patientRegisterForm.get('confirm_password').dirty && patientRegisterForm.get('password').value==patientRegisterForm.get('confirm_password').value
         }"> 
           <span class="input-group-addon"><i class="fa fa-repeat"></i></span> 
           <input [ngClass]="{
-            'has-danger': confirm_password.invalid && confirm_password.dirty || (submitted && confirm_password.invalid) || (confirm_password.valid && patientModel.password!=patientModel.confirm_password),
-            'has-success': confirm_password.valid && confirm_password.dirty && patientModel.password==patientModel.confirm_password
-          }" type="password" class="form-control" name="confirm_password" placeholder="Re-enter Password" [(ngModel)]="patientModel.confirm_password" #confirm_password="ngModel" minlength="6" maxlength="20" required>
+            'has-danger': patientRegisterForm.get('confirm_password').invalid && patientRegisterForm.get('confirm_password').dirty || (submitted && patientRegisterForm.get('confirm_password').invalid) || (patientRegisterForm.get('confirm_password').valid && patientRegisterForm.get('password').value!=patientRegisterForm.get('confirm_password').value),
+            'has-success': patientRegisterForm.get('confirm_password').valid && patientRegisterForm.get('confirm_password').dirty && patientRegisterForm.get('password').value==patientRegisterForm.get('confirm_password').value
+          }" type="password" class="form-control" formControlName="confirm_password" placeholder="Re-enter Password">
         </div>
-        <label class="error-label" *ngIf="confirm_password.invalid && !confirm_password.pristine || (submitted && confirm_password.invalid)">
+
+        <label class="error-label" *ngIf="patientRegisterForm.get('confirm_password').invalid && !patientRegisterForm.get('confirm_password').pristine || (submitted && patientRegisterForm.get('confirm_password').invalid)">
             Your Password confirmation is required and must contain between 6 and 20 characters.
         </label>  
-        <label class="error-label" *ngIf="confirm_password.valid && patientModel.confirm_password!=patientModel.password">
+        <label class="error-label" *ngIf="patientRegisterForm.get('confirm_password').valid && patientRegisterForm.get('password').value!=patientRegisterForm.get('confirm_password').value">
             The password you entered does not match.
         </label>  
 
@@ -189,206 +195,212 @@
 
       <h1>Doctor Register Here</h1>
       
-      <form #f="ngForm" (ngSubmit)="registerDoctor(f)">
+      <form [formGroup]="doctorRegisterForm" #f="ngForm" (ngSubmit)="registerDoctor(f)">
 
         <p class="field-title">Doctor Identification Number</p>
         <div class="form-group input-group " [ngClass]="{
-          'has-danger': din.invalid && din.dirty || (submitted && din.invalid),
-          'has-success': din.valid && din.dirty
+          'has-danger': doctorRegisterForm.get('din').invalid && doctorRegisterForm.get('din').dirty || submitted && doctorRegisterForm.get('din').invalid,
+          'has-success': doctorRegisterForm.get('din').valid && doctorRegisterForm.get('din').dirty
         }">
           <span class="input-group-addon"><i class="fa fa-lock"></i></span> 
           <input [ngClass]="{
-            'has-danger': din.invalid && din.dirty || (submitted && din.invalid),
-            'has-success': din.valid && din.dirty
-          }" type="number" class="form-control" name="din" placeholder="Enter DIN" [(ngModel)]="doctorModel.din" #din="ngModel" required>  
+            'has-danger': doctorRegisterForm.get('din').invalid && doctorRegisterForm.get('din').dirty || submitted && doctorRegisterForm.get('din').invalid,
+            'has-success': doctorRegisterForm.get('din').valid && doctorRegisterForm.get('din').dirty
+          }" type="number" class="form-control" formControlName="din" placeholder="Enter DIN">  
         </div>
-        <label class="error-label" *ngIf="(din.invalid && !din.pristine) || (submitted && din.invalid)">
-            Your DIN is required.
-        </label>  
+      <label class="error-label" *ngIf="doctorRegisterForm.get('din').invalid && doctorRegisterForm.get('din').dirty && !doctorRegisterForm.get('din').errors.dinTaken || submitted && doctorRegisterForm.get('din').invalid && !doctorRegisterForm.get('din').errors.dinTaken">
+          Your DIN is required.
+      </label>
+      <label class="error-label" *ngIf="doctorRegisterForm.get('din').errors && doctorRegisterForm.get('din').errors.dinTaken">
+          This DIN is already taken!
+      </label>
 
         <p class="field-title">Last Name</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': lastName.invalid && lastName.dirty || (submitted && lastName.invalid),
-          'has-success': lastName.valid && lastName.dirty
+          'has-danger': doctorRegisterForm.get('lastName').invalid && doctorRegisterForm.get('lastName').dirty || (submitted && doctorRegisterForm.get('lastName').invalid),
+          'has-success': doctorRegisterForm.get('lastName').valid && doctorRegisterForm.get('lastName').dirty
         }">
           <span class="input-group-addon"><i class="fa fa-user"></i></span> 
           <input [ngClass]="{
-            'has-danger': lastName.invalid && lastName.dirty || (submitted && lastName.invalid),
-            'has-success': lastName.valid && lastName.dirty
-          }" type="text" class="form-control" placeholder="Enter Last Name" name="lastName" [(ngModel)]="doctorModel.lastName" #lastName="ngModel" minlength="3" maxlength="30" required>
+            'has-danger': doctorRegisterForm.get('lastName').invalid && doctorRegisterForm.get('lastName').dirty || (submitted && doctorRegisterForm.get('lastName').invalid),
+            'has-success': doctorRegisterForm.get('lastName').valid && doctorRegisterForm.get('lastName').dirty
+          }" type="text" class="form-control" placeholder="Enter Last Name" formControlName="lastName" >
         </div>
-        <label class="error-label" *ngIf="lastName.invalid && !lastName.pristine || (submitted && lastName.invalid)">
+        <label class="error-label" *ngIf="doctorRegisterForm.get('lastName').invalid && !doctorRegisterForm.get('lastName').pristine || (submitted && doctorRegisterForm.get('lastName').invalid)">
             Your Last Name is required and must contain between 3 and 30 letters.
         </label>  
 
         <p class="field-title">First Name</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': firstName.invalid && firstName.dirty || (submitted && firstName.invalid),
-          'has-success': firstName.valid && firstName.dirty
+          'has-danger': doctorRegisterForm.get('firstName').invalid && doctorRegisterForm.get('firstName').dirty || (submitted && doctorRegisterForm.get('firstName').invalid),
+          'has-success': doctorRegisterForm.get('firstName').valid && doctorRegisterForm.get('firstName').dirty
         }">
           <span class="input-group-addon"><i class="fa fa-user"></i></span> 
           <input [ngClass]="{
-            'has-danger': firstName.invalid && firstName.dirty || (submitted && firstName.invalid),
-            'has-success': firstName.valid && firstName.dirty
-          }" type="text" class="form-control" name="firstName" placeholder="Enter First Name" [(ngModel)]="doctorModel.firstName" #firstName="ngModel" minlength="3" maxlength="30" required>
+            'has-danger': doctorRegisterForm.get('firstName').invalid && doctorRegisterForm.get('firstName').dirty || (submitted && doctorRegisterForm.get('firstName').invalid),
+            'has-success': doctorRegisterForm.get('firstName').valid && doctorRegisterForm.get('firstName').dirty
+          }" type="text" class="form-control" formControlName="firstName" placeholder="Enter First Name">
         </div>
-        <label class="error-label" *ngIf="firstName.invalid && !firstName.pristine || (submitted && firstName.invalid)">
+        <label class="error-label" *ngIf="doctorRegisterForm.get('firstName').invalid && !doctorRegisterForm.get('firstName').pristine || (submitted && doctorRegisterForm.get('firstName').invalid)">
             Your First Name is required and must contain between 3 and 30 letters.
         </label>  
 
         <p class="field-title">E-mail</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': email.invalid && email.dirty || (submitted && email.invalid),
-          'has-success': email.valid && email.dirty
+          'has-danger': doctorRegisterForm.get('email').invalid && doctorRegisterForm.get('email').dirty || submitted && doctorRegisterForm.get('email').invalid,
+          'has-success': doctorRegisterForm.get('email').valid && doctorRegisterForm.get('email').dirty
         }">
-         
           <input  [ngClass]="{
-            'has-danger': email.invalid && email.dirty || (submitted && email.invalid),
-            'has-success': email.valid && email.dirty
-          }" type="email" class="form-control" name="email" placeholder="Enter E-mail" [(ngModel)]="doctorModel.email" #email="ngModel" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" >
+            'has-danger': doctorRegisterForm.get('email').invalid && doctorRegisterForm.get('email').dirty || submitted && doctorRegisterForm.get('email').invalid,
+            'has-success': doctorRegisterForm.get('email').valid && doctorRegisterForm.get('email').dirty
+          }" type="email" class="form-control" formControlName="email" placeholder="Enter E-mail">
           <span class="input-group-addon"><i class="fa fa-at"></i>example.com</span> 
         </div>
-        <label class="error-label" *ngIf="!email.valid && email.dirty || (submitted && !email.valid)">
-            Enter a valid E-mail.
-        </label> 
+        <label class="error-label" *ngIf="doctorRegisterForm.get('email').invalid && doctorRegisterForm.get('email').dirty && !doctorRegisterForm.get('email').errors.doctorEmailTaken || submitted && doctorRegisterForm.get('email').invalid && !doctorRegisterForm.get('email').errors.doctorEmailTaken">
+            Enter your correct E-mail.
+        </label>
+        <label class="error-label" *ngIf="doctorRegisterForm.get('email').errors && doctorRegisterForm.get('email').errors.doctorEmailTaken">
+            This email is already taken!
+        </label>
 
         <p class="field-title">Phone Number</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': phoneNumber.invalid && phoneNumber.dirty || (submitted && phoneNumber.invalid),
-          'has-success': phoneNumber.valid && phoneNumber.dirty
+          'has-danger': doctorRegisterForm.get('phoneNumber').invalid && doctorRegisterForm.get('phoneNumber').dirty || (submitted && doctorRegisterForm.get('phoneNumber').invalid),
+          'has-success': doctorRegisterForm.get('phoneNumber').valid && doctorRegisterForm.get('phoneNumber').dirty
         }">
           <span class="input-group-addon"><i class="fa fa-phone"></i></span> 
           <input [ngClass]="{
-            'has-danger': phoneNumber.invalid && phoneNumber.dirty || (submitted && phoneNumberinvalid),
-            'has-success': phoneNumber.valid && phoneNumber.dirty
-          }" type="tel" class="form-control" name="phoneNumber" placeholder="Enter Phone Number" [(ngModel)]="doctorModel.phoneNumber" #phoneNumber="ngModel" required>
+            'has-danger': doctorRegisterForm.get('phoneNumber').invalid && doctorRegisterForm.get('phoneNumber').dirty || (submitted && doctorRegisterForm.get('phoneNumber').invalid),
+            'has-success': doctorRegisterForm.get('phoneNumber').valid && doctorRegisterForm.get('phoneNumber').dirty
+          }" type="tel" class="form-control" formControlName="phoneNumber" placeholder="Enter Phone Number">
         </div>
-        <label class="error-label" *ngIf="phoneNumber.invalid && !phoneNumber.pristine || (submitted && phoneNumber.invalid)">
+        <label class="error-label" *ngIf="doctorRegisterForm.get('phoneNumber').invalid && !doctorRegisterForm.get('phoneNumber').pristine || (submitted && doctorRegisterForm.get('phoneNumber').invalid)">
             Your Phone Number is required.
         </label>  
 
         <p class="field-title">Description</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': description.invalid && description.dirty || (submitted && description.invalid),
-          'has-success': description.valid && description.dirty
+          'has-danger': doctorRegisterForm.get('description').invalid && doctorRegisterForm.get('description').dirty || (submitted && doctorRegisterForm.get('description').invalid),
+          'has-success': doctorRegisterForm.get('description').valid && doctorRegisterForm.get('description').dirty
         }"> 
           <span class="input-group-addon"><i class="fa fa-sticky-note-o"></i></span> 
           <input [ngClass]="{
-            'has-danger': description.invalid && description.dirty || (submitted && description.invalid),
-            'has-success': description.valid && description.dirty
-          }" type="text" class="form-control" name="description" placeholder="Enter Description" [(ngModel)]="doctorModel.description" #description="ngModel" minlength="10" maxlength="50" required>
+            'has-danger': doctorRegisterForm.get('description').invalid && doctorRegisterForm.get('description').dirty || (submitted && doctorRegisterForm.get('description').invalid),
+            'has-success': doctorRegisterForm.get('description').valid && doctorRegisterForm.get('description').dirty
+          }" type="text" class="form-control" formControlName="description" placeholder="Enter Description" >
         </div>
-        <label class="error-label" *ngIf="description.invalid && !description.pristine || (submitted && description.invalid)">
+        <label class="error-label" *ngIf="doctorRegisterForm.get('description').invalid && !doctorRegisterForm.get('description').pristine || (submitted && doctorRegisterForm.get('description').invalid)">
             Your Description is required and must contain between 10 and 50 characters.
         </label>  
 
         <p class="field-title">Speciality</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': speciality.invalid && speciality.dirty || (submitted && speciality.invalid),
-          'has-success': speciality.valid && speciality.dirty
+          'has-danger': doctorRegisterForm.get('speciality').invalid && doctorRegisterForm.get('speciality').dirty || (submitted && doctorRegisterForm.get('speciality').invalid),
+          'has-success': doctorRegisterForm.get('speciality').valid && doctorRegisterForm.get('speciality').dirty
         }"> 
           <span class="input-group-addon"><i class="fa fa-id-card-o"></i></span> 
           <input [ngClass]="{
-            'has-danger': speciality.invalid && speciality.dirty || (submitted && speciality.invalid),
-            'has-success': speciality.valid && speciality.dirty
-          }" type="text" class="form-control" name="speciality" placeholder="Enter Speciality" [(ngModel)]="doctorModel.speciality" #speciality="ngModel" required>
+            'has-danger': doctorRegisterForm.get('speciality').invalid && doctorRegisterForm.get('speciality').dirty || (submitted && doctorRegisterForm.get('speciality').invalid),
+            'has-success': doctorRegisterForm.get('speciality').valid && doctorRegisterForm.get('speciality').dirty
+          }" type="text" class="form-control" formControlName="speciality" placeholder="Enter Speciality">
         </div>
-        <label class="error-label" *ngIf="speciality.invalid && !speciality.pristine || (submitted && speciality.invalid)">
+        <label class="error-label" *ngIf="doctorRegisterForm.get('speciality').invalid && !doctorRegisterForm.get('speciality').pristine || (submitted && doctorRegisterForm.get('speciality').invalid)">
             Your Speciality is required.
         </label>  
 
         <p class="field-title">Institution</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': hospital.invalid && hospital.dirty || (submitted && hospital.invalid),
-          'has-success': hospital.valid && hospital.dirty
+          'has-danger': doctorRegisterForm.get('hospital').invalid && doctorRegisterForm.get('hospital').dirty || (submitted && doctorRegisterForm.get('hospital').invalid),
+          'has-success': doctorRegisterForm.get('hospital').valid && doctorRegisterForm.get('hospital').dirty
         }" > 
           <span class="input-group-addon"><i class="fa fa-h-square"></i></span> 
           <input [ngClass]="{
-            'has-danger': hospital.invalid && hospital.dirty || (submitted && hospital.invalid),
-            'has-success': hospital.valid && hospital.dirty
-          }" type="text" class="form-control" name="hospital" placeholder="Enter Institution" [(ngModel)]="doctorModel.hospital" #hospital="ngModel" required>
+            'has-danger': doctorRegisterForm.get('hospital').invalid && doctorRegisterForm.get('hospital').dirty || (submitted && doctorRegisterForm.get('hospital').invalid),
+            'has-success': doctorRegisterForm.get('hospital').valid && doctorRegisterForm.get('hospital').dirty
+          }" type="text" class="form-control" formControlName="hospital" placeholder="Enter Institution">
         </div>
-        <label class="error-label" *ngIf="hospital.invalid && !hospital.pristine || (submitted && hospital.invalid)">
+        <label class="error-label" *ngIf="doctorRegisterForm.get('hospital').invalid && !doctorRegisterForm.get('hospital').pristine || (submitted && doctorRegisterForm.get('hospital').invalid)">
             Your Institution is required.
         </label>  
         
         <p class="field-title">Address</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': address.invalid && address.dirty || (submitted && address.invalid),
-          'has-success': address.valid && address.dirty
+          'has-danger': doctorRegisterForm.get('address').invalid && doctorRegisterForm.get('address').dirty || (submitted && doctorRegisterForm.get('address').invalid),
+          'has-success': doctorRegisterForm.get('address').valid && doctorRegisterForm.get('address').dirty
         }" > 
           <span class="input-group-addon"><i class="fa fa-map-marker"></i></span> 
           <input [ngClass]="{
-            'has-danger': address.invalid && address.dirty || (submitted && address.invalid),
-            'has-success': address.valid && address.dirty
-          }" type="text" class="form-control" name="address" placeholder="Enter Address" [(ngModel)]="doctorModel.address" #address="ngModel" required> 
+            'has-danger': doctorRegisterForm.get('address').invalid && doctorRegisterForm.get('address').dirty || (submitted && doctorRegisterForm.get('address').invalid),
+            'has-success': doctorRegisterForm.get('address').valid && doctorRegisterForm.get('address').dirty
+          }" type="text" class="form-control" formControlName="address" placeholder="Enter Address"> 
         </div>
-        <label class="error-label" *ngIf="address.invalid && !address.pristine || (submitted && address.invalid)">
+        <label class="error-label" *ngIf="doctorRegisterForm.get('address').invalid && !doctorRegisterForm.get('address').pristine || (submitted && doctorRegisterForm.get('address').invalid)">
             Your Address is required.
         </label>  
 
         <p class="field-title">City</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': city.invalid && city.dirty || (submitted && city.invalid),
-          'has-success': city.valid && city.dirty
+          'has-danger': doctorRegisterForm.get('city').invalid && doctorRegisterForm.get('city').dirty || (submitted && doctorRegisterForm.get('city').invalid),
+          'has-success': doctorRegisterForm.get('city').valid && doctorRegisterForm.get('city').dirty
         }">
           <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span> 
           <input [ngClass]="{
-            'has-danger': city.invalid && city.dirty || (submitted && city.invalid),
-            'has-success': city.valid && city.dirty
-          }" type="text" class="form-control" name="city" placeholder="Enter City" [(ngModel)]="doctorModel.city" #city="ngModel" minlength="3" maxlength="30" required>
+            'has-danger': doctorRegisterForm.get('city').invalid && doctorRegisterForm.get('city').dirty || (submitted && doctorRegisterForm.get('city').invalid),
+            'has-success': doctorRegisterForm.get('city').valid && doctorRegisterForm.get('city').dirty
+          }" type="text" class="form-control" formControlName="city" placeholder="Enter City">
         </div>
-        <label class="error-label" *ngIf="city.invalid && !city.pristine || (submitted && city.invalid)">
+        <label class="error-label" *ngIf="doctorRegisterForm.get('city').invalid && !doctorRegisterForm.get('city').pristine || (submitted && doctorRegisterForm.get('city').invalid)">
             Your City is required and must contain between 3 and 30 letters.
         </label>  
 
         <p class="field-title">Country</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': country.invalid && country.dirty || (submitted && country.invalid),
-          'has-success': country.valid && country.dirty
+          'has-danger':  doctorRegisterForm.get('country').invalid && doctorRegisterForm.get('country').dirty || (submitted && doctorRegisterForm.get('country').invalid),
+          'has-success': doctorRegisterForm.get('country').valid && doctorRegisterForm.get('country').dirty
         }">
           <span class="input-group-addon"><i class="fa fa-flag"></i></span> 
           <input [ngClass]="{
-            'has-danger': country.invalid && country.dirty || (submitted && country.invalid),
-            'has-success': country.valid && country.dirty
-          }" type="text" class="form-control" name="country" placeholder="Enter Country" [(ngModel)]="doctorModel.country" #country="ngModel" minlength="3" maxlength="30" required>
+            'has-danger': doctorRegisterForm.get('country').invalid && doctorRegisterForm.get('country').dirty || (submitted && doctorRegisterForm.get('country').invalid),
+            'has-success': doctorRegisterForm.get('country').valid && doctorRegisterForm.get('country').dirty
+          }" type="text" class="form-control" formControlName="country" placeholder="Enter Country">
         </div>
-        <label class="error-label" *ngIf="country.invalid && !country.pristine || (submitted && country.invalid)">
+        <label class="error-label" *ngIf="doctorRegisterForm.get('country').invalid && !doctorRegisterForm.get('country').pristine || (submitted && doctorRegisterForm.get('country').invalid)">
             Your Country is required and must contain between 3 and 30 letters.
         </label>  
 
         <p class="field-title">Password</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': password.invalid && password.dirty || (submitted && password.invalid),
-          'has-success': password.valid && password.dirty
+          'has-danger': doctorRegisterForm.get('password').invalid && doctorRegisterForm.get('password').dirty || (submitted && doctorRegisterForm.get('password').invalid),
+          'has-success': doctorRegisterForm.get('password').valid && doctorRegisterForm.get('password').dirty
         }">
           <span class="input-group-addon"><i class="fa fa-key"></i></span> 
           <input [ngClass]="{
-            'has-danger': password.invalid && password.dirty || (submitted && password.invalid),
-            'has-success': password.valid && password.dirty
-          }" type="password" class="form-control" name="password" placeholder="Enter Password" [(ngModel)]="doctorModel.password" #password="ngModel" minlength="6" maxlength="20" required>
+            'has-danger': doctorRegisterForm.get('password').invalid && doctorRegisterForm.get('password').dirty || (submitted && doctorRegisterForm.get('password').invalid),
+            'has-success': doctorRegisterForm.get('password').valid && doctorRegisterForm.get('password').dirty
+          }" type="password" class="form-control" formControlName="password" placeholder="Enter Password" >
         </div>
-        <label class="error-label" *ngIf="password.invalid && !password.pristine || (submitted && password.invalid)">
+        <label class="error-label" *ngIf="doctorRegisterForm.get('password').invalid && !doctorRegisterForm.get('password').pristine || (submitted && doctorRegisterForm.get('password').invalid)">
             Your Password is required and must contain between 6 and 20 characters.
         </label>  
 
         <p class="field-title">Confirm Password</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': confirm_password.invalid && confirm_password.dirty || (submitted && confirm_password.invalid) || (confirm_password.valid && doctorModel.password!=doctorModel.confirm_password),
-          'has-success': confirm_password.valid && confirm_password.dirty && doctorModel.password==doctorModel.confirm_password
+          'has-danger': doctorRegisterForm.get('confirm_password').invalid && doctorRegisterForm.get('confirm_password').dirty || (submitted && doctorRegisterForm.get('confirm_password').invalid) || (doctorRegisterForm.get('confirm_password').valid && doctorRegisterForm.get('password').value!=doctorRegisterForm.get('confirm_password').value),
+          'has-success': doctorRegisterForm.get('confirm_password').valid && doctorRegisterForm.get('confirm_password').dirty && doctorRegisterForm.get('password').value==doctorRegisterForm.get('confirm_password').value
         }"> 
           <span class="input-group-addon"><i class="fa fa-repeat"></i></span> 
           <input [ngClass]="{
-            'has-danger': confirm_password.invalid && confirm_password.dirty || (submitted && confirm_password.invalid) || (confirm_password.valid && doctorModel.password!=doctorModel.confirm_password),
-            'has-success': confirm_password.valid && confirm_password.dirty && doctorModel.password==doctorModel.confirm_password
-          }" type="password" class="form-control" name="confirm_password" placeholder="Re-enter Password" [(ngModel)]="doctorModel.confirm_password" #confirm_password="ngModel" minlength="6" maxlength="20" required>
+            'has-danger': doctorRegisterForm.get('confirm_password').invalid && doctorRegisterForm.get('confirm_password').dirty || (submitted && doctorRegisterForm.get('confirm_password').invalid) || (doctorRegisterForm.get('confirm_password').valid && doctorRegisterForm.get('password').value!=doctorRegisterForm.get('confirm_password').value),
+            'has-success': doctorRegisterForm.get('confirm_password').valid && doctorRegisterForm.get('confirm_password').dirty && doctorRegisterForm.get('password').value==doctorRegisterForm.get('confirm_password').value
+          }" type="password" class="form-control" formControlName="confirm_password" placeholder="Re-enter Password">
         </div>
-        <label class="error-label" *ngIf="confirm_password.invalid && !confirm_password.pristine || (submitted && confirm_password.invalid)">
+
+        <label class="error-label" *ngIf="doctorRegisterForm.get('confirm_password').invalid && !doctorRegisterForm.get('confirm_password').pristine || (submitted && doctorRegisterForm.get('confirm_password').invalid)">
             Your Password confirmation is required and must contain between 6 and 20 characters.
         </label>  
-        <label class="error-label" *ngIf="confirm_password.valid && doctorModel.confirm_password!=doctorModel.password">
+        <label class="error-label" *ngIf="doctorRegisterForm.get('confirm_password').valid && doctorRegisterForm.get('password').value!=doctorRegisterForm.get('confirm_password').value">
             The password you entered does not match.
-        </label>  
+        </label>   
 
         <input type="submit" class="form-control" name="submit" value="Register">   
       </form>   

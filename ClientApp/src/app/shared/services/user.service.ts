@@ -27,19 +27,54 @@ export class UserService extends BaseService {
     let body = JSON.stringify({ din, firstName, lastName , email, password, phoneNumber, description, speciality, hospital, city, country, address });
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    console.log(firstName);
-    console.log(hospital);
     return this.http.post(this.baseUrl + "api/Doctors", body, options)
     .map (res => true)
     .catch (this.handleError);
   }
 
-  private extractData(res: Response) {
-    if (res.status < 200 || res.status >= 300) {
-      throw new Error('Bad response status: ' + res.status);
-    }
-    let body = res.json();
-    return body || { };
+  patientRegister(nin: string, firstName: string, lastName: string, email: string, password: string, city: string, country: string, birthdate: Date, phoneNumber: string): Observable<any> {
+    let body = JSON.stringify({ nin, firstName, lastName , email, password, city, country, birthdate, phoneNumber });
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post(this.baseUrl + "api/Patients", body, options)
+    .map (res => true)
+    .catch (this.handleError);
+  }
+
+  checkDoctorEmailNotTaken(email: string) {
+    return this.http
+      .get(this.baseUrl + "api/Doctors")
+      .delay(1000)
+      .map(res => res.json())
+      .map(users => users.filter(user => user.email === email))
+      .map(users => !users.length);
+  }
+
+  checkPatientEmailNotTaken(email: string) {
+    return this.http
+      .get(this.baseUrl + "api/Patients")
+      .delay(1000)
+      .map(res => res.json())
+      .map(users => users.filter(user => user.email === email))
+      .map(users => !users.length);
+  }
+
+  checkDoctorDINNotTaken(din: string) {
+    return this.http
+      .get(this.baseUrl + "api/Doctors")
+      .delay(1000)
+      .map(res => res.json())
+      .map(users => users.filter(user => user.din == din))
+      .map(users => !users.length);
+  }
+
+  checkPatientNINNotTaken(nin: string) {
+    return this.http
+      .get(this.baseUrl + "api/Patients")
+      .delay(1000)
+      .map(res => res.json())
+      .map(users => users.filter(user => user.nin == nin))
+      .map(users => !users.length);
   }
 
 }
