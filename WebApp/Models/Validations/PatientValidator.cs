@@ -7,6 +7,7 @@ namespace WebApp.Models.Validations
     {
         public PatientValidator()
         {
+            RuleFor(c => c.NIN).NotNull().WithMessage("Trebuie sa specificati un NIN");
             RuleFor(c => c.FirstName).NotNull().WithMessage("Trebuie sa specificati un prenume").Length(3, 30)
                 .WithMessage("Trebuie sa aiba intre 3 si 30 caractere");
             RuleFor(c => c.LastName).NotNull().WithMessage("Trebuie sa specificati un nume").Length(3, 30)
@@ -17,6 +18,8 @@ namespace WebApp.Models.Validations
                 .WithMessage("Parola trebuie sa fie intre 6 si 20 caractere");
             RuleFor(c => c.City).NotNull().WithMessage("Trebuie sa specificati un oras").Length(3, 30)
                 .WithMessage("Numele orasului trebuie sa aiba intre 3 si 30 caractere");
+            RuleFor(c => c.Country).NotNull().WithMessage("Trebuie sa specificati o tara").Length(3, 30)
+                .WithMessage("Numele tarii trebuie sa aiba intre 3 si 30 caractere");
             RuleFor(c => c.Birthdate).NotNull().WithMessage("Trebuie sa specificati data de nastere").Must(BeAValidDate);
             RuleFor(c => c.PhoneNumber).NotNull().WithMessage("Trebuie sa specificati un numar de telefon");
             //.Matches(@" ^\(? ([0 - 9]{ 3})\)?[-. ]? ([0 - 9]{3})[-. ]? ([0 - 9]{4})$")
