@@ -18,8 +18,8 @@ namespace Infrastructure.Repositories.BaseRepositories
             DatabaseService = dbContext;
         }
 
-        public async Task<List<TEntity>> GetAllAsync(string[] includes)
-        {
+        public async Task<List<TEntity>> GetAllAsync()
+        { //string[] includes in parametru
             /*var query = DatabaseService.Set<TEntity>().AsQueryable();
             if (includes != null)
             {
