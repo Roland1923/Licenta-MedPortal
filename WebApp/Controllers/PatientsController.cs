@@ -33,7 +33,7 @@ namespace WebApp.Apis
             try
             {
                 string[] includes = { "Appointments", "Feedbacks", "PatientHistories" };
-                var patients = await _repository.GetAllAsync(null);
+                var patients = await _repository.GetAllAsync();
                 return Ok(patients);
             }
             catch

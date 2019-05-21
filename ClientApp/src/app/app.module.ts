@@ -15,6 +15,9 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { FooterComponent } from './footer/footer.component';
 import { ConfigService } from './shared/services/config.service';
+import { DoctorHomeComponent } from './doctor-home/doctor-home.component';
+import { PatientHomeComponent } from './patient-home/patient-home.component';
+import { FourZeroFourComponent } from './four-zero-four/four-zero-four.component';
 
 @NgModule({
   declarations: [
@@ -22,17 +25,23 @@ import { ConfigService } from './shared/services/config.service';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    FooterComponent
+    FooterComponent,
+    DoctorHomeComponent,
+    PatientHomeComponent,
+    FourZeroFourComponent
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot([
       {path:'', redirectTo: '/home', pathMatch: 'full' },
       {path:'home', component:HomeComponent},
-      {path:'doctor-login',component:LoginComponent},
-      {path:'patient-login',component:LoginComponent},
-      {path:'doctor-register',component:RegisterComponent},
-      {path:'patient-register',component:RegisterComponent}
+      {path:'doctor-login', component:LoginComponent},
+      {path:'patient-login', component:LoginComponent},
+      {path:'doctor-register', component:RegisterComponent},
+      {path:'patient-register', component:RegisterComponent},
+      {path:'doctor-home', component:DoctorHomeComponent, data:{requiresLogin: true}},
+      {path:'patient-home', component:PatientHomeComponent, data:{requiresLogin: true}},
+      {path:'**', component: FourZeroFourComponent}
     ]),
     HttpClientModule,
     FormsModule,

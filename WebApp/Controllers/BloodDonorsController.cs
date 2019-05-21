@@ -30,7 +30,7 @@ namespace WebApp.Apis
         {
             try
             {
-                var bloodDonors = await _repository.GetAllAsync(null);
+                var bloodDonors = await _repository.GetAllAsync();
                 return Ok(bloodDonors);
             }
             catch

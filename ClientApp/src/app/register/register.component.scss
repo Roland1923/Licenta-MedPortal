@@ -86,16 +86,6 @@ body, html {
     background: red;
 }
 
-label.error-label {
-    clear: both;
-    background: #b11116;
-    color: #fff;
-    padding: 2px 5px;
-    font-weight: normal;
-    font-size: 0.8rem;
-    min-height: auto;
-}
-
 .avatar{
     width: 100px;
     height: 100px;
@@ -143,7 +133,7 @@ h1{
     border: none;
     outline: none;
     height: 40px;
-    background: #b11116;
+    background: #fc1919;
     color: #fff;
     font-size: 18px;
     border-radius: 20px;
@@ -165,15 +155,12 @@ h1{
     color: #e0e0e0;
 }
 
-//----------
-footer {
-    flex: 0 0 auto;
-    -webkit-flex: 0 0 auto;
-}
-
-.container {
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
+label.error-label {
+    clear: both;
+    background: #b11116;
+    color: #fff;
+    padding: 2px 5px;
+    font-weight: normal;
+    font-size: 0.8rem;
+    min-height: auto;
 }

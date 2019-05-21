@@ -30,7 +30,7 @@ namespace WebApp.Apis
         {
             try
             {
-                var patientHistories = await _repository.GetAllAsync(null);
+                var patientHistories = await _repository.GetAllAsync();
                 return Ok(patientHistories);
             }
             catch

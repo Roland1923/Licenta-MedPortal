@@ -113,8 +113,6 @@ export class RegisterComponent implements OnInit {
     this.submitted = true;
     this.isRequesting = true;
     this.errors = '';
-    console.log(value);
-    console.log(valid);
     if (valid) {
       this.userService.doctorRegister(value.din,
                 value.firstName,
@@ -132,7 +130,7 @@ export class RegisterComponent implements OnInit {
                 .subscribe(
                     result => {
                         if (result) {
-                            this.router.navigate(['/home']);
+                            this.router.navigate(['/doctor-login']);
                         }
                     },
                     errors => this.errors = errors);
@@ -143,7 +141,6 @@ export class RegisterComponent implements OnInit {
     this.submitted = true;
     this.isRequesting = true;
     this.errors = '';
-    console.log(value);
     if (valid) {
       this.userService.patientRegister(value.nin,
                 value.firstName,
@@ -158,7 +155,7 @@ export class RegisterComponent implements OnInit {
                 .subscribe(
                     result => {
                         if (result) {
-                            this.router.navigate(['/home']);
+                            this.router.navigate(['/patient-login']);
                         }
                     },
                     errors => this.errors = errors);

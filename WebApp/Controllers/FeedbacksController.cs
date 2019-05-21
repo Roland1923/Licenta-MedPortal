@@ -30,7 +30,7 @@ namespace WebApp.Apis
         {
             try
             {
-                var feedbacks = await _repository.GetAllAsync(null);
+                var feedbacks = await _repository.GetAllAsync();
                 return Ok(feedbacks);
             }
             catch

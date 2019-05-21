@@ -34,7 +34,7 @@ namespace WebApp.Apis
             try
             {
               string[] includes = { "Appointments", "Feedbacks" };
-              var doctors = await _repository.GetAllAsync(null);
+              var doctors = await _repository.GetAllAsync();
               return Ok(doctors);
             }
             catch

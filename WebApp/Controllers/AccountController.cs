@@ -29,22 +29,22 @@ namespace WebApp.Apis
         _repositoryPatient = repositoryPatient;
       }
 
-     // api/Accout/doctorAccount
+     // api/Account/doctorAccount
       [HttpPut("doctorAccount")]
       [NoCache]
       [ProducesResponseType(typeof(Doctor), 200)]
       [ProducesResponseType(typeof(ApiResponse), 404)]
-      public async Task<ActionResult> DoctorAccount([FromBody]CredentialsModel doctorCredetialsModel)
+      public async Task<ActionResult> DoctorAccount([FromBody]CredentialsModel doctorCredentialsModel)
       {
         try
         {
           MD5 md5Hash = MD5.Create();
-          string passwordHash = PasswordHashMd5.GetMd5Hash(md5Hash, doctorCredetialsModel.Password);
+          string passwordHash = PasswordHashMd5.GetMd5Hash(md5Hash, doctorCredentialsModel.Password);
           string[] includes = {"Appointments","Feedbacks"};
-          var doctorsList = await _repositoryDoctor.GetAllAsync(null);
+          var doctorsList = await _repositoryDoctor.GetAllAsync();
           foreach (var doctor in doctorsList)
           {
-            if (doctor.Email == doctorCredetialsModel.Email && doctor.Password == passwordHash)
+            if (doctor.DIN == doctorCredentialsModel.DIN && doctor.Password == passwordHash)
             {
               var requestAt = DateTime.Now;
               var expiresIn = requestAt + TokenAuthOption.ExpiresSpan;
@@ -84,17 +84,17 @@ namespace WebApp.Apis
       [NoCache]
       [ProducesResponseType(typeof(Patient), 200)]
       [ProducesResponseType(typeof(ApiResponse), 400)]
-      public async Task<ActionResult> PacientAccount([FromBody] CredentialsModel patientCredetialsModel)
+      public async Task<ActionResult> PatientAccount([FromBody] CredentialsModel patientCredentialsModel)
       {
         try
         {
           MD5 md5Hash = MD5.Create();
-          string passwordHash = PasswordHashMd5.GetMd5Hash(md5Hash, patientCredetialsModel.Password);
-          string[] includes = { "Appointments", "Feedbacks", "PatientHistories" };
-          var patientList = await _repositoryPatient.GetAllAsync(null);
+          string passwordHash = PasswordHashMd5.GetMd5Hash(md5Hash, patientCredentialsModel.Password);
+          //string[] includes = { "Appointments", "Feedbacks", "PatientHistories" };
+          var patientList = await _repositoryPatient.GetAllAsync();
           foreach (var patient in patientList)
           {
-            if (patient.Email == patientCredetialsModel.Email && patient.Password == passwordHash)
+            if (patient.NIN == patientCredentialsModel.NIN && patient.Password == passwordHash)
             {
               var requestAt = DateTime.Now;
               var expiresIn = requestAt + TokenAuthOption.ExpiresSpan;
@@ -145,6 +145,8 @@ namespace WebApp.Apis
         });
         return handler.WriteToken(securityToken);
       }
+
+
       [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
       [ProducesResponseType(typeof(ApiResponse), 200)]
       [HttpGet("GetStaff")]
@@ -152,5 +154,7 @@ namespace WebApp.Apis
       {
       return BadRequest(new ApiResponse { Status = false });
     }
+
+
   }
 }

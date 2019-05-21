@@ -2,7 +2,8 @@
 {
     public class CredentialsModel
     {
-      public string Email { get; set; }
+      public string NIN { get; set; }
+      public string DIN { get; set; }
       public string Password { get; set; }
   }
 }
