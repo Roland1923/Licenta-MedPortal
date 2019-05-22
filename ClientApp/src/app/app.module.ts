@@ -18,6 +18,7 @@ import { ConfigService } from './shared/services/config.service';
 import { DoctorHomeComponent } from './doctor-home/doctor-home.component';
 import { PatientHomeComponent } from './patient-home/patient-home.component';
 import { FourZeroFourComponent } from './four-zero-four/four-zero-four.component';
+import { AuthService } from './shared/services/auth.service';
 
 @NgModule({
   declarations: [
@@ -39,8 +40,8 @@ import { FourZeroFourComponent } from './four-zero-four/four-zero-four.component
       {path:'patient-login', component:LoginComponent},
       {path:'doctor-register', component:RegisterComponent},
       {path:'patient-register', component:RegisterComponent},
-      {path:'doctor-home', component:DoctorHomeComponent, data:{requiresLogin: true}},
-      {path:'patient-home', component:PatientHomeComponent, data:{requiresLogin: true}},
+      {path:'doctor-home', component:DoctorHomeComponent, data:{requiresDoctor: true}, canActivate: [ AuthService ]},
+      {path:'patient-home', component:PatientHomeComponent, data:{requiresPatient: true}, canActivate: [ AuthService ]},
       {path:'**', component: FourZeroFourComponent}
     ]),
     HttpClientModule,

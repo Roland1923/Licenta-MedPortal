@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { ConfigService } from './config.service';
 import { Observable, of } from 'rxjs';
 import { AuthBearer } from '../models/auth.interface';
@@ -8,17 +8,62 @@ import { debounceTime } from 'rxjs/operators';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
+import { CanActivate } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements CanActivate{
 
   baseUrl = '';
   private tokeyKey = "token";
 
   constructor(private http: HttpClient, private configService: ConfigService, private router: Router) { 
     this.baseUrl = configService.getApiURI();
+  }
+
+  canActivate(route: ActivatedRouteSnapshot): boolean{
+    const requiresLogin = route.data.requiresLogin || false;
+    if (requiresLogin) {
+      // Check that the user is logged in...
+      if(!this.checkLogin()) {
+        this.router.navigate(['home']);
+        return false;
+      }
+      return true;
+    }
+
+    const requiresDoctor = route.data.requiresDoctor || false;
+    if (requiresDoctor) {
+      // Check that the user is doctor or not
+      if(this.checkLogin()) {
+        if(!this.checkDoctor()) {
+          this.router.navigate(['patient-home']);
+          return false;
+        }
+        else {
+          return true;
+        }
+      }
+      this.router.navigate(['home']);;
+      return false;
+    }
+
+    const requiresPatient = route.data.requiresPatient || false;
+    if (requiresPatient) {
+      // Check that the user is patient or not
+      if(this.checkLogin()) {
+        if(this.checkDoctor()) {
+          this.router.navigate(['doctor-home']);
+          return false;
+        }
+        else {
+          return true;
+        }
+      }
+      this.router.navigate(['home']);;
+      return false;
+    }
   }
 
   public loginPatient(nin: string, password: string) {
