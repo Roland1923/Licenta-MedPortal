@@ -59,7 +59,8 @@ namespace WebApp.Apis
                   expiresIn = TokenAuthOption.ExpiresSpan.TotalSeconds,
                   tokeyType = TokenAuthOption.TokenType,
                   accessToken = token,
-                  user_id = doctor.DoctorId       
+                  user_id = doctor.DoctorId,
+                  isDoctor = true
                 }
               });
             }
@@ -109,7 +110,8 @@ namespace WebApp.Apis
                   expiresIn = TokenAuthOption.ExpiresSpan.TotalSeconds,
                   tokeyType = TokenAuthOption.TokenType,
                   accessToken = token,
-                  user_id = patient.PatientId
+                  user_id = patient.PatientId,
+                  isDoctor = false
                 }
               });
             }

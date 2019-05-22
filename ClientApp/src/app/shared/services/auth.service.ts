@@ -21,56 +21,58 @@ export class AuthService {
     this.baseUrl = configService.getApiURI();
   }
 
-      public loginPatient(nin: string, password: string) {
-        let body = JSON.stringify({nin, password});
-       
-        let header = new HttpHeaders().set('Content-Type', 'application/json');
-        let options = { headers: header };
+  public loginPatient(nin: string, password: string) {
+    let body = JSON.stringify({nin, password});
+    
+    let header = new HttpHeaders().set('Content-Type', 'application/json');
+    let options = { headers: header };
 
-        return this.http.put<AuthBearer>(this.baseUrl +"api/Account/patientAccount", body, options).pipe(
-            debounceTime(200),
-            distinctUntilChanged(),
-            map(
-                res => {
-                    let result = res;
-                    console.log(result);
-                    if (result.state && result.state == 1 && result.data && result.data.accessToken) {
-                        localStorage.setItem('user_id',result.data.user_id);
-                        sessionStorage.setItem(this.tokeyKey,result.data.accessToken)
-                    }
-                    return result;
+    return this.http.put<AuthBearer>(this.baseUrl +"api/Account/patientAccount", body, options).pipe(
+        debounceTime(200),
+        distinctUntilChanged(),
+        map(
+            res => {
+                let result = res;
+                console.log(result);
+                if (result.state && result.state == 1 && result.data && result.data.accessToken) {
+                    localStorage.setItem('user_id',result.data.user_id);
+                    localStorage.setItem('isDoctor',result.data.isDoctor);
+                    sessionStorage.setItem(this.tokeyKey,result.data.accessToken);
                 }
-            ),
+                return result;
+            }
+        ),
 
-            catchError(this.handleError<AuthBearer>("login"))
-        )
-      }
+        catchError(this.handleError<AuthBearer>("login"))
+    )
+  }
 
 
-      public loginDoctor(din: string, password: string) {
-        let body = JSON.stringify({din, password});
-       
-        let header = new HttpHeaders().set('Content-Type', 'application/json');
-        let options = { headers: header };
+  public loginDoctor(din: string, password: string) {
+    let body = JSON.stringify({din, password});
+    
+    let header = new HttpHeaders().set('Content-Type', 'application/json');
+    let options = { headers: header };
 
-        return this.http.put<AuthBearer>(this.baseUrl +"api/Account/doctorAccount", body, options).pipe(
-            debounceTime(200),
-            distinctUntilChanged(),
-            map(
-                res => {
-                    let result = res;
-                    console.log(result);
-                    if (result.state && result.state == 1 && result.data && result.data.accessToken) {
-                        localStorage.setItem('user_id',result.data.user_id);
-                        sessionStorage.setItem(this.tokeyKey,result.data.accessToken)
-                    }
-                    return result;
+    return this.http.put<AuthBearer>(this.baseUrl +"api/Account/doctorAccount", body, options).pipe(
+        debounceTime(200),
+        distinctUntilChanged(),
+        map(
+            res => {
+                let result = res;
+                console.log(result);
+                if (result.state && result.state == 1 && result.data && result.data.accessToken) {
+                    localStorage.setItem('user_id',result.data.user_id);
+                    localStorage.setItem('isDoctor',result.data.isDoctor);
+                    sessionStorage.setItem(this.tokeyKey,result.data.accessToken);
                 }
-            ),
+                return result;
+            }
+        ),
 
-            catchError(this.handleError<AuthBearer>("login"))
-        )
-      }
+        catchError(this.handleError<AuthBearer>("login"))
+    )
+  }
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
@@ -78,4 +80,22 @@ export class AuthService {
         return of(result as T);
     };
   }
+
+  public checkLogin(): boolean {
+    let token = sessionStorage.getItem(this.tokeyKey);
+    return token != null;
+}
+
+  public checkDoctor(): boolean {
+    let isDoctor = localStorage.getItem('isDoctor') == 'true' ? true : false;
+    return isDoctor;
+  }
+
+  public logout()
+  {
+      localStorage.clear();
+      sessionStorage.clear();
+      this.router.navigate(['/home']);
+  }
+
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   selector: 'app-four-zero-four',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FourZeroFourComponent implements OnInit {
 
-  constructor() { }
+  private authenticate: boolean;
+  private isDoctor: boolean;
+
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
+    this.authenticate = this.authService.checkLogin();
+    this.isDoctor = this.authService.checkDoctor();
   }
 
 }
