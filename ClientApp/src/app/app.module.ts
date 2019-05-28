@@ -19,6 +19,7 @@ import { DoctorHomeComponent } from './doctor-home/doctor-home.component';
 import { PatientHomeComponent } from './patient-home/patient-home.component';
 import { FourZeroFourComponent } from './four-zero-four/four-zero-four.component';
 import { AuthService } from './shared/services/auth.service';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { AuthService } from './shared/services/auth.service';
     FooterComponent,
     DoctorHomeComponent,
     PatientHomeComponent,
-    FourZeroFourComponent
+    FourZeroFourComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

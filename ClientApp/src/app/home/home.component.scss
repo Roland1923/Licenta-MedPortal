@@ -246,7 +246,10 @@ button {
 ::ng-deep footer{
     font-size: 16px;  
     padding: 28px 0;
-    background: #454545;
-    color: #DAE5EF;
+    background: #343a40!important;
+    color: white;
 }
 
+::ng-deep app-header {
+    display: none;
+}

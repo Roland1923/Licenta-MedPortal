@@ -94,6 +94,7 @@ namespace WebApp.Apis
                 return BadRequest(ModelState);
             }
 
+
             MD5 md5Hash = MD5.Create();
             string passwordHash = PasswordHashMd5.GetMd5Hash(md5Hash, doctor.Password);
 

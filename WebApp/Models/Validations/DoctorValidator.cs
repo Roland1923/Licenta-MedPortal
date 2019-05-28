@@ -1,18 +1,28 @@
-﻿using FluentValidation;
+﻿using Core.Entities;
+using Core.IRepositories;
+using FluentValidation;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace WebApp.Models.Validations
 {
     public class DoctorValidator : AbstractValidator<DoctorModel>
     {
-        public DoctorValidator()
+
+        private IEditableRepository<Doctor> _repository;
+
+        public DoctorValidator(IEditableRepository<Doctor> _repository)
         {
-            RuleFor(c => c.DIN).NotNull().WithMessage("Trebuie sa specificati un DIN");
+            this._repository = _repository;
+            RuleFor(c => c.DIN).NotNull().WithMessage("Trebuie sa specificati un DIN").MustAsync(DinIsUniqueAsync).WithMessage("DIN-ul trebuie sa fie unic!");
             RuleFor(c => c.FirstName).NotNull().WithMessage("Trebuie sa specificati un prenume").Length(3, 30)
                 .WithMessage("Trebuie sa aiba intre 3 si 30 caractere");
             RuleFor(c => c.LastName).NotNull().WithMessage("Trebuie sa specificati un nume").Length(3, 30)
                 .WithMessage("Trebuie sa aiba intre 3 si 30 caractere");
             RuleFor(c => c.Email).NotNull().WithMessage("Trebuie sa specificati o adresa de email").EmailAddress()
-                .WithMessage("Trebuie sa specificati o adresa valida");
+                .WithMessage("Trebuie sa specificati o adresa valida").MustAsync(EmailIsUniqueAsync).WithMessage("Email-ul trebuie sa fie unic!");
             RuleFor(c => c.Password).NotNull().WithMessage("Trebuie sa specificati o parola").Length(6, 20)
                 .WithMessage("Parola trebuie sa fie intre 6 si 20 caractere");
             RuleFor(c => c.City).NotNull().WithMessage("Trebuie sa specificati un oras").Length(3, 30)
@@ -26,6 +36,18 @@ namespace WebApp.Models.Validations
             RuleFor(c => c.Hospital).NotNull().WithMessage("Trebuie sa specificati spitalul");
             RuleFor(c => c.Address).NotNull().WithMessage("Trebuie sa specificati adresa");
             RuleFor(c => c.Speciality).NotNull().WithMessage("Trebuie sa specificati specialitatea");
+        }
+
+        private async Task<bool> DinIsUniqueAsync(string DIN, CancellationToken arg2)
+        {
+            List<Doctor> doctors = await _repository.GetAllAsync();
+            return !doctors.Any(x => x.DIN == DIN);
+        }
+
+        private async Task<bool> EmailIsUniqueAsync(string Email, CancellationToken arg2)
+        {
+            List<Doctor> doctors = await _repository.GetAllAsync();
+            return !doctors.Any(x => x.Email == Email);
         }
     }
 }

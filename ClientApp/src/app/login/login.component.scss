@@ -180,3 +180,7 @@ label.error-label {
     background: rgb(0, 150, 20);
 }
 
+::ng-deep app-header {
+    display: none;
+}
+

@@ -164,3 +164,7 @@ label.error-label {
     font-size: 0.8rem;
     min-height: auto;
 }
+
+::ng-deep app-header {
+    display: none;
+}
