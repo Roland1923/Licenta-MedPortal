@@ -18,4 +18,8 @@ export class HeaderComponent implements OnInit {
     this.isDoctor = this.authService.checkDoctor();
   }
 
+  logout() {
+    this.authService.logout();
+  }
+
 }

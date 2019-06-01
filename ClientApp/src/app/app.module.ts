@@ -15,11 +15,12 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { FooterComponent } from './footer/footer.component';
 import { ConfigService } from './shared/services/config.service';
-import { DoctorHomeComponent } from './doctor-home/doctor-home.component';
-import { PatientHomeComponent } from './patient-home/patient-home.component';
 import { FourZeroFourComponent } from './four-zero-four/four-zero-four.component';
 import { AuthService } from './shared/services/auth.service';
 import { HeaderComponent } from './header/header.component';
+import { ScheduleComponent } from './schedule/schedule.component';
+import { PatientMedicalHistoryComponent } from './patient-medical-history/patient-medical-history.component';
+import { PatientAccountComponent } from './patient-account/patient-account.component';
 
 @NgModule({
   declarations: [
@@ -28,10 +29,11 @@ import { HeaderComponent } from './header/header.component';
     LoginComponent,
     RegisterComponent,
     FooterComponent,
-    DoctorHomeComponent,
-    PatientHomeComponent,
     FourZeroFourComponent,
-    HeaderComponent
+    HeaderComponent,
+    ScheduleComponent,
+    PatientMedicalHistoryComponent,
+    PatientAccountComponent
   ],
   imports: [
     BrowserModule,
@@ -42,8 +44,9 @@ import { HeaderComponent } from './header/header.component';
       {path:'patient-login', component:LoginComponent},
       {path:'doctor-register', component:RegisterComponent},
       {path:'patient-register', component:RegisterComponent},
-      {path:'doctor-home', component:DoctorHomeComponent, data:{requiresDoctor: true}, canActivate: [ AuthService ]},
-      {path:'patient-home', component:PatientHomeComponent, data:{requiresPatient: true}, canActivate: [ AuthService ]},
+      {path:'patient/appointments', component:ScheduleComponent, data:{requiresPatient: true}, canActivate: [ AuthService]},
+      {path:'patient/medical-history', component:PatientMedicalHistoryComponent, data:{requiresPatient: true}, canActivate: [ AuthService]},
+      {path:'patient/account', component:PatientAccountComponent, data:{requiresPatient: true}, canActivate: [ AuthService]},
       {path:'**', component: FourZeroFourComponent}
     ]),
     HttpClientModule,
@@ -52,7 +55,7 @@ import { HeaderComponent } from './header/header.component';
     HttpModule,
     routing
   ],
-  providers: [UserService, ConfigService],
+  providers: [UserService, ConfigService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

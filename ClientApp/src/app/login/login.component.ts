@@ -41,6 +41,7 @@ export class LoginComponent implements OnInit {
       din:  ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
+
   }
 
   loginPatient() {
@@ -51,7 +52,7 @@ export class LoginComponent implements OnInit {
         this.postStream = this.authService.loginPatient(this.nin, this.password).subscribe(
             result => {
                 if (result.state == 1) {
-                    this.router.navigate(["patient-home"]);
+                    this.router.navigate(["patient/account"]);
                 } 
                 else {
                   this.loginFailed = true;
@@ -68,7 +69,7 @@ export class LoginComponent implements OnInit {
         this.postStream = this.authService.loginDoctor(this.din, this.password).subscribe(
             result => {
                 if (result.state == 1) {
-                    this.router.navigate(["doctor-home"]);
+                    this.router.navigate(["doctor/account"]);
                 } 
                 else {
                   this.loginFailed = true;
@@ -76,6 +77,7 @@ export class LoginComponent implements OnInit {
             }
         )
   }
+
 
   ngOnDestroy() {
     if(this.postStream){this.postStream.unsubscribe()}

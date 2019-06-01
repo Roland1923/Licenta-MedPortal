@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html>
 
-
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600' type='text/css'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600' type='text/css'>
 </head>
-
 
 <body>
 
@@ -52,7 +49,7 @@
           }" type="text" class="form-control" formControlName="lastName" placeholder="Enter Last Name" >
         </div>
         <label class="error-label" *ngIf="patientRegisterForm.get('lastName').invalid && !patientRegisterForm.get('lastName').pristine || (submitted && patientRegisterForm.get('lastName').invalid)">
-            Your Last Name is required and must contain between 3 and 30 letters.
+            Your Last Name is required and must contain between 3 and 30 letters. (alphabets only)
         </label>  
 
         <p class="field-title">First Name</p>
@@ -67,7 +64,7 @@
           }" type="text" class="form-control" formControlName="firstName" placeholder="Enter First Name">
         </div>
         <label class="error-label" *ngIf="patientRegisterForm.get('firstName').invalid && !patientRegisterForm.get('firstName').pristine || (submitted && patientRegisterForm.get('firstName').invalid)">
-            Your First Name is required and must contain between 3 and 30 letters.
+            Your First Name is required and must contain between 3 and 30 letters. (alphabets only)
         </label>  
 
         <p class="field-title">E-mail</p>
@@ -100,7 +97,7 @@
           }" type="tel" class="form-control" formControlName="phoneNumber" placeholder="Enter Phone Number">
         </div>
         <label class="error-label" *ngIf="patientRegisterForm.get('phoneNumber').errors && !patientRegisterForm.get('phoneNumber').pristine || (submitted && patientRegisterForm.get('phoneNumber').errors)">
-            Your Phone Number is required.
+            Your Phone Number is required. (digits only)
         </label>  
         
         <p class="field-title">Birthdate</p>
@@ -130,7 +127,7 @@
           }" type="text" class="form-control" formControlName="city" placeholder="Enter City">
         </div>
         <label class="error-label" *ngIf="patientRegisterForm.get('city').invalid && !patientRegisterForm.get('city').pristine || (submitted && patientRegisterForm.get('city').invalid)">
-            Your City is required and must contain between 3 and 30 letters.
+            Your City is required and must contain between 3 and 30 letters. (alphabets only)
         </label>  
 
         <p class="field-title">Country</p>
@@ -145,7 +142,7 @@
           }" type="text" class="form-control" formControlName="country" placeholder="Enter Country">
         </div>
         <label class="error-label" *ngIf="patientRegisterForm.get('country').invalid && !patientRegisterForm.get('country').pristine || (submitted && patientRegisterForm.get('country').invalid)">
-            Your Country is required and must contain between 3 and 30 letters.
+            Your Country is required and must contain between 3 and 30 letters. (alphabets only)
         </label>  
 
         <p class="field-title">Password</p>
@@ -227,7 +224,7 @@
           }" type="text" class="form-control" placeholder="Enter Last Name" formControlName="lastName" >
         </div>
         <label class="error-label" *ngIf="doctorRegisterForm.get('lastName').invalid && !doctorRegisterForm.get('lastName').pristine || (submitted && doctorRegisterForm.get('lastName').invalid)">
-            Your Last Name is required and must contain between 3 and 30 letters.
+            Your Last Name is required and must contain between 3 and 30 letters. (alphabets only)
         </label>  
 
         <p class="field-title">First Name</p>
@@ -242,7 +239,7 @@
           }" type="text" class="form-control" formControlName="firstName" placeholder="Enter First Name">
         </div>
         <label class="error-label" *ngIf="doctorRegisterForm.get('firstName').invalid && !doctorRegisterForm.get('firstName').pristine || (submitted && doctorRegisterForm.get('firstName').invalid)">
-            Your First Name is required and must contain between 3 and 30 letters.
+            Your First Name is required and must contain between 3 and 30 letters. (alphabets only)
         </label>  
 
         <p class="field-title">E-mail</p>
@@ -275,7 +272,7 @@
           }" type="tel" class="form-control" formControlName="phoneNumber" placeholder="Enter Phone Number">
         </div>
         <label class="error-label" *ngIf="doctorRegisterForm.get('phoneNumber').invalid && !doctorRegisterForm.get('phoneNumber').pristine || (submitted && doctorRegisterForm.get('phoneNumber').invalid)">
-            Your Phone Number is required.
+            Your Phone Number is required. (digits only)
         </label>  
 
         <p class="field-title">Description</p>
@@ -350,7 +347,7 @@
           }" type="text" class="form-control" formControlName="city" placeholder="Enter City">
         </div>
         <label class="error-label" *ngIf="doctorRegisterForm.get('city').invalid && !doctorRegisterForm.get('city').pristine || (submitted && doctorRegisterForm.get('city').invalid)">
-            Your City is required and must contain between 3 and 30 letters.
+            Your City is required and must contain between 3 and 30 letters. (alphabets only)
         </label>  
 
         <p class="field-title">Country</p>
@@ -365,7 +362,7 @@
           }" type="text" class="form-control" formControlName="country" placeholder="Enter Country">
         </div>
         <label class="error-label" *ngIf="doctorRegisterForm.get('country').invalid && !doctorRegisterForm.get('country').pristine || (submitted && doctorRegisterForm.get('country').invalid)">
-            Your Country is required and must contain between 3 and 30 letters.
+            Your Country is required and must contain between 3 and 30 letters. (alphabets only)
         </label>  
 
         <p class="field-title">Password</p>

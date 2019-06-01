@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+
+<body>
+<div class="content">
+    <div class="intro">
+      <p class="p1">
+          Hello, <b><i><span style="color:#69D18B">ROLAND IORDACHE!</span></i></b>
+      </p>
+      <p class="p1">
+          From your <b><i><span style="color:#343a40">ACCOUNT DASHBOARD</span></i></b> you have the ability to update your account information as personal information or password/e-mail.
+      </p>
+      <p class="p1">
+          Select a <b><i><span style="color:#343a40">TAB</span></i></b> below to view or edit information.
+      </p>
+    </div>
+
+    <div class="accountMenu">
+        <button type="button" class="btn active btn-primary btn-lg" (click)="toggleShow(0)">MY ACCOUNT</button>
+        <button type="button" class="btn btn-primary btn-lg" (click)="toggleShow(1)" >PASSWORD</button>
+        <button type="button" class="btn btn-primary btn-lg" (click)="toggleShow(2)" >E-MAIL</button>
+    </div>
+
+    <div *ngIf="buttonsClicked[0]"  id="divshow1" >
+      <div class="headdiv1">
+        <p class="p2head">
+          <b>PROFILE INFORMATION</b>
+        </p>
+
+          <hr>
+          <p class="p2">
+              <b>Name: </b>Iordache Roland | <b>Email Address: </b>roland.iordache96@gmail.com | 
+          
+              <b>City: </b>Iasi | <b>Country: </b>Romania | <b>Birthdate: </b>10/02/1996 | <b>Phone Number: </b>0746524459
+          </p>
+
+          <hr id="hr2">
+
+
+
+          <form [formGroup]="patientEditForm" #f="ngForm" (ngSubmit)="editPatient(f)">
+            <div class="row">
+                <div class="col-sm-4 ">
+                  <fieldset>
+                    <label>Email:</label>
+                    <input type="email"  value="roland.iordache96@gmail.com" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                  </fieldset>
+                </div>
+                <div class="col-sm-4 form-group" [ngClass]="{
+                  'is-invalid': patientEditForm.get('firstName').invalid,
+                  'is-valid': patientEditForm.get('firstName').valid 
+                }">
+                  <fieldset>
+                    <label>First Name:</label>
+                    <input [ngClass]="{
+                      'is-invalid': patientEditForm.get('firstName').invalid,
+                      'is-valid': patientEditForm.get('firstName').valid 
+                    }" type="text" formControlName="firstName" id="fsss" value="Roland" class="form-control mb-2 mr-sm-2 mb-sm-0">
+                  </fieldset>
+                </div>
+                <div class="col-sm-4 form-group" [ngClass]="{
+                  'is-invalid': patientEditForm.get('lastName').invalid,
+                  'is-valid': patientEditForm.get('lastName').valid 
+                }">
+                  <fieldset>
+                    <label>Last Name:</label>
+                    <input [ngClass]="{
+                      'is-invalid': patientEditForm.get('lastName').invalid,
+                      'is-valid': patientEditForm.get('lastName').valid 
+                    }" type="text" formControlName="lastName" value="Iordache" class="form-control mb-2 mr-sm-2 mb-sm-0" >
+                  </fieldset>
+                </div>
+              </div>
+          
+          <div class="row">
+              <div class="col-sm-6 form-group" [ngClass]="{
+                'is-invalid': patientEditForm.get('city').invalid,
+                'is-valid': patientEditForm.get('city').valid 
+              }">
+                <fieldset>
+                  <label>City:</label>
+                  <input [ngClass]="{
+                    'is-invalid': patientEditForm.get('city').invalid,
+                    'is-valid': patientEditForm.get('city').valid 
+                  }" type="text" formControlName="city" value="Iasi" class="form-control mb-2 mr-sm-2 mb-sm-0">
+                </fieldset>
+              </div>
+              <div class="col-sm-6 form-group" [ngClass]="{
+                'is-invalid': patientEditForm.get('country').invalid,
+                'is-valid': patientEditForm.get('country').valid 
+              }">
+                <fieldset>
+                  <label>Country:</label>
+                  <input [ngClass]="{
+                    'is-invalid': patientEditForm.get('country').invalid,
+                    'is-valid': patientEditForm.get('country').valid 
+                  }" type="text" formControlName="country" value="Romania" class="form-control mb-2 mr-sm-2 mb-sm-0">
+                </fieldset>
+              </div>
+          </div>
+
+          <div class="row">
+              <div class="col-sm-6 form-group" [ngClass]="{
+                'is-invalid': patientEditForm.get('birthday').invalid,
+                'is-valid': patientEditForm.get('birthday').valid 
+              }">
+                <fieldset>
+                  <label>Birthdate:</label>
+                  <input [ngClass]="{
+                    'is-invalid': patientEditForm.get('birthday').invalid,
+                    'is-valid': patientEditForm.get('birthday').valid 
+                  }" type="date" formControlName="birthday" id="txtDate" class="form-control mb-2 mr-sm-2 mb-sm-0">
+                </fieldset>
+              </div>
+              <div class="col-sm-6 form-group" [ngClass]="{
+                'is-invalid': patientEditForm.get('phoneNumber').invalid,
+                'is-valid': patientEditForm.get('phoneNumber').valid 
+              }">
+                <fieldset>
+                  <label>Phone:</label>
+                  <input [ngClass]="{
+                    'is-invalid': patientEditForm.get('phoneNumber').invalid,
+                    'is-valid': patientEditForm.get('phoneNumber').valid 
+                  }" type="text" formControlName="phoneNumber" value="0746524459" class="form-control mb-2 mr-sm-2 mb-sm-0">
+                </fieldset>
+              </div>
+          </div>
+        </form>
+
+      </div>
+      <label class="error-label" *ngIf="patientEditForm.get('firstName').invalid ">
+          Your First Name is required and must contain between 3 and 30 letters. (alphabets only)
+      </label>  
+      <label class="error-label" *ngIf="patientEditForm.get('lastName').invalid ">
+          Your Last Name is required and must contain between 3 and 30 letters. (alphabets only)
+      </label> 
+      <label class="error-label" *ngIf="patientEditForm.get('city').invalid ">
+          Your City is required and must contain between 3 and 30 letters. (alphabets only)
+      </label>
+      <label class="error-label" *ngIf="patientEditForm.get('country').invalid ">
+          Your Country is required and must contain between 3 and 30 letters. (alphabets only)
+      </label>  
+      <label class="error-label" *ngIf="patientEditForm.get('phoneNumber').invalid ">
+          Your Phone Number is required. (digits only)
+      </label>  
+      <label class="error-label" *ngIf="patientEditForm.get('birthday').invalid ">
+          Your Birthdate is required.
+      </label>  
+    </div>
+
+    <div class="updateButton" *ngIf="buttonsClicked[0]">
+      <button type="button" class="btn active btn-primary btn-lg">UPDATE</button>
+    </div>
+
+
+
+
+    <div *ngIf="buttonsClicked[1]" class="row container-fluid"  id="divshow2" >
+      Div Content2
+    </div>
+
+    <div *ngIf="buttonsClicked[2]" class="row container-fluid"  id="divshow3" >
+      Div Content3
+    </div>
+
+  </div>
+
+</body>
+
+</html>

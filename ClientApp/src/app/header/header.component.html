@@ -1,69 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600' type='text/css'>
+</head>
+
 
 <body>
 
-<nav class="navbar navbar-dark navbar-expand-md bg-dark justify-content-center align-items-center">
-<a class="navbar-brand p-0"><img src="assets/img/LogoMP1.png" alt="logo"></a>
+    <nav class="navbar navbar-dark navbar-expand-md bg-dark justify-content-center">
+            <a class="navbar-brand d-flex w-50 mr-auto"><img src="assets/img/LogoMP1.png" alt="logo" id="menulogo"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar3">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse w-100" id="collapsingNavbar3" *ngIf="authenticate && !isDoctor">
+                <ul class="navbar-nav w-100 justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink='/patient/medical-history' routerLinkActive='active'><i class='far fa-plus-square'></i> MED-HISTORY</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink='/patient/appointments' routerLinkActive='active'><i class="fas fa-stethoscope"></i> APPOINTMENTS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink='/patient/doctor-reviews' routerLinkActive='active'><i class="fas fa-edit"></i> REVIEW</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink='/patient/donor' routerLinkActive='active'><i class="far fa-heart"></i> DONOR</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink='/patient/contact' routerLinkActive='active'><i class="far fa-grin-alt"></i> CONTACT </a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav ml-auto w-100 justify-content-end">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" routerLinkActive="active" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-fw fa-user"></i>   PROFILE
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" routerLink='/patient/account' routerLinkActive='active'><i class="fas fa-user-alt"></i> MY ACCOUNT</a>
+                            <a class="dropdown-item"  routerLink='/home' (click)="logout()"><i class="fas fa-user-slash"></i> LOG OUT</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
 
 
-<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar3">
-  <span class="navbar-toggler-icon"></span>
-</button>
-
-<div class="navbar-collapse collapse w-100 ml-auto d-flex align-items-center" id="collapsingNavbar3" *ngIf="authenticate && !isDoctor">
-    <ul class="navbar-nav w-100 justify-content-center">
-        <li class="nav-item active">
-            <a class="nav-link" href="#">MEDICAL HISTORY</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">MAKE AN APPOINTMENT</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">EVALUATE A DOCTOR</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">BE A DONOR</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">CONTACT US</a>
-        </li>
-    </ul>
-</div>
-
-<div class="navbar-collapse collapse w-100 ml-auto d-flex align-items-center" id="collapsingNavbar3" *ngIf="authenticate && isDoctor">
-    <ul class="navbar-nav w-100 justify-content-center">
-        <li class="nav-item active">
-            <a class="nav-link" href="#">ADD MEDICAL HISTORY</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">SEE APPOINTMENTS</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">CONTACT US</a>
-        </li>
-    </ul>
-</div>
-
-<ul class="nav navbar-nav ml-auto w-100 justify-content-end">
-  <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fa fa-fw fa-user"></i>
-          PROFILE
-      </a>
-      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" href="#">MY ACCOUNT</a>
-        <a class="dropdown-item" href="#">LOG OUT</a>
-      </div>
-    </li>
-</ul>
-
-</nav>
-  
-<div class="container">
-  <h3>Right Aligned Navbar</h3>
-  <p>The .navbar-right class is used to right-align navigation bar buttons.</p>
-</div>
+            <div class="navbar-collapse collapse w-100" id="collapsingNavbar3" *ngIf="authenticate && isDoctor">
+                    <ul class="navbar-nav w-100 justify-content-center">
+                        <li class="nav-item active">
+                                <a class="nav-link" href="#">ADD MEDICAL HISTORY</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">SEE APPOINTMENTS</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">CONTACT US</a>
+                            </li>
+                    </ul>
+                    <ul class="nav navbar-nav ml-auto w-100 justify-content-end">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-fw fa-user"></i>   PROFILE
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#">MY ACCOUNT</a>
+                                <a class="dropdown-item" href="#">LOG OUT</a>
+                            </div>
+                        </li>
+                    </ul>
+            </div>
+        </nav>
 
 </body>
 </html>

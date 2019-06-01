@@ -4,17 +4,33 @@ body, html {
     font-family: 'Source Sans Pro';
     margin: 0;
     padding: 0;
+    height: 100%;
 }
 
-#bg { 
-    height: 100vh;
-    background-image: url('../../assets/img/1-mono.jpg'); /*  Background Image Link */   
-    background-size: cover;
-    width: 102%;
-    background-repeat: no-repeat;
-    position: relative;
-    display: inline-block;
+@media only screen and (min-height: 777px){
+    #bg { 
+        height: 100vh;
+        background-image: url('../../assets/img/1-mono.jpg'); /*  Background Image Link */   
+        background-size: cover;
+        width: 102%;
+        background-repeat: no-repeat;
+        display: inline-block;
+        position: relative;
+    }    
 }
+
+@media only screen and (max-height: 777px) {
+    #bg { 
+        height: 100%;
+        background-image: url('../../assets/img/1-mono.jpg'); /*  Background Image Link */   
+        background-size: cover;
+        width: 102%;
+        background-repeat: no-repeat;
+        display: inline-block;
+        position: relative;
+    } 
+}
+
 
 #logo {
     position: relative;
@@ -32,14 +48,6 @@ body, html {
         width: 33%;
         height: 15%;
     }
-}
-
-::ng-deep footer {
-    font-size: 14px;  
-    padding: 21px 0;
-    background: #ffffff;
-    color: rgb(0, 0, 0);
-    text-align: center;
 }
 
 //-------------------
@@ -184,3 +192,10 @@ label.error-label {
     display: none;
 }
 
+::ng-deep footer {
+    font-size: 14px;  
+    padding: 21px 0;
+    background: #ffffff;
+    color: rgb(0, 0, 0);
+    text-align: center;
+}

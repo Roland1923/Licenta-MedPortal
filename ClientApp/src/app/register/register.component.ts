@@ -55,28 +55,28 @@ export class RegisterComponent implements OnInit {
 
     this.doctorRegisterForm = this.formBuilder.group({
       din:  ['', [Validators.required], this.validateDoctorDINNotTaken.bind(this)],
-      lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
-      firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
-      phoneNumber: ['', [Validators.required]],
+      lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
+      firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
+      phoneNumber: ['', [Validators.required, Validators.pattern("[0-9]+")]],
       email: ['', [Validators.required, Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")], this.validateDoctorEmailNotTaken.bind(this)],
       description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(50)]],
       speciality: ['', [Validators.required]],
       hospital: ['', [Validators.required]],
       address: ['', [Validators.required]],
-      city: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
-      country: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
+      city: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
+      country: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
       confirm_password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]]
   });
 
     this.patientRegisterForm = this.formBuilder.group({
       nin:  ['', [Validators.required], this.validatePatientNINNotTaken.bind(this)],
-      lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
-      firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
-      phoneNumber: ['', [Validators.required]],
+      lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
+      firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
+      phoneNumber: ['', [Validators.required, Validators.pattern("[0-9]+")]],
       birthday: ['', [Validators.required]],
-      city: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
-      country: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
+      city: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
+      country: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
       confirm_password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
       email: ['', [Validators.required, Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")], this.validatePatientEmailNotTaken.bind(this)]
