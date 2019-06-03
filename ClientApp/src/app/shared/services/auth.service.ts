@@ -81,6 +81,8 @@ export class AuthService implements CanActivate{
                 console.log(result);
                 if (result.state && result.state == 1 && result.data && result.data.accessToken) {
                     localStorage.setItem('user_id',result.data.user_id);
+                    localStorage.setItem('user_password',result.data.user_password);
+                    localStorage.setItem('user_email',result.data.user_email);
                     localStorage.setItem('isDoctor',result.data.isDoctor);
                     sessionStorage.setItem(this.tokeyKey,result.data.accessToken);
                 }
@@ -108,6 +110,8 @@ export class AuthService implements CanActivate{
                 console.log(result);
                 if (result.state && result.state == 1 && result.data && result.data.accessToken) {
                     localStorage.setItem('user_id',result.data.user_id);
+                    localStorage.setItem('user_password',result.data.user_password);
+                    localStorage.setItem('user_email',result.data.user_email);
                     localStorage.setItem('isDoctor',result.data.isDoctor);
                     sessionStorage.setItem(this.tokeyKey,result.data.accessToken);
                 }

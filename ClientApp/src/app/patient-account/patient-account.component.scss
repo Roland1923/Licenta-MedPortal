@@ -70,7 +70,7 @@ button:focus, button:active, .active {
      background-color: rgb(236, 236, 236)!important;
  }
 
- #divshow1 {
+ #divshow {
     padding-top: 1vw;
     margin-left: 8vw;
     margin-right: 8vw;
@@ -163,4 +163,34 @@ input[type=text],[type=email],[type=date] {
 
 label {
     margin-bottom: .1rem;
+}
+
+.updatedMessage {
+    text-align:center;
+    background-color: #69D18B;
+    font-weight: bold;
+    padding: 15px;
+    min-height: auto;
+    color: white;
+    clear: both;
+    margin-top: 1vw;
+    margin-bottom: .3vw;
+    margin-left: 8vw;
+    margin-right: 8vw;
+}
+
+#close{
+    float:right;
+    display:inline-block;
+    color: white;
+    cursor: pointer;
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+}
+
+#close:hover {
+    background-color: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
 }

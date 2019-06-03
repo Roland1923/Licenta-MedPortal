@@ -76,7 +76,7 @@
             'has-danger': patientRegisterForm.get('email').invalid && patientRegisterForm.get('email').dirty || submitted && patientRegisterForm.get('email').invalid,
             'has-success': patientRegisterForm.get('email').valid && patientRegisterForm.get('email').dirty
           }" type="email" class="form-control" formControlName="email" placeholder="Enter E-mail">
-          <span class="input-group-addon"><i class="fa fa-at"></i>example.com</span> 
+          <span class="input-group-addon"><i class="fa fa-at">example.com</i></span> 
         </div>
         <label class="error-label" *ngIf="patientRegisterForm.get('email').invalid && patientRegisterForm.get('email').dirty && !patientRegisterForm.get('email').errors.patientEmailTaken || submitted && patientRegisterForm.get('email').invalid && !patientRegisterForm.get('email').errors.patientEmailTaken">
             Enter your correct E-mail.
@@ -102,17 +102,17 @@
         
         <p class="field-title">Birthdate</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': patientRegisterForm.get('birthday').invalid && patientRegisterForm.get('birthday').dirty || (submitted && patientRegisterForm.get('birthday').invalid),
-          'has-success': patientRegisterForm.get('birthday').valid && patientRegisterForm.get('birthday').dirty
+          'has-danger': patientRegisterForm.get('birthdate').invalid && patientRegisterForm.get('birthdate').dirty || (submitted && patientRegisterForm.get('birthdate').invalid) || patientRegisterForm.get('birthdate').errors?.DOBwrong,
+          'has-success': patientRegisterForm.get('birthdate').valid && patientRegisterForm.get('birthdate').dirty
         }"> 
           <span class="input-group-addon"><i class="fa fa-map-marker"></i></span> 
           <input [ngClass]="{
-            'has-danger': patientRegisterForm.get('birthday').invalid && patientRegisterForm.get('birthday').dirty || (submitted && patientRegisterForm.get('birthday').invalid),
-            'has-success': patientRegisterForm.get('birthday').valid && patientRegisterForm.get('birthday').dirty
-          }" id="txtDate" type="date" formControlName="birthday"> 
+            'has-danger': patientRegisterForm.get('birthdate').invalid && patientRegisterForm.get('birthdate').dirty || (submitted && patientRegisterForm.get('birthdate').invalid) || patientRegisterForm.get('birthdate').errors?.DOBwrong,
+            'has-success': patientRegisterForm.get('birthdate').valid && patientRegisterForm.get('birthdate').dirty
+          }" id="txtDate" type="date" formControlName="birthdate"> 
         </div>
-        <label class="error-label" *ngIf="patientRegisterForm.get('birthday').invalid && !patientRegisterForm.get('birthday').pristine || (submitted && patientRegisterForm.get('birthday').invalid)">
-            Your Birthdate is required.
+        <label class="error-label" *ngIf="patientRegisterForm.get('birthdate').invalid && !patientRegisterForm.get('birthdate').pristine || (submitted && patientRegisterForm.get('birthdate').invalid) || patientRegisterForm.get('birthdate').errors?.DOBwrong">
+            Your Birthdate is required and you must be not dead or from the future.
         </label>  
    
         <p class="field-title">City</p>
@@ -157,7 +157,7 @@
           }" type="password" class="form-control" formControlName="password" placeholder="Enter Password">
         </div>
         <label class="error-label" *ngIf="patientRegisterForm.get('password').invalid && !patientRegisterForm.get('password').pristine || (submitted && patientRegisterForm.get('password').invalid)">
-            Your Password is required and must contain between 6 and 20 characters.
+            Your Password is required and must contain between 6 and 35 characters.
         </label>  
 
         <p class="field-title">Confirm Password</p>
@@ -173,10 +173,10 @@
         </div>
 
         <label class="error-label" *ngIf="patientRegisterForm.get('confirm_password').invalid && !patientRegisterForm.get('confirm_password').pristine || (submitted && patientRegisterForm.get('confirm_password').invalid)">
-            Your Password confirmation is required and must contain between 6 and 20 characters.
+            Your Password confirmation is required and must contain between 6 and 35 characters.
         </label>  
         <label class="error-label" *ngIf="patientRegisterForm.get('confirm_password').valid && patientRegisterForm.get('password').value!=patientRegisterForm.get('confirm_password').value">
-            The password you entered does not match.
+            The Password and Confirmation Password does not match.
         </label>  
 
         <input type="submit" class="form-control" name="submit" value="Register">   
@@ -377,7 +377,7 @@
           }" type="password" class="form-control" formControlName="password" placeholder="Enter Password" >
         </div>
         <label class="error-label" *ngIf="doctorRegisterForm.get('password').invalid && !doctorRegisterForm.get('password').pristine || (submitted && doctorRegisterForm.get('password').invalid)">
-            Your Password is required and must contain between 6 and 20 characters.
+            Your Password is required and must contain between 6 and 35 characters.
         </label>  
 
         <p class="field-title">Confirm Password</p>
@@ -393,10 +393,10 @@
         </div>
 
         <label class="error-label" *ngIf="doctorRegisterForm.get('confirm_password').invalid && !doctorRegisterForm.get('confirm_password').pristine || (submitted && doctorRegisterForm.get('confirm_password').invalid)">
-            Your Password confirmation is required and must contain between 6 and 20 characters.
+            Your Password confirmation is required and must contain between 6 and 35 characters.
         </label>  
         <label class="error-label" *ngIf="doctorRegisterForm.get('confirm_password').valid && doctorRegisterForm.get('password').value!=doctorRegisterForm.get('confirm_password').value">
-            The password you entered does not match.
+            The Password and Confirmation Password does not match.
         </label>   
 
         <input type="submit" class="form-control" name="submit" value="Register">   

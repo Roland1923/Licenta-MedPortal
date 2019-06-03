@@ -65,8 +65,8 @@ export class RegisterComponent implements OnInit {
       address: ['', [Validators.required]],
       city: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
       country: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
-      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
-      confirm_password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]]
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(35)]],
+      confirm_password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(35)]]
   });
 
     this.patientRegisterForm = this.formBuilder.group({
@@ -74,13 +74,24 @@ export class RegisterComponent implements OnInit {
       lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
       firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
       phoneNumber: ['', [Validators.required, Validators.pattern("[0-9]+")]],
-      birthday: ['', [Validators.required]],
+      birthdate: ['', [Validators.required, this.validateDOB.bind(this)]],
       city: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
       country: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
-      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
-      confirm_password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(35)]],
+      confirm_password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(35)]],
       email: ['', [Validators.required, Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")], this.validatePatientEmailNotTaken.bind(this)]
   });
+  }
+
+  validateDOB(control: AbstractControl){
+    let year = new Date(control.value).getFullYear();
+    let today = new Date().getFullYear();
+    if(today - year >= 120 || today-year<0) {
+      return { DOBwrong: false };
+    }
+    else {
+      return true;
+    }
   }
 
   validateDoctorDINNotTaken(control: AbstractControl) {

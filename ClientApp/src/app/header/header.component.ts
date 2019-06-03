@@ -8,8 +8,8 @@ import { AuthService } from '../shared/services/auth.service';
 })
 export class HeaderComponent implements OnInit {
 
-  private authenticate: boolean;
-  private isDoctor: boolean;
+  authenticate: boolean;
+  isDoctor: boolean;
 
   constructor(private authService: AuthService) { }
 

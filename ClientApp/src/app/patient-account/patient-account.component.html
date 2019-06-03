@@ -4,9 +4,19 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
-
 <body>
-<div class="content">
+
+<div class="updatedMessage" *ngIf="displayMessage(1) && buttonsClicked[0]">
+    <button id="close" type="button" (click)="removeMessage(1)" >x</button>
+    <i class="fas fa-check-circle"> Your account has been updated.</i>
+</div>
+
+<div class="updatedMessage" *ngIf="displayMessage(2) && buttonsClicked[1]">
+    <button id="close" type="button" (click)="removeMessage(2)" >x</button>
+    <i class="fas fa-check-circle"> Your password has been changed.</i>
+</div>
+
+<div class="content" *ngIf="this.patient">
     <div class="intro">
       <p class="p1">
           Hello, <b><i><span style="color:#69D18B">ROLAND IORDACHE!</span></i></b>
@@ -25,29 +35,27 @@
         <button type="button" class="btn btn-primary btn-lg" (click)="toggleShow(2)" >E-MAIL</button>
     </div>
 
-    <div *ngIf="buttonsClicked[0]"  id="divshow1" >
-      <div class="headdiv1">
+    <div *ngIf="buttonsClicked[0]"  id="divshow" >
+   
         <p class="p2head">
           <b>PROFILE INFORMATION</b>
         </p>
 
           <hr>
           <p class="p2">
-              <b>Name: </b>Iordache Roland | <b>Email Address: </b>roland.iordache96@gmail.com | 
+              <b>Name: </b>{{this.patient.firstName}} {{this.patient.lastName}} | <b>Email Address: </b>{{this.patient.email}} | 
           
-              <b>City: </b>Iasi | <b>Country: </b>Romania | <b>Birthdate: </b>10/02/1996 | <b>Phone Number: </b>0746524459
+              <b>City: </b>{{this.patient.city}} | <b>Country: </b>{{this.patient.country}} | <b>Birthdate: </b>{{patient.birthdate | date:'dd/MM/yyyy'}} | <b>Phone Number: </b>{{this.patient.phoneNumber}}
           </p>
 
           <hr id="hr2">
 
-
-
-          <form [formGroup]="patientEditForm" #f="ngForm" (ngSubmit)="editPatient(f)">
+          <form [formGroup]="patientEditForm" #f="ngForm" (ngSubmit)="editPatientProfile(f)">
             <div class="row">
                 <div class="col-sm-4 ">
                   <fieldset>
                     <label>Email:</label>
-                    <input type="email"  value="roland.iordache96@gmail.com" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                    <input type="email" value="{{patient.email}}" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
                   </fieldset>
                 </div>
                 <div class="col-sm-4 form-group" [ngClass]="{
@@ -59,7 +67,7 @@
                     <input [ngClass]="{
                       'is-invalid': patientEditForm.get('firstName').invalid,
                       'is-valid': patientEditForm.get('firstName').valid 
-                    }" type="text" formControlName="firstName" id="fsss" value="Roland" class="form-control mb-2 mr-sm-2 mb-sm-0">
+                    }" type="text" value="{{patient.firstName}}" formControlName="firstName" class="form-control mb-2 mr-sm-2 mb-sm-0">
                   </fieldset>
                 </div>
                 <div class="col-sm-4 form-group" [ngClass]="{
@@ -71,7 +79,7 @@
                     <input [ngClass]="{
                       'is-invalid': patientEditForm.get('lastName').invalid,
                       'is-valid': patientEditForm.get('lastName').valid 
-                    }" type="text" formControlName="lastName" value="Iordache" class="form-control mb-2 mr-sm-2 mb-sm-0" >
+                    }" type="text" value="{{patient.lastName}}" formControlName="lastName" class="form-control mb-2 mr-sm-2 mb-sm-0" >
                   </fieldset>
                 </div>
               </div>
@@ -86,7 +94,7 @@
                   <input [ngClass]="{
                     'is-invalid': patientEditForm.get('city').invalid,
                     'is-valid': patientEditForm.get('city').valid 
-                  }" type="text" formControlName="city" value="Iasi" class="form-control mb-2 mr-sm-2 mb-sm-0">
+                  }" type="text" value="{{patient.city}}" formControlName="city" class="form-control mb-2 mr-sm-2 mb-sm-0">
                 </fieldset>
               </div>
               <div class="col-sm-6 form-group" [ngClass]="{
@@ -98,25 +106,26 @@
                   <input [ngClass]="{
                     'is-invalid': patientEditForm.get('country').invalid,
                     'is-valid': patientEditForm.get('country').valid 
-                  }" type="text" formControlName="country" value="Romania" class="form-control mb-2 mr-sm-2 mb-sm-0">
+                  }" type="text" value="{{patient.country}}" formControlName="country" class="form-control mb-2 mr-sm-2 mb-sm-0">
                 </fieldset>
               </div>
+
           </div>
 
           <div class="row">
-              <div class="col-sm-6 form-group" [ngClass]="{
-                'is-invalid': patientEditForm.get('birthday').invalid,
-                'is-valid': patientEditForm.get('birthday').valid 
+              <div class="col-sm-4 form-group" [ngClass]="{
+                'is-invalid': patientEditForm.get('birthdate').invalid,
+                'is-valid': patientEditForm.get('birthdate').valid 
               }">
                 <fieldset>
                   <label>Birthdate:</label>
                   <input [ngClass]="{
-                    'is-invalid': patientEditForm.get('birthday').invalid,
-                    'is-valid': patientEditForm.get('birthday').valid 
-                  }" type="date" formControlName="birthday" id="txtDate" class="form-control mb-2 mr-sm-2 mb-sm-0">
+                    'is-invalid': patientEditForm.get('birthdate').invalid,
+                    'is-valid': patientEditForm.get('birthdate').valid 
+                  }" type="date" formControlName="birthdate" value="{{patient.birthdate | date:'yyyy-MM-dd'}}" id="txtDate" class="form-control mb-2 mr-sm-2 mb-sm-0">
                 </fieldset>
               </div>
-              <div class="col-sm-6 form-group" [ngClass]="{
+              <div class="col-sm-4 form-group" [ngClass]="{
                 'is-invalid': patientEditForm.get('phoneNumber').invalid,
                 'is-valid': patientEditForm.get('phoneNumber').valid 
               }">
@@ -125,14 +134,32 @@
                   <input [ngClass]="{
                     'is-invalid': patientEditForm.get('phoneNumber').invalid,
                     'is-valid': patientEditForm.get('phoneNumber').valid 
-                  }" type="text" formControlName="phoneNumber" value="0746524459" class="form-control mb-2 mr-sm-2 mb-sm-0">
+                  }" type="text" value="{{patient.phoneNumber}}" formControlName="phoneNumber" class="form-control mb-2 mr-sm-2 mb-sm-0">
+                </fieldset>
+              </div>
+              <div class="col-sm-4 form-group" [ngClass]="{
+                'is-invalid': patientEditForm.get('password').invalid && patientEditForm.get('password').dirty || submitted && patientEditForm.get('password').invalid,
+                'is-valid': patientEditForm.get('password').valid 
+              }">
+                <fieldset>
+                  <label>Confirm Password:</label>
+                  <input [ngClass]="{
+                    'is-invalid': patientEditForm.get('password').invalid && patientEditForm.get('password').dirty || submitted && patientEditForm.get('password').invalid,
+                    'is-valid': patientEditForm.get('password').valid 
+                  }" type="password" formControlName="password" class="form-control mb-2 mr-sm-2 mb-sm-0">
                 </fieldset>
               </div>
           </div>
+
+          <div class="updateButton">
+              <button type="submit" class="btn active btn-primary btn-lg" [disabled]="f.invalid || isRequesting">UPDATE</button>
+          </div>
         </form>
 
-      </div>
-      <label class="error-label" *ngIf="patientEditForm.get('firstName').invalid ">
+   
+
+
+      <label class="error-label" *ngIf="patientEditForm.get('firstName').invalid"> 
           Your First Name is required and must contain between 3 and 30 letters. (alphabets only)
       </label>  
       <label class="error-label" *ngIf="patientEditForm.get('lastName').invalid ">
@@ -147,23 +174,96 @@
       <label class="error-label" *ngIf="patientEditForm.get('phoneNumber').invalid ">
           Your Phone Number is required. (digits only)
       </label>  
-      <label class="error-label" *ngIf="patientEditForm.get('birthday').invalid ">
-          Your Birthdate is required.
+      <label class="error-label" *ngIf="patientEditForm.get('birthdate').invalid && patientEditForm.get('birthdate').dirty && !patientEditForm.get('birthdate').errors?.DOBwrong">
+          Your Birthdate is required and you must be not dead or from the future.
       </label>  
+      <label class="error-label" *ngIf="patientEditForm.get('password').invalid && patientEditForm.get('password').dirty && !patientEditForm.get('password').errors?.passConfirmation || submitted && patientEditForm.get('password').invalid && !patientEditForm.get('password').errors?.passConfirmation">
+          Your Password Confirmation is required, must contain between 6 and 35 characters and must match your registered password.
+      </label>    
     </div>
 
-    <div class="updateButton" *ngIf="buttonsClicked[0]">
-      <button type="button" class="btn active btn-primary btn-lg">UPDATE</button>
+  
+
+
+
+
+    <div *ngIf="buttonsClicked[1]"  id="divshow" >
+      
+            <p class="p2head">
+              <b>CHANGE YOUR PASSWORD</b>
+            </p>
+
+              <hr>
+              
+              <form [formGroup]="patientPasswordEditForm" #f="ngForm" (ngSubmit)="editPatientPassword(f)">
+    
+              <div class="row">
+                  <div class="col-sm-6 form-group" [ngClass]="{
+                    'is-invalid': patientPasswordEditForm.get('password').invalid && patientPasswordEditForm.get('password').dirty || submitted2 && patientPasswordEditForm.get('password').invalid,
+                    'is-valid': patientPasswordEditForm.get('password').valid 
+                  }">
+                    <fieldset>
+                      <label>Current Password:</label>
+                      <input [ngClass]="{
+                        'is-invalid': patientPasswordEditForm.get('password').invalid && patientPasswordEditForm.get('password').dirty || submitted2 && patientPasswordEditForm.get('password').invalid,
+                        'is-valid': patientPasswordEditForm.get('password').valid 
+                      }" type="password" formControlName="password" class="form-control mb-2 mr-sm-2 mb-sm-0">
+                    </fieldset>
+                  </div>
+              </div>
+
+              <div class="row">
+                  <div class="col-sm-6 form-group"  [ngClass]="{
+                    'is-invalid': patientPasswordEditForm.get('newPassword').invalid && patientPasswordEditForm.get('newPassword').dirty || submitted2 && patientPasswordEditForm.get('newPassword').invalid,
+                    'is-valid': patientPasswordEditForm.get('newPassword').valid 
+                  }">
+                    <fieldset>
+                      <label>New Password:</label>
+                      <input  [ngClass]="{
+                        'is-invalid': patientPasswordEditForm.get('newPassword').invalid && patientPasswordEditForm.get('newPassword').dirty || submitted2 && patientPasswordEditForm.get('newPassword').invalid,
+                        'is-valid': patientPasswordEditForm.get('newPassword').valid 
+                      }" type="password" formControlName="newPassword" class="form-control mb-2 mr-sm-2 mb-sm-0">
+                    </fieldset>
+                  </div>
+                  <div class="col-sm-6 form-group" [ngClass]="{
+                    'is-invalid': patientPasswordEditForm.get('confirmNewPassword').invalid && patientPasswordEditForm.get('confirmNewPassword').dirty || submitted2 && patientPasswordEditForm.get('confirmNewPassword').invalid || (patientPasswordEditForm.get('confirmNewPassword').valid && patientPasswordEditForm.get('newPassword').value!=patientPasswordEditForm.get('confirmNewPassword').value),
+                    'is-valid': patientPasswordEditForm.get('confirmNewPassword').valid 
+                  }">
+                    <fieldset>
+                      <label>Confirm New Password:</label>
+                      <input [ngClass]="{
+                        'is-invalid': patientPasswordEditForm.get('confirmNewPassword').invalid && patientPasswordEditForm.get('confirmNewPassword').dirty || submitted2 && patientPasswordEditForm.get('confirmNewPassword').invalid || (patientPasswordEditForm.get('confirmNewPassword').valid && patientPasswordEditForm.get('newPassword').value!=patientPasswordEditForm.get('confirmNewPassword').value),
+                        'is-valid': patientPasswordEditForm.get('confirmNewPassword').valid 
+                      }" type="password" formControlName="confirmNewPassword" class="form-control mb-2 mr-sm-2 mb-sm-0">
+                    </fieldset>
+                  </div>
+              </div>
+    
+              <div class="updateButton">
+                  <button type="submit" class="btn active btn-primary btn-lg" [disabled]="f.invalid || isRequesting || patientPasswordEditForm.get('newPassword').value!=patientPasswordEditForm.get('confirmNewPassword').value">UPDATE</button>
+              </div>
+            </form>
+     
+    
+          <label class="error-label" *ngIf="patientPasswordEditForm.get('password').invalid && patientPasswordEditForm.get('password').dirty && !patientPasswordEditForm.get('password').errors?.passConfirmation || submitted2 && patientPasswordEditForm.get('password').invalid && !patientPasswordEditForm.get('password').errors?.passConfirmation">
+              Your Password is required, must contain between 6 and 35 characters and must match your registered password.
+          </label>  
+          <label class="error-label" *ngIf="patientPasswordEditForm.get('newPassword').invalid && patientPasswordEditForm.get('newPassword').dirty || submitted2 && patientPasswordEditForm.get('newPassword').invalid">
+              Your New Password is required, must contain between 6 and 35 characters.
+          </label>   
+          <label class="error-label" *ngIf="patientPasswordEditForm.get('confirmNewPassword').invalid && patientPasswordEditForm.get('confirmNewPassword').dirty || submitted2 && patientPasswordEditForm.get('confirmNewPassword').invalid">
+              Your New Password Confirmation is required, must contain between 6 and 35 characters.
+          </label>    
+          <label class="error-label" *ngIf="(patientPasswordEditForm.get('confirmNewPassword').valid && patientPasswordEditForm.get('newPassword').value!=patientPasswordEditForm.get('confirmNewPassword').value)">
+              The New Password and New Password Confirmation does not match.
+          </label>    
     </div>
 
 
 
 
-    <div *ngIf="buttonsClicked[1]" class="row container-fluid"  id="divshow2" >
-      Div Content2
-    </div>
 
-    <div *ngIf="buttonsClicked[2]" class="row container-fluid"  id="divshow3" >
+    <div *ngIf="buttonsClicked[2]"  id="divshow" >
       Div Content3
     </div>
 
