@@ -38,7 +38,7 @@ export class AuthService implements CanActivate{
       // Check that the user is doctor or not
       if(this.checkLogin()) {
         if(!this.checkDoctor()) {
-          this.router.navigate(['patient-home']);
+          this.router.navigate(['patient/account']);
           return false;
         }
         else {
@@ -54,7 +54,7 @@ export class AuthService implements CanActivate{
       // Check that the user is patient or not
       if(this.checkLogin()) {
         if(this.checkDoctor()) {
-          this.router.navigate(['doctor-home']);
+          this.router.navigate(['doctor/account']);
           return false;
         }
         else {

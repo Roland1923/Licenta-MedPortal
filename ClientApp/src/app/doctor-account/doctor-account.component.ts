@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { of, Observable } from 'rxjs';
-import { PatientProfile } from '../shared/models/patient-profile';
+import { DoctorProfile } from '../shared/models/doctor-profile';
+
 import { UserService } from '../shared/services/user.service';
 import { Router } from '@angular/router';
 import { isUndefined } from 'util';
@@ -11,25 +12,25 @@ import { NgForm } from '@angular/forms';
 declare var $: any;
 
 @Component({
-  selector: 'app-patient-account',
-  templateUrl: './patient-account.component.html',
-  styleUrls: ['./patient-account.component.scss']
+  selector: 'app-doctor-account',
+  templateUrl: './doctor-account.component.html',
+  styleUrls: ['./doctor-account.component.scss']
 })
-export class PatientAccountComponent implements OnInit {
+export class DoctorAccountComponent implements OnInit {
 
   private buttonsClicked: boolean[];
-  patientEditForm: FormGroup;
-  patientPasswordEditForm: FormGroup;
-  patientEmailEditForm: FormGroup;
+  doctorEditForm: FormGroup;
+  doctorPasswordEditForm: FormGroup;
+  doctorEmailEditForm: FormGroup;
   errors: string;  
   isRequesting: boolean;
   submitted: boolean = false;
   submitted2: boolean = false;
   submitted3: boolean = false;
-  patientId : string;
+  doctorId : string;
   email: string;
   password: string;
-  patient: PatientProfile;
+  doctor: DoctorProfile;
 
   toggleShow(nr) {
     this.buttonsClicked = [false, false, false];
@@ -41,15 +42,15 @@ export class PatientAccountComponent implements OnInit {
     });
   }
 
-  constructor(private router: Router, private userService: UserService, private formBuilder: FormBuilder) { }
 
+  constructor(private router: Router, private userService: UserService, private formBuilder: FormBuilder) { }
   ngOnInit() {
     this.buttonsClicked = [true, false, false];
 
-    this.patientId =  this.userService.getUserId();
+    this.doctorId =  this.userService.getUserId();
     
-    if(this.patientId != null) {
-      this.getPatient();
+    if(this.doctorId != null) {
+      this.getDoctor();
     }
     else {
         this.router.navigate(['/home']);
@@ -76,47 +77,53 @@ export class PatientAccountComponent implements OnInit {
   });
 
   
-    this.patientEditForm = this.formBuilder.group({
+    this.doctorEditForm = this.formBuilder.group({
       lastName: ['Test', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
       firstName: ['Test', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
       phoneNumber: ['0745119974', [Validators.required, Validators.pattern("[0-9]+")]],
-      birthdate: ['1996-02-10', [Validators.required,this.validateDOB.bind(this)]],
+      speciality: ['Test', [Validators.required]],
+      description: ['Testtttttt', [Validators.required, Validators.minLength(10), Validators.maxLength(50)]],
+      address: ['Str. Petre', [Validators.required]],
+      hospital: ['Test', [Validators.required]],
       city: ['Iasi', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(35), this.validatePasswordConfirmation.bind(this)]],
       country: ['Romania', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]]    
     });
 
-    this.patientPasswordEditForm = this.formBuilder.group({
+    this.doctorPasswordEditForm = this.formBuilder.group({
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(35), this.validatePasswordConfirmation.bind(this)]],
       confirmNewPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(35)]],
       newPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(35)]]
     });
 
 
-    this.patientEmailEditForm = this.formBuilder.group({
+    this.doctorEmailEditForm = this.formBuilder.group({
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(35), this.validatePasswordConfirmation.bind(this)]],
-      email: ['', [Validators.required, Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")], this.validatePatientEmailNotTaken.bind(this)]
+      email: ['', [Validators.required, Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")], this.validateDoctorEmailNotTaken.bind(this)]
     });
   }
 
-  validatePatientEmailNotTaken(control: AbstractControl) {
-    return this.userService.checkPatientEmailNotTaken(control.value).map(res => {
-      return res ? null : { patientEmailTaken: true };
+  validateDoctorEmailNotTaken(control: AbstractControl) {
+    return this.userService.checkDoctorEmailNotTaken(control.value).map(res => {
+      return res ? null : { doctorEmailTaken: true };
     });
   }
 
-  private getPatient() {
-    this.userService.getPatient(this.patientId)
-    .subscribe((patient: PatientProfile) => {
-        this.patient = patient;
-        this.email = patient.email;
-        this.password = patient.password;
-        this.patientEditForm.controls['lastName'].setValue(patient.lastName);
-        this.patientEditForm.controls['firstName'].setValue(patient.firstName);
-        this.patientEditForm.controls['phoneNumber'].setValue(patient.phoneNumber);
-        this.patientEditForm.controls['birthdate'].setValue(patient.birthdate);
-        this.patientEditForm.controls['city'].setValue(patient.city);
-        this.patientEditForm.controls['country'].setValue(patient.country);
+  private getDoctor() {
+    this.userService.getDoctor(this.doctorId)
+    .subscribe((doctor: DoctorProfile) => {
+        this.doctor = doctor;
+        this.email = doctor.email;
+        this.password = doctor.password;
+        this.doctorEditForm.controls['lastName'].setValue(doctor.lastName);
+        this.doctorEditForm.controls['firstName'].setValue(doctor.firstName);
+        this.doctorEditForm.controls['phoneNumber'].setValue(doctor.phoneNumber);
+        this.doctorEditForm.controls['speciality'].setValue(doctor.speciality);
+        this.doctorEditForm.controls['description'].setValue(doctor.description);
+        this.doctorEditForm.controls['hospital'].setValue(doctor.hospital);
+        this.doctorEditForm.controls['address'].setValue(doctor.address);
+        this.doctorEditForm.controls['city'].setValue(doctor.city);
+        this.doctorEditForm.controls['country'].setValue(doctor.country);
     },
     errors => this.errors = errors
     );
@@ -124,26 +131,29 @@ export class PatientAccountComponent implements OnInit {
 
 
 
-  editPatientProfile(patientEditForm: FormGroup) {
+  editDoctorProfile(doctorEditForm: FormGroup) {
   this.submitted = true;
   this.isRequesting = true;
   this.errors = '';
-  if (patientEditForm.valid) { 
-      this.userService.editPatientProfile(this.patientId,
-          this.patient.nin,
-          patientEditForm.value.firstName,
-          patientEditForm.value.lastName,
+  if (doctorEditForm.valid) { 
+      this.userService.editDoctorProfile(this.doctorId,
+          this.doctor.din,
+          doctorEditForm.value.firstName,
+          doctorEditForm.value.lastName,
           this.email,
-          patientEditForm.value.password,
-          patientEditForm.value.city,
-          patientEditForm.value.country,
-          patientEditForm.value.birthdate,
-          patientEditForm.value.phoneNumber)
+          doctorEditForm.value.password,
+          doctorEditForm.value.city,
+          doctorEditForm.value.country,
+          doctorEditForm.value.description,
+          doctorEditForm.value.speciality,
+          doctorEditForm.value.address,
+          doctorEditForm.value.hospital,
+          doctorEditForm.value.phoneNumber)
           .finally(() => this.isRequesting = false)
           .subscribe(
               result => {
                   if (result) {
-                      this.router.navigate(['/patient/account']);
+                      this.router.navigate(['/doctor/account']);
                       localStorage.setItem('displayMessage1', "true");
                       window.location.reload();
                   }
@@ -152,26 +162,29 @@ export class PatientAccountComponent implements OnInit {
   }
   }
 
-  editPatientPassword({ value, valid }: { value: PatientProfile, valid: boolean }) {
+  editDoctorPassword({ value, valid }: { value: DoctorProfile, valid: boolean }) {
     this.submitted2 = true;
     this.isRequesting = true;
     this.errors = '';
     if (valid) {
-        this.userService.editPatientProfile(this.patientId,
-            this.patient.nin,
-            this.patient.firstName,
-            this.patient.lastName,
+        this.userService.editDoctorProfile(this.doctorId,
+            this.doctor.din,
+            this.doctor.firstName,
+            this.doctor.lastName,
             this.email,
             value.newPassword,
-            this.patient.city,
-            this.patient.country,
-            this.patient.birthdate,
-            this.patient.phoneNumber)
+            this.doctor.city,
+            this.doctor.country,
+            this.doctor.description,
+            this.doctor.speciality,
+            this.doctor.address,
+            this.doctor.hospital,
+            this.doctor.phoneNumber)
             .finally(() => this.isRequesting = false)
             .subscribe(
                 result => {
                     if (result) {
-                        this.router.navigate(['/patient/account']);
+                        this.router.navigate(['/doctor/account']);
                         localStorage.setItem('displayMessage2', "true");
                         window.location.reload(); 
                     }
@@ -180,26 +193,29 @@ export class PatientAccountComponent implements OnInit {
     }
     }
 
-    editPatientEmail({ value, valid }: { value: PatientProfile, valid: boolean }) {
+    editDoctorEmail({ value, valid }: { value: DoctorProfile, valid: boolean }) {
       this.submitted3 = true;
       this.isRequesting = true;
       this.errors = '';
       if (valid) {
-          this.userService.editPatientProfile(this.patientId,
-              this.patient.nin,
-              this.patient.firstName,
-              this.patient.lastName,
-              value.email,
-              value.password,
-              this.patient.city,
-              this.patient.country,
-              this.patient.birthdate,
-              this.patient.phoneNumber)
+          this.userService.editDoctorProfile(this.doctorId,
+            this.doctor.din,
+            this.doctor.firstName,
+            this.doctor.lastName,
+            value.email,
+            value.password,
+            this.doctor.city,
+            this.doctor.country,
+            this.doctor.description,
+            this.doctor.speciality,
+            this.doctor.address,
+            this.doctor.hospital,
+            this.doctor.phoneNumber)
               .finally(() => this.isRequesting = false)
               .subscribe(
                   result => {
                       if (result) {
-                          this.router.navigate(['/patient/account']);
+                          this.router.navigate(['/doctor/account']);
                           localStorage.setItem('displayMessage3', "true");
                           window.location.reload(); 
                       }

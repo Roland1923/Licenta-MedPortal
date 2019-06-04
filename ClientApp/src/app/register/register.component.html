@@ -82,7 +82,7 @@
             Enter your correct E-mail.
         </label>
         <label class="error-label" *ngIf="patientRegisterForm.get('email').errors && patientRegisterForm.get('email').errors.patientEmailTaken">
-            This email is already taken!
+            This E-mail is already taken!
         </label>
 
         <p class="field-title">Phone Number</p>
@@ -251,13 +251,13 @@
             'has-danger': doctorRegisterForm.get('email').invalid && doctorRegisterForm.get('email').dirty || submitted && doctorRegisterForm.get('email').invalid,
             'has-success': doctorRegisterForm.get('email').valid && doctorRegisterForm.get('email').dirty
           }" type="email" class="form-control" formControlName="email" placeholder="Enter E-mail">
-          <span class="input-group-addon"><i class="fa fa-at"></i>example.com</span> 
+          <span class="input-group-addon"><i class="fa fa-at">example.com</i></span>  
         </div>
         <label class="error-label" *ngIf="doctorRegisterForm.get('email').invalid && doctorRegisterForm.get('email').dirty && !doctorRegisterForm.get('email').errors.doctorEmailTaken || submitted && doctorRegisterForm.get('email').invalid && !doctorRegisterForm.get('email').errors.doctorEmailTaken">
             Enter your correct E-mail.
         </label>
         <label class="error-label" *ngIf="doctorRegisterForm.get('email').errors && doctorRegisterForm.get('email').errors.doctorEmailTaken">
-            This email is already taken!
+            This E-mail is already taken!
         </label>
 
         <p class="field-title">Phone Number</p>

@@ -56,19 +56,6 @@ $colors: (
   }
 }
 
-// Now every button will have different colors as set above. We get to use the same structure, only changing the custom properties.
-button {  
-  color: var(--color);
-  transition: 0.25s;
-  
-  &:hover,
-  &:focus { 
-    border-color: var(--hover);
-    color: #fff;
-  }
-}
-
-
 
 
 .title {
@@ -242,15 +229,4 @@ button {
     border-width: 1px;
     border-radius: 30px !important;
     opacity: 0.79;
-}
-
-::ng-deep footer{
-    font-size: 16px;  
-    padding: 28px 0;
-    background: #343a40!important;
-    color: white;
-}
-
-::ng-deep app-header {
-    display: none;
 }

@@ -28,7 +28,7 @@
                         <a class="nav-link" routerLink='/patient/donor' routerLinkActive='active'><i class="far fa-heart"></i> DONOR</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" routerLink='/patient/contact' routerLinkActive='active'><i class="far fa-grin-alt"></i> CONTACT </a>
+                        <a class="nav-link" routerLink='/patient/contact' routerLinkActive='active'><i class="far fa-grin-alt"></i> CONTACT</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav ml-auto w-100 justify-content-end">
@@ -46,28 +46,28 @@
 
 
             <div class="navbar-collapse collapse w-100" id="collapsingNavbar3" *ngIf="authenticate && isDoctor">
-                    <ul class="navbar-nav w-100 justify-content-center">
-                        <li class="nav-item active">
-                                <a class="nav-link" href="#">ADD MEDICAL HISTORY</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">SEE APPOINTMENTS</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">CONTACT US</a>
-                            </li>
+                <ul class="navbar-nav w-100 justify-content-center">
+                        <li class="nav-item">
+                            <a class="nav-link" routerLink='/doctor/medical-history' routerLinkActive='active'><i class='far fa-plus-square'></i> MED-HISTORY</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" routerLink='/doctor/appointments' routerLinkActive='active'><i class="fas fa-stethoscope"></i> APPOINTMENTS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" routerLink='/doctor/contact' routerLinkActive='active'><i class="far fa-grin-alt"></i> CONTACT</a>
+                        </li>
                     </ul>
                     <ul class="nav navbar-nav ml-auto w-100 justify-content-end">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" routerLinkActive="active" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-fw fa-user"></i>   PROFILE
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">MY ACCOUNT</a>
-                                <a class="dropdown-item" href="#">LOG OUT</a>
+                                <a class="dropdown-item" routerLink='/doctor/account' routerLinkActive='active'><i class="fas fa-user-alt"></i> MY ACCOUNT</a>
+                                <a class="dropdown-item"  routerLink='/home' (click)="logout()"><i class="fas fa-user-slash"></i> LOG OUT</a>
                             </div>
                         </li>
-                    </ul>
+                </ul>
             </div>
         </nav>
 

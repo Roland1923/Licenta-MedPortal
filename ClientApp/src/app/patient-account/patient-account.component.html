@@ -16,10 +16,15 @@
     <i class="fas fa-check-circle"> Your password has been changed.</i>
 </div>
 
+<div class="updatedMessage" *ngIf="displayMessage(3) && buttonsClicked[2]">
+    <button id="close" type="button" (click)="removeMessage(3)" >x</button>
+    <i class="fas fa-check-circle"> Your e-mail has been changed.</i>
+</div>
+
 <div class="content" *ngIf="this.patient">
     <div class="intro">
       <p class="p1">
-          Hello, <b><i><span style="color:#69D18B">ROLAND IORDACHE!</span></i></b>
+          Hello, <b><i><span style="color:#69D18B">{{this.patient.firstName}} {{this.patient.lastName}}!</span></i></b>
       </p>
       <p class="p1">
           From your <b><i><span style="color:#343a40">ACCOUNT DASHBOARD</span></i></b> you have the ability to update your account information as personal information or password/e-mail.
@@ -43,18 +48,18 @@
 
           <hr>
           <p class="p2">
-              <b>Name: </b>{{this.patient.firstName}} {{this.patient.lastName}} | <b>Email Address: </b>{{this.patient.email}} | 
+              <b>Name: </b>{{this.patient.firstName}} {{this.patient.lastName}} | <b>E-mail Address: </b>{{this.patient.email}} | 
           
               <b>City: </b>{{this.patient.city}} | <b>Country: </b>{{this.patient.country}} | <b>Birthdate: </b>{{patient.birthdate | date:'dd/MM/yyyy'}} | <b>Phone Number: </b>{{this.patient.phoneNumber}}
           </p>
 
           <hr id="hr2">
 
-          <form [formGroup]="patientEditForm" #f="ngForm" (ngSubmit)="editPatientProfile(f)">
+          <form [formGroup]="patientEditForm" #f="ngForm" (ngSubmit)="editPatientProfile(patientEditForm)">
             <div class="row">
                 <div class="col-sm-4 ">
                   <fieldset>
-                    <label>Email:</label>
+                    <label>E-mail:</label>
                     <input type="email" value="{{patient.email}}" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
                   </fieldset>
                 </div>
@@ -150,7 +155,7 @@
                 </fieldset>
               </div>
           </div>
-
+        
           <div class="updateButton">
               <button type="submit" class="btn active btn-primary btn-lg" [disabled]="f.invalid || isRequesting">UPDATE</button>
           </div>
@@ -183,7 +188,6 @@
     </div>
 
   
-
 
 
 
@@ -264,7 +268,59 @@
 
 
     <div *ngIf="buttonsClicked[2]"  id="divshow" >
-      Div Content3
+        <p class="p2head">
+            <b>CHANGE YOUR EMAIL</b>
+          </p>
+
+            <hr>
+            
+            <form [formGroup]="patientEmailEditForm" #f="ngForm" (ngSubmit)="editPatientEmail(f)">
+  
+            <div class="row">
+                <div class="col-sm-6 form-group" [ngClass]="{
+                  'is-invalid': patientEmailEditForm.get('password').invalid && patientEmailEditForm.get('password').dirty || submitted3 && patientEmailEditForm.get('password').invalid,
+                  'is-valid': patientEmailEditForm.get('password').valid 
+                }">
+                  <fieldset>
+                    <label>Confirm Password:</label>
+                    <input [ngClass]="{
+                      'is-invalid': patientEmailEditForm.get('password').invalid && patientEmailEditForm.get('password').dirty || submitted3 && patientEmailEditForm.get('password').invalid,
+                      'is-valid': patientEmailEditForm.get('password').valid 
+                    }" type="password" formControlName="password" class="form-control mb-2 mr-sm-2 mb-sm-0">
+                  </fieldset>
+                </div>
+
+                <div class="col-sm-6 form-group"  [ngClass]="{
+                  'is-invalid': patientEmailEditForm.get('email').invalid && patientEmailEditForm.get('email').dirty || submitted3 && patientEmailEditForm.get('email').invalid,
+                  'is-valid': patientEmailEditForm.get('email').valid 
+                }">
+                  <fieldset>
+                    <label>New E-mail:</label>
+                    <input  [ngClass]="{
+                      'is-invalid': patientEmailEditForm.get('email').invalid && patientEmailEditForm.get('email').dirty || submitted3 && patientEmailEditForm.get('email').invalid,
+                      'is-valid': patientEmailEditForm.get('email').valid 
+                    }" type="email" formControlName="email" class="form-control mb-2 mr-sm-2 mb-sm-0">
+                  </fieldset>
+                </div>
+            </div>
+  
+            <div class="updateButton">
+                <button type="submit" class="btn active btn-primary btn-lg" [disabled]="f.invalid || isRequesting">UPDATE</button>
+            </div>
+          </form>
+   
+  
+        <label class="error-label" *ngIf="patientEmailEditForm.get('password').invalid && patientEmailEditForm.get('password').dirty && !patientEmailEditForm.get('password').errors?.passConfirmation || submitted3 && patientEmailEditForm.get('password').invalid && !patientEmailEditForm.get('password').errors?.passConfirmation">
+            Your Password is required, must contain between 6 and 35 characters and must match your registered password.
+        </label>  
+        <label class="error-label" *ngIf="patientEmailEditForm.get('email').invalid && patientEmailEditForm.get('email').dirty && !patientEmailEditForm.get('email').errors.patientEmailTaken || submitted3 && patientEmailEditForm.get('email').invalid && !patientEmailEditForm.get('email').errors.patientEmailTaken">
+            Enter your correct E-mail.
+        </label>
+        <label class="error-label" *ngIf="patientEmailEditForm.get('email').errors && patientEmailEditForm.get('email').errors.patientEmailTaken">
+            This E-mail is already taken!
+        </label>
+
+      
     </div>
 
   </div>

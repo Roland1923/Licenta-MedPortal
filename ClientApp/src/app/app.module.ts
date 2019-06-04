@@ -21,6 +21,7 @@ import { HeaderComponent } from './header/header.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { PatientMedicalHistoryComponent } from './patient-medical-history/patient-medical-history.component';
 import { PatientAccountComponent } from './patient-account/patient-account.component';
+import { DoctorAccountComponent } from './doctor-account/doctor-account.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { PatientAccountComponent } from './patient-account/patient-account.compo
     HeaderComponent,
     ScheduleComponent,
     PatientMedicalHistoryComponent,
-    PatientAccountComponent
+    PatientAccountComponent,
+    DoctorAccountComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +49,7 @@ import { PatientAccountComponent } from './patient-account/patient-account.compo
       {path:'patient/appointments', component:ScheduleComponent, data:{requiresPatient: true}, canActivate: [ AuthService]},
       {path:'patient/medical-history', component:PatientMedicalHistoryComponent, data:{requiresPatient: true}, canActivate: [ AuthService]},
       {path:'patient/account', component:PatientAccountComponent, data:{requiresPatient: true}, canActivate: [ AuthService]},
+      {path:'doctor/account', component:DoctorAccountComponent, data:{requiresDoctor: true}, canActivate: [ AuthService]},
       {path:'**', component: FourZeroFourComponent}
     ]),
     HttpClientModule,

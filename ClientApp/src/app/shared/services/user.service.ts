@@ -29,20 +29,6 @@ export class UserService extends BaseService {
     return null;
   }
 
-  getPassword() {
-    if(!!localStorage.getItem('user_password') == true) {
-      return localStorage.getItem('user_password');
-    }
-    return null;
-  }
-
-  getEmail() {
-    if(!!localStorage.getItem('user_email') == true) {
-      return localStorage.getItem('user_email');
-    }
-    return null;
-  }
-
   doctorRegister(din: string, firstName: string, lastName: string, email: string, password: string, phoneNumber: string, description : string, speciality: string, hospital: string, city: string, country: string, address: string): Observable<any> {
     let body = JSON.stringify({ din, firstName, lastName , email, password, phoneNumber, description, speciality, hospital, city, country, address });
     let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -107,12 +93,30 @@ export class UserService extends BaseService {
       .catch(this.handleError);
   }
 
+  editDoctorProfile(id : string, DIN : string, firstName: string, lastName: string, email: string, password: string, city: string, country: string, description: string, speciality: string, address: string, hospital: string, phoneNumber: string): Observable<any> {
+    let body = JSON.stringify({ DIN, firstName, lastName, email, password, city, country, description, speciality, address, hospital, phoneNumber });
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    
+    return this.http.put(this.baseUrl + "api/Doctors/" + id, body, options)
+      .map(res => true)
+      .catch(this.handleError);
+  }
+
 
   getPatient (id : string) {
     return this.http.get(this.baseUrl + "api/Patients/" + id)
       .map(response => response.json())
       .catch(this.handleError);
   }
+
+  getDoctor (id : string) {
+    return this.http.get(this.baseUrl + "api/Doctors/" + id)
+      .map(response => response.json())
+      .catch(this.handleError);
+  }
+
+
 
 
 

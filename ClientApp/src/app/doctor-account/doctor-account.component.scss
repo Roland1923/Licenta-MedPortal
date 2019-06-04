@@ -1,0 +1,197 @@
+::ng-deep footer{
+    font-size: 16px;  
+    padding: 22px 0;
+    background: #343a40!important;
+    color: white;
+    margin-top: 2%;
+    bottom: 0;
+    position: static;
+    width: 100%;
+    clear: both;
+}
+
+.intro {
+    padding-top: 2vw;
+    padding-bottom: 3vw;
+    text-align: center;
+    margin-left: 8vw;
+    margin-right: 8vw;
+}
+
+.p1 {
+    margin-bottom: 2px;
+}
+
+.accountMenu {
+    text-align: center;
+    margin-left: 8vw;
+    margin-right: 8vw;
+    padding-bottom: 1vw;
+}
+
+@media only screen and (min-width: 1255px) {
+    .accountMenu .btn {
+        background-color: rgb(248, 248, 248);
+        border: 1px ridge #e7e7e7;
+        border-radius: 0 !important;
+        color: black;
+        font-size: .7vw;
+        padding: 2vh; 
+        font-weight: bold;
+        width: 33.3%;
+    }
+}
+
+@media only screen and (max-width: 1255px) {
+.accountMenu .btn {
+    background-color: rgb(248, 248, 248);
+    border: 1px ridge #e7e7e7;
+    border-radius: 0 !important;
+    color: black;
+    font-size: 3vw;
+    padding: 2vh; 
+    font-weight: bold;
+    width: 100%;
+    }
+}
+
+.accountMenu .btn:not(:last-child) {
+    border-right: 1px ridge rgb(200, 200, 200);
+}
+
+button:focus, button:active, .active {
+    outline: none !important;
+    box-shadow: none !important;
+    color: white !important;
+    background-color:  #69D18B !important;
+ }
+ 
+ button:not(.active):hover{
+     background-color: rgb(236, 236, 236)!important;
+ }
+
+ #divshow {
+    padding-top: 1vw;
+    margin-left: 8vw;
+    margin-right: 8vw;
+    border:  1px ridge #e7e7e7;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 15px;
+    width: auto;
+}
+
+.row {
+    margin-bottom: 1vw;
+}
+
+#hr2 {
+    border: .5px ridge #343a40!important;
+}
+
+.updateButton {
+    text-align: center;
+    margin-left: 8vw;
+    margin-right: 8vw;
+    padding-bottom: 1vw;
+}
+
+
+@media only screen and (min-width: 1255px) {
+    .updateButton .btn {
+        border: 1px ridge #e7e7e7;
+        border-radius: 0 !important;
+        margin-top: 2vw;
+        font-size: .7vw;
+        padding: 2vh; 
+        font-weight: bold;
+        width: 25%;
+    }
+}
+
+@media only screen and (max-width: 1255px) {
+    .updateButton .btn {
+        border: 1px ridge #e7e7e7;
+        border-radius: 0 !important;
+        margin-top: 2vw;
+        font-size: 3vw;
+        padding: 2vh; 
+        font-weight: bold;
+        width: 100%;
+    }
+}
+
+.content {
+    min-height: calc(100vh - 40px);
+}
+
+input[type=text],[type=email],[type=date] {
+    color: rgb(136, 136, 136);
+    font-weight: bold;
+}
+
+@media only screen and (min-width: 1255px) {
+    label.error-label {
+        clear: both;
+        background: #b11116;
+        color: #fff;
+        padding: 2px 5px;
+        font-weight: normal;
+        font-size: 0.8rem;
+        min-height: auto;
+        text-align: center;
+        display: block;
+        width: 33.3%;
+        margin-left: 35%;
+    }
+}
+
+@media only screen and (max-width: 1255px) {
+    label.error-label {
+        clear: both;
+        background: #b11116;
+        color: #fff;
+        padding: 2px 5px;
+        font-weight: normal;
+        font-size: 0.8rem;
+        min-height: auto;
+        text-align: center;
+        display: block;
+        width: 100%;
+    }
+}
+
+label {
+    margin-bottom: .1rem;
+}
+
+.updatedMessage {
+    text-align:center;
+    background-color: #69D18B;
+    font-weight: bold;
+    padding: 15px;
+    min-height: auto;
+    color: white;
+    clear: both;
+    margin-top: 1vw;
+    margin-bottom: .3vw;
+    margin-left: 8vw;
+    margin-right: 8vw;
+}
+
+#close{
+    float:right;
+    display:inline-block;
+    color: white;
+    cursor: pointer;
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+}
+
+#close:hover {
+    background-color: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
