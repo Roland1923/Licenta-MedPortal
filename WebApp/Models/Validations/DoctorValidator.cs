@@ -16,15 +16,17 @@ namespace WebApp.Models.Validations
         public DoctorValidator(IEditableRepository<Doctor> _repository)
         {
             this._repository = _repository;
-            RuleFor(c => c.DIN).NotNull().WithMessage("Trebuie sa specificati un DIN").MustAsync(DinIsUniqueAsync).WithMessage("DIN-ul trebuie sa fie unic!");
+            RuleFor(c => c.DIN).NotNull().WithMessage("Trebuie sa specificati un DIN");
+            //.MustAsync(DinIsUniqueAsync).WithMessage("DIN-ul trebuie sa fie unic!");
             RuleFor(c => c.FirstName).NotNull().WithMessage("Trebuie sa specificati un prenume").Length(3, 30)
                 .WithMessage("Trebuie sa aiba intre 3 si 30 caractere");
             RuleFor(c => c.LastName).NotNull().WithMessage("Trebuie sa specificati un nume").Length(3, 30)
                 .WithMessage("Trebuie sa aiba intre 3 si 30 caractere");
             RuleFor(c => c.Email).NotNull().WithMessage("Trebuie sa specificati o adresa de email").EmailAddress()
-                .WithMessage("Trebuie sa specificati o adresa valida").MustAsync(EmailIsUniqueAsync).WithMessage("Email-ul trebuie sa fie unic!");
-            RuleFor(c => c.Password).NotNull().WithMessage("Trebuie sa specificati o parola").Length(6, 20)
-                .WithMessage("Parola trebuie sa fie intre 6 si 20 caractere");
+                .WithMessage("Trebuie sa specificati o adresa valida");
+            //.MustAsync(EmailIsUniqueAsync).WithMessage("Email-ul trebuie sa fie unic!");
+            RuleFor(c => c.Password).NotNull().WithMessage("Trebuie sa specificati o parola").Length(6, 35)
+                .WithMessage("Parola trebuie sa fie intre 6 si 35 caractere");
             RuleFor(c => c.City).NotNull().WithMessage("Trebuie sa specificati un oras").Length(3, 30)
                 .WithMessage("Numele orasului trebuie sa aiba intre 3 si 30 caractere");
             RuleFor(c => c.Country).NotNull().WithMessage("Trebuie sa specificati o tara").Length(3, 30)

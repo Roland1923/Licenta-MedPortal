@@ -11,7 +11,7 @@ export class HeaderComponent implements OnInit {
   authenticate: boolean;
   isDoctor: boolean;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {  }
 
   ngOnInit() {
     this.authenticate = this.authService.checkLogin();

@@ -4,6 +4,8 @@ import { DoctorRegistration } from '../shared/models/doctor-registration';
 import { PatientRegistration } from '../shared/models/patient-registration';
 import { UserService } from '../shared/services/user.service';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { ValueConverter } from '@angular/compiler/src/render3/view/template';
+import { Subscription } from 'rxjs';
 
 declare var $: any;
 
@@ -22,6 +24,7 @@ export class RegisterComponent implements OnInit {
   patientModel ={};
   doctorRegisterForm: FormGroup;
   patientRegisterForm: FormGroup;
+  private subscriptions = new Subscription();
 
   constructor(private userService: UserService, public router: Router, private formBuilder: FormBuilder) { }
 
@@ -67,7 +70,9 @@ export class RegisterComponent implements OnInit {
       country: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(35)]],
       confirm_password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(35)]]
-  });
+  },
+      {validator: this.validateConfirmPassword}
+  );
 
     this.patientRegisterForm = this.formBuilder.group({
       nin:  ['', [Validators.required], this.validatePatientNINNotTaken.bind(this)],
@@ -80,7 +85,9 @@ export class RegisterComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(35)]],
       confirm_password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(35)]],
       email: ['', [Validators.required, Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")], this.validatePatientEmailNotTaken.bind(this)]
-  });
+  },
+      {validator: this.validateConfirmPassword}
+  );
   }
 
   validateDOB(control: AbstractControl){
@@ -92,6 +99,11 @@ export class RegisterComponent implements OnInit {
     else {
       return true;
     }
+  }
+
+  validateConfirmPassword(frm: FormGroup){
+    return frm.controls['password'].value === 
+    frm.controls['confirm_password'].value ? null : {'mismatch': true};
   }
 
   validateDoctorDINNotTaken(control: AbstractControl) {
@@ -125,7 +137,7 @@ export class RegisterComponent implements OnInit {
     this.isRequesting = true;
     this.errors = '';
     if (valid) {
-      this.userService.doctorRegister(value.din,
+      this.subscriptions.add(this.userService.doctorRegister(value.din,
                 value.firstName,
                 value.lastName,
                 value.email,
@@ -144,7 +156,7 @@ export class RegisterComponent implements OnInit {
                             this.router.navigate(['/doctor-login']);
                         }
                     },
-                    errors => this.errors = errors);
+                    errors => this.errors = errors));
     }
   }
 
@@ -153,7 +165,7 @@ export class RegisterComponent implements OnInit {
     this.isRequesting = true;
     this.errors = '';
     if (valid) {
-      this.userService.patientRegister(value.nin,
+      this.subscriptions.add(this.userService.patientRegister(value.nin,
                 value.firstName,
                 value.lastName,
                 value.email,
@@ -169,9 +181,11 @@ export class RegisterComponent implements OnInit {
                             this.router.navigate(['/patient-login']);
                         }
                     },
-                    errors => this.errors = errors);
+                    errors => this.errors = errors));
     }
   }
 
-
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
 }

@@ -4,9 +4,135 @@
 
 <body>
 
-<div class="container1">
-  <h2>Doctors</h2>
-  <hr>
+<div class="schedule">
+  <h3>Available Doctors</h3>
+
+  <form [formGroup]="doctorSearch" #f="ngForm" (ngSubmit)="searchDoctor(doctorSearch)" class="form-horizontal" id="formSearch">
+    <div class="searchCard">
+      <div class="row">
+        <div class="col-12 col-md-2">
+          <span class="input-group-addon"> <i class="fa fa-flag"> </i>
+          <input class="form-control text-box single-line" formControlName="country" placeholder="Search country" type="text" value=""></span>
+        </div>
+        <div class="col-12 col-md-2">
+          <span class="input-group-addon"><i class="fas fa-city"></i>
+          <input class="form-control text-box single-line" formControlName="city" placeholder="Search city" type="text" value=""></span>
+        </div>
+        <div class="col-12 col-md-2">
+          <span class="input-group-addon"><i class="fas fa-briefcase-medical"></i>
+          <input class="form-control text-box single-line" formControlName="speciality" placeholder="Search speciality" type="text" value=""></span>
+        </div>
+        <div class="col-12 col-md-5">
+          <span class="input-group-addon"><i class="fa fa-user-md"></i>
+          <input class="form-control text-box single-line" formControlName="doctorOrInstitute" placeholder="Search doctor or institute" type="text" value=""></span>
+        </div>
+        <div class="col-12 col-md-1">
+          <button class="btn btn-primary pull-right" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="doctor-card">
+
+    <div class="row">
+      <div class="col-md-7 col-12">
+        <div class="row">
+          <div class="col-auto">
+              <img class="photo" src="assets/img/avatar-doctor.png">
+          </div>
+          <div class="col-auto">
+            <h4 class="card-doctor-name">Dr. Bogdan Bacanu</h4>
+            <p class="card-spec">Medic Specialist, Stomatologie</p>
+            <div class="card-rating">
+              <div class="fill-rating">
+                  <div>★★★★★</div>
+              </div>
+              <span class="rating">5.00 (1 rating)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-5 col-12">
+       
+          <span class="input-group-addon"> <i class="fas fa-hospital"> </i><div class="institute">Spitalul Sf. Maria</div></span>
+          <span class="input-group-addon"> <i class="fa fa-map-marker"></i><div class="card-spec">Str. Aleea Rozelor nr. 13, langa Cimitirul vesel, Iasi, judetul Iasi</div></span> 
+          <button class="btn btn-primary schedule-button">
+            SCHEDULE YOURSELF
+          </button>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="doctor-card">
+
+      <div class="row">
+        <div class="col-md-7 col-12">
+          <div class="row">
+            <div class="col-auto">
+                <img class="photo" src="assets/img/avatar-doctor.png">
+            </div>
+            <div class="col-auto">
+              <h4 class="card-doctor-name">Dr. Bogdan Bacanu</h4>
+              <p class="card-spec">Medic Specialist, Stomatologie</p>
+              <div class="card-rating">
+                <div class="fill-rating">
+                    <div>★★★★★</div>
+                </div>
+                <span class="rating">5.00 (1 rating)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-md-5 col-12">
+         
+            <span class="input-group-addon"> <i class="fas fa-hospital"> </i><div class="institute">Spitalul Sf. Maria</div></span>
+            <span class="input-group-addon"> <i class="fa fa-map-marker"></i><div class="card-spec">Str. Aleea Rozelor nr. 13, langa Cimitirul vesel, Iasi, judetul Iasi</div></span> 
+            <button class="btn btn-primary schedule-button">
+              SCHEDULE YOURSELF
+            </button>
+        </div>
+      </div>
+      
+    </div>
+    <div class="doctor-card">
+
+        <div class="row">
+          <div class="col-md-7 col-12">
+            <div class="row">
+              <div class="col-auto">
+                  <img class="photo" src="assets/img/avatar-doctor.png">
+              </div>
+              <div class="col-auto">
+                <h4 class="card-doctor-name">Dr. Bogdan Bacanu</h4>
+                <p class="card-spec">Medic Specialist, Stomatologie</p>
+                <div class="card-rating">
+                  <div class="fill-rating">
+                      <div>★★★★★</div>
+                  </div>
+                  <span class="rating">5.00 (1 rating)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+    
+          <div class="col-md-5 col-12">
+           
+              <span class="input-group-addon"> <i class="fas fa-hospital"> </i><div class="institute">Spitalul Sf. Maria</div></span>
+              <span class="input-group-addon"> <i class="fa fa-map-marker"></i><div class="card-spec">Str. Aleea Rozelor nr. 13, langa Cimitirul vesel, Iasi, judetul Iasi</div></span> 
+              <button class="btn btn-primary schedule-button">
+                SCHEDULE YOURSELF
+              </button>
+          </div>
+        </div>
+        
+      </div>
+
 </div>
 
 

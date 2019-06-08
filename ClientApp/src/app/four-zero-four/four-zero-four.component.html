@@ -1,6 +1,6 @@
 <div id="centeringFields">
 <h2><strong>404</strong> - Page Not Found</h2>
 
-<a *ngIf="authenticate && isDoctor" routerLink="/doctor/account" class="btn btn-primary">Home</a>
-<a *ngIf="authenticate && !isDoctor" routerLink="/patient/account" class="btn btn-primary">Home</a>
-<a *ngIf="!authenticate" routerLink="/" class="btn btn-primary">Home</a></div>
+<a *ngIf="authenticate && isDoctor" routerLink="/doctor/account" routerLinkActive='active' class="btn btn-primary">Home</a>
+<a *ngIf="authenticate && !isDoctor" routerLink="/patient/account" routerLinkActive='active' class="btn btn-primary">Home</a>
+<a *ngIf="!authenticate" routerLink="/" routerLinkActive='active' class="btn btn-primary">Home</a></div>

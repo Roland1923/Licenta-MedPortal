@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { of, Observable } from 'rxjs';
+import { of, Observable, Subscription } from 'rxjs';
 import { PatientProfile } from '../shared/models/patient-profile';
 import { UserService } from '../shared/services/user.service';
 import { Router } from '@angular/router';
@@ -30,6 +30,7 @@ export class PatientAccountComponent implements OnInit {
   email: string;
   password: string;
   patient: PatientProfile;
+  private subscriptions = new Subscription();
 
   toggleShow(nr) {
     this.buttonsClicked = [false, false, false];
@@ -41,9 +42,20 @@ export class PatientAccountComponent implements OnInit {
     });
   }
 
+  reload() {
+    if(!!localStorage.getItem('reload') == true) {
+    }
+    else {
+      localStorage.setItem('reload','true');
+      window.location.reload();
+    }
+  }
+  
   constructor(private router: Router, private userService: UserService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+    this.reload();
+
     this.buttonsClicked = [true, false, false];
 
     this.patientId =  this.userService.getUserId();
@@ -90,13 +102,20 @@ export class PatientAccountComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(35), this.validatePasswordConfirmation.bind(this)]],
       confirmNewPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(35)]],
       newPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(35)]]
-    });
+    },
+    {validator: this.validateConfirmPassword}
+    );
 
 
     this.patientEmailEditForm = this.formBuilder.group({
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(35), this.validatePasswordConfirmation.bind(this)]],
       email: ['', [Validators.required, Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")], this.validatePatientEmailNotTaken.bind(this)]
     });
+  }
+
+  validateConfirmPassword(frm: FormGroup){
+    return frm.controls['newPassword'].value === 
+    frm.controls['confirmNewPassword'].value ? null : {'mismatch': true};
   }
 
   validatePatientEmailNotTaken(control: AbstractControl) {
@@ -106,7 +125,7 @@ export class PatientAccountComponent implements OnInit {
   }
 
   private getPatient() {
-    this.userService.getPatient(this.patientId)
+    this.subscriptions.add(this.userService.getPatient(this.patientId)
     .subscribe((patient: PatientProfile) => {
         this.patient = patient;
         this.email = patient.email;
@@ -119,7 +138,7 @@ export class PatientAccountComponent implements OnInit {
         this.patientEditForm.controls['country'].setValue(patient.country);
     },
     errors => this.errors = errors
-    );
+    ));
   }
 
 
@@ -129,7 +148,7 @@ export class PatientAccountComponent implements OnInit {
   this.isRequesting = true;
   this.errors = '';
   if (patientEditForm.valid) { 
-      this.userService.editPatientProfile(this.patientId,
+    this.subscriptions.add(this.userService.editPatientProfile(this.patientId,
           this.patient.nin,
           patientEditForm.value.firstName,
           patientEditForm.value.lastName,
@@ -148,7 +167,7 @@ export class PatientAccountComponent implements OnInit {
                       window.location.reload();
                   }
               },
-              errors => this.errors = errors);
+              errors => this.errors = errors));
   }
   }
 
@@ -157,7 +176,7 @@ export class PatientAccountComponent implements OnInit {
     this.isRequesting = true;
     this.errors = '';
     if (valid) {
-        this.userService.editPatientProfile(this.patientId,
+      this.subscriptions.add(this.userService.editPatientProfile(this.patientId,
             this.patient.nin,
             this.patient.firstName,
             this.patient.lastName,
@@ -176,7 +195,7 @@ export class PatientAccountComponent implements OnInit {
                         window.location.reload(); 
                     }
                 },
-                errors => this.errors = errors);
+                errors => this.errors = errors));
     }
     }
 
@@ -185,7 +204,7 @@ export class PatientAccountComponent implements OnInit {
       this.isRequesting = true;
       this.errors = '';
       if (valid) {
-          this.userService.editPatientProfile(this.patientId,
+        this.subscriptions.add(this.userService.editPatientProfile(this.patientId,
               this.patient.nin,
               this.patient.firstName,
               this.patient.lastName,
@@ -204,7 +223,7 @@ export class PatientAccountComponent implements OnInit {
                           window.location.reload(); 
                       }
                   },
-                  errors => this.errors = errors);
+                  errors => this.errors = errors));
       }
       }
   
@@ -249,6 +268,8 @@ export class PatientAccountComponent implements OnInit {
     localStorage.removeItem('displayMessage1');
     localStorage.removeItem('displayMessage2');
     localStorage.removeItem('displayMessage3');
+    this.subscriptions.unsubscribe();
+    localStorage.removeItem('reload');
   }
 
 }

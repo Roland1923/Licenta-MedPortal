@@ -50,17 +50,19 @@ namespace WebApp.Apis
               var expiresIn = requestAt + TokenAuthOption.ExpiresSpan;
               var token = GenerateToken(expiresIn);
 
-              return Json(new RequestResult
-              {
-                State = RequestState.Success,
-                Data = new
-                {
-                  requertAt = requestAt,
-                  expiresIn = TokenAuthOption.ExpiresSpan.TotalSeconds,
-                  tokeyType = TokenAuthOption.TokenType,
-                  accessToken = token,
-                  user_id = doctor.DoctorId,
-                  isDoctor = true
+                        return Json(new RequestResult
+                        {
+                            State = RequestState.Success,
+                            Data = new
+                            {
+                                requertAt = requestAt,
+                                expiresIn = TokenAuthOption.ExpiresSpan.TotalSeconds,
+                                tokeyType = TokenAuthOption.TokenType,
+                                accessToken = token,
+                                user_id = doctor.DoctorId,
+                                user_password = doctor.Password,
+                                user_email = doctor.Email,
+                                isDoctor = true
                 }
               });
             }
@@ -111,6 +113,8 @@ namespace WebApp.Apis
                   tokeyType = TokenAuthOption.TokenType,
                   accessToken = token,
                   user_id = patient.PatientId,
+                  user_password = patient.Password,
+                  user_email = patient.Email,
                   isDoctor = false
                 }
               });
