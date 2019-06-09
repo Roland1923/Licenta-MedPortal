@@ -5,26 +5,26 @@
 <body>
 
 <div class="schedule">
-  <h3>Available Doctors</h3>
+  <h3>AVAILABLE DOCTORS</h3>
 
-  <form [formGroup]="doctorSearch" #f="ngForm" (ngSubmit)="searchDoctor(doctorSearch)" class="form-horizontal" id="formSearch">
+  <form [formGroup]="doctorSearch" #f="ngForm" (ngSubmit)="getDoctorsByFilter(doctorSearch, 0)" class="form-horizontal" id="formSearch">
     <div class="searchCard">
       <div class="row">
         <div class="col-12 col-md-2">
-          <span class="input-group-addon"> <i class="fa fa-flag"> </i>
-          <input class="form-control text-box single-line" formControlName="country" placeholder="Search country" type="text" value=""></span>
+          <span class="input-group-addon"> <i class="fa fa-hospital"> </i>
+          <input class="form-control text-box single-line" formControlName="hospital" placeholder="Search by hospital" type="text" value=""></span>
         </div>
         <div class="col-12 col-md-2">
           <span class="input-group-addon"><i class="fas fa-city"></i>
-          <input class="form-control text-box single-line" formControlName="city" placeholder="Search city" type="text" value=""></span>
+          <input class="form-control text-box single-line" formControlName="city" placeholder="Search by city" type="text" value=""></span>
         </div>
         <div class="col-12 col-md-2">
           <span class="input-group-addon"><i class="fas fa-briefcase-medical"></i>
-          <input class="form-control text-box single-line" formControlName="speciality" placeholder="Search speciality" type="text" value=""></span>
+          <input class="form-control text-box single-line" formControlName="speciality" placeholder="Search by speciality" type="text" value=""></span>
         </div>
         <div class="col-12 col-md-5">
           <span class="input-group-addon"><i class="fa fa-user-md"></i>
-          <input class="form-control text-box single-line" formControlName="doctorOrInstitute" placeholder="Search doctor or institute" type="text" value=""></span>
+          <input class="form-control text-box single-line" formControlName="name" placeholder="Search by name" type="text" value=""></span>
         </div>
         <div class="col-12 col-md-1">
           <button class="btn btn-primary pull-right" type="submit">
@@ -35,40 +35,10 @@
     </div>
   </form>
 
-  <div class="doctor-card">
 
-    <div class="row">
-      <div class="col-md-7 col-12">
-        <div class="row">
-          <div class="col-auto">
-              <img class="photo" src="assets/img/avatar-doctor.png">
-          </div>
-          <div class="col-auto">
-            <h4 class="card-doctor-name">Dr. Bogdan Bacanu</h4>
-            <p class="card-spec">Medic Specialist, Stomatologie</p>
-            <div class="card-rating">
-              <div class="fill-rating">
-                  <div>★★★★★</div>
-              </div>
-              <span class="rating">5.00 (1 rating)</span>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="col-md-5 col-12">
-       
-          <span class="input-group-addon"> <i class="fas fa-hospital"> </i><div class="institute">Spitalul Sf. Maria</div></span>
-          <span class="input-group-addon"> <i class="fa fa-map-marker"></i><div class="card-spec">Str. Aleea Rozelor nr. 13, langa Cimitirul vesel, Iasi, judetul Iasi</div></span> 
-          <button class="btn btn-primary schedule-button">
-            SCHEDULE YOURSELF
-          </button>
-      </div>
-    </div>
-    
-  </div>
-
-  <div class="doctor-card">
+  <div class="doctors" *ngIf="doctorsList.length!=0">
+    <div class="doctor-card" *ngFor="let doctor of doctorsList">
 
       <div class="row">
         <div class="col-md-7 col-12">
@@ -77,8 +47,8 @@
                 <img class="photo" src="assets/img/avatar-doctor.png">
             </div>
             <div class="col-auto">
-              <h4 class="card-doctor-name">Dr. Bogdan Bacanu</h4>
-              <p class="card-spec">Medic Specialist, Stomatologie</p>
+              <h4 class="card-doctor-name">Dr. {{doctor.firstName}} {{doctor.lastName}}</h4>
+              <p class="card-spec">{{doctor.speciality}}</p>
               <div class="card-rating">
                 <div class="fill-rating">
                     <div>★★★★★</div>
@@ -88,11 +58,11 @@
             </div>
           </div>
         </div>
-  
+
         <div class="col-md-5 col-12">
-         
-            <span class="input-group-addon"> <i class="fas fa-hospital"> </i><div class="institute">Spitalul Sf. Maria</div></span>
-            <span class="input-group-addon"> <i class="fa fa-map-marker"></i><div class="card-spec">Str. Aleea Rozelor nr. 13, langa Cimitirul vesel, Iasi, judetul Iasi</div></span> 
+        
+            <span class="input-group-addon"> <i class="fas fa-hospital"> </i><div class="institute">{{doctor.hospital}}</div></span>
+            <span class="input-group-addon"> <i class="fa fa-map-marker"></i><div class="card-spec">{{doctor.address}}, {{doctor.city}}</div></span> 
             <button class="btn btn-primary schedule-button">
               SCHEDULE YOURSELF
             </button>
@@ -100,38 +70,25 @@
       </div>
       
     </div>
-    <div class="doctor-card">
 
-        <div class="row">
-          <div class="col-md-7 col-12">
-            <div class="row">
-              <div class="col-auto">
-                  <img class="photo" src="assets/img/avatar-doctor.png">
-              </div>
-              <div class="col-auto">
-                <h4 class="card-doctor-name">Dr. Bogdan Bacanu</h4>
-                <p class="card-spec">Medic Specialist, Stomatologie</p>
-                <div class="card-rating">
-                  <div class="fill-rating">
-                      <div>★★★★★</div>
-                  </div>
-                  <span class="rating">5.00 (1 rating)</span>
-                </div>
-              </div>
-            </div>
-          </div>
-    
-          <div class="col-md-5 col-12">
-           
-              <span class="input-group-addon"> <i class="fas fa-hospital"> </i><div class="institute">Spitalul Sf. Maria</div></span>
-              <span class="input-group-addon"> <i class="fa fa-map-marker"></i><div class="card-spec">Str. Aleea Rozelor nr. 13, langa Cimitirul vesel, Iasi, judetul Iasi</div></span> 
-              <button class="btn btn-primary schedule-button">
-                SCHEDULE YOURSELF
-              </button>
-          </div>
-        </div>
-        
-      </div>
+    <div id="pagination-div">
+      <nav aria-label="pagination" class="row align-items-center justify-content-center" *ngIf="doctorsList.length!=0">
+          <ul class="pagination justify-content-center">
+              <li class="page-item"><a class="page-link"> < </a></li>
+              
+              <li class="page-item" *ngFor="let page of numbers"><button [ngClass]="active[page] ? 'page-link active' : 'page-link'"  (click)="getDoctorsByFilter(doctorSearch, page-1); activate(page);">{{page}}</button></li>
+              
+              <li class="page-item"><a class="page-link"> > </a></li>
+          </ul>
+      </nav>
+    </div>
+  </div>
+  
+  <div class="doctors" *ngIf="doctorsList==0 && !isRequesting">
+      <h3>No doctors were found in the database.</h3>
+  </div>
+
+
 
 </div>
 

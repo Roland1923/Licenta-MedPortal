@@ -47,7 +47,8 @@ namespace Infrastructure.Repositories.BaseRepositories
 
         public async Task<PagingResult<TEntity>> GetByFilter(Expression<Func<TEntity, bool>> predicate, int skip, int take)
         {
-            var totalRecords = await DatabaseService.Set<TEntity>().CountAsync();
+            var totalRecords = await DatabaseService.Set<TEntity>().Where(predicate)
+                .CountAsync();
             var records = await DatabaseService.Set<TEntity>().Where(predicate)
                 .Skip(skip)
                 .Take(take)

@@ -179,20 +179,24 @@ namespace WebApp.Apis
                 return x => (x.LastName.Contains(name) || x.FirstName.Contains(name)) &&
                             x.Speciality.Contains(speciality) && x.Hospital.Contains(hospital) && x.City.Contains(city);
 
+
+
             if (name != "" && hospital != "" && speciality != "" && city == "")
                 return x => (x.LastName.Contains(name) || x.FirstName.Contains(name)) &&
                             x.Speciality.Contains(speciality) && x.Hospital.Contains(hospital);
 
             if (name != "" && hospital != "" && speciality == "" && city != "")
                 return x => (x.LastName.Contains(name) || x.FirstName.Contains(name)) &&
-                            x.Speciality.Contains(speciality) && x.City.Contains(city);
+                            x.Hospital.Contains(hospital) && x.City.Contains(city);
 
             if (name != "" && hospital == "" && speciality != "" && city != "")
                 return x => (x.LastName.Contains(name) || x.FirstName.Contains(name)) &&
-                             x.Hospital.Contains(hospital) && x.City.Contains(city);
+                             x.Speciality.Contains(speciality) && x.City.Contains(city);
 
             if (name == "" && hospital != "" && speciality != "" && city != "")
                 return x => x.Speciality.Contains(speciality) && x.Hospital.Contains(hospital) && x.City.Contains(city);
+
+
 
             if (name == "" && hospital == "" && speciality != "" && city != "")
                 return x => x.Speciality.Contains(speciality) && x.City.Contains(city);
@@ -214,6 +218,8 @@ namespace WebApp.Apis
                 return x => (x.LastName.Contains(name) || x.FirstName.Contains(name)) &&
                             x.Hospital.Contains(hospital);
 
+
+
             if (name != "" && hospital == "" && speciality == "" && city == "")
                 return x => (x.LastName.Contains(name) || x.FirstName.Contains(name));
 
@@ -226,7 +232,9 @@ namespace WebApp.Apis
             if (name == "" && hospital == "" && speciality == "" && city != "")
                 return x => x.City.Contains(city);
 
+
             return x => x.LastName.Contains(name) || x.FirstName.Contains(name);
+
         }
 
     }

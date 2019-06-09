@@ -188,10 +188,6 @@ label.error-label {
     background: rgb(0, 150, 20);
 }
 
-::ng-deep app-header {
-    display: none;
-}
-
 ::ng-deep footer {
     font-size: 14px;  
     padding: 21px 0;

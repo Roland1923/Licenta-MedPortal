@@ -1,11 +1,15 @@
 #centeringFields {
+    margin-top: 5vh;
     text-align: center;
 }
 
-::ng-deep app-footer {
-    display: none;
-}
-
-::ng-deep app-header {
-    display: none;
+::ng-deep footer{
+    font-size: 16px;  
+    padding: 22px 0;
+    background: #343a40!important;
+    color: white;
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+    clear: both;
 }

@@ -46,8 +46,6 @@ import { DoctorAccountComponent } from './doctor-account/doctor-account.componen
       {path:'patient-login', component:LoginComponent},
       {path:'doctor-register', component:RegisterComponent},
       {path:'patient-register', component:RegisterComponent},
-      {path:'', component:FooterComponent, outlet:'footerOutlet'},
-      {path:'', component:HeaderComponent, outlet:'headerOutlet'},
       {path:'patient/appointments', component:ScheduleComponent, data:{requiresPatient: true}, canActivate: [ AuthService]},
       {path:'patient/medical-history', component:PatientMedicalHistoryComponent, data:{requiresPatient: true}, canActivate: [ AuthService]},
       {path:'patient/account', component:PatientAccountComponent, data:{requiresPatient: true}, canActivate: [ AuthService]},

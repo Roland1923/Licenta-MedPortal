@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
         this.postStream = this.authService.loginPatient(this.nin, this.password).subscribe(
             result => {
                 if (result.state == 1) {
-                    this.router.navigate(["patient/account"]);
+                    this.router.navigateByUrl("patient/account");
                 } 
                 else {
                   this.loginFailed = true;
@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
         this.postStream = this.authService.loginDoctor(this.din, this.password).subscribe(
             result => {
                 if (result.state == 1) {
-                    this.router.navigate(["doctor/account"]);
+                    this.router.navigateByUrl("doctor/account");
                 } 
                 else {
                   this.loginFailed = true;

@@ -8,12 +8,12 @@
 
 <body>
 
-    <nav class="navbar navbar-dark navbar-expand-md bg-dark justify-content-center" >
+    <nav class="navbar navbar-dark navbar-expand-md bg-dark justify-content-center"  *ngIf="authenticate && allow">
             <a class="navbar-brand d-flex w-50 mr-auto"><img src="assets/img/LogoMP1.png" alt="logo" id="menulogo"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar3">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="navbar-collapse collapse w-100" id="collapsingNavbar3" *ngIf="authenticate && !isDoctor">
+            <div class="navbar-collapse collapse w-100" id="collapsingNavbar3" *ngIf="!isDoctor">
                 <ul class="navbar-nav w-100 justify-content-center">
                     <li class="nav-item">
                         <a class="nav-link" routerLink='/patient/medical-history' routerLinkActive='active'><i class='far fa-plus-square'></i> MED-HISTORY</a>
@@ -45,7 +45,7 @@
             </div>
 
 
-            <div class="navbar-collapse collapse w-100" id="collapsingNavbar3" *ngIf="authenticate && isDoctor">
+            <div class="navbar-collapse collapse w-100" id="collapsingNavbar3" *ngIf="isDoctor">
                 <ul class="navbar-nav w-100 justify-content-center">
                         <li class="nav-item">
                             <a class="nav-link" routerLink='/doctor/medical-history' routerLinkActive='active'><i class='far fa-plus-square'></i> MED-HISTORY</a>

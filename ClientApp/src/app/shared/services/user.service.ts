@@ -103,6 +103,15 @@ export class UserService extends BaseService {
       .catch(this.handleError);
   }
 
+  getDoctorsByFilter(name : string, hospital : string, speciality : string, city : string, skip : number, take : number) {
+    let body = JSON.stringify({ name, hospital , speciality, city});
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.put(this.baseUrl + "api/Doctors/page/" + skip + "/" + take, body, options)
+      .map(response => response)
+      .catch(this.handleError);
+  }
 
   getPatient (id : string) {
     return this.http.get(this.baseUrl + "api/Patients/" + id)

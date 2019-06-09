@@ -3,10 +3,12 @@ import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/fo
 import { of, Observable, Subscription } from 'rxjs';
 import { PatientProfile } from '../shared/models/patient-profile';
 import { UserService } from '../shared/services/user.service';
-import { Router } from '@angular/router';
+import { Router, RoutesRecognized, NavigationEnd } from '@angular/router';
 import { isUndefined } from 'util';
 import { Md5 } from 'ts-md5/dist/md5';
 import { NgForm } from '@angular/forms';
+import { Location } from '@angular/common';
+import { pairwise, filter } from 'rxjs/operators';
 
 declare var $: any;
 
@@ -43,7 +45,7 @@ export class PatientAccountComponent implements OnInit {
   }
 
   reload() {
-    if(!!localStorage.getItem('reload') == true) {
+    if(!!localStorage.getItem('reload') == true ) {
     }
     else {
       localStorage.setItem('reload','true');
@@ -51,10 +53,13 @@ export class PatientAccountComponent implements OnInit {
     }
   }
   
-  constructor(private router: Router, private userService: UserService, private formBuilder: FormBuilder) { }
+  constructor(public router: Router, private userService: UserService, private formBuilder: FormBuilder) { 
+  }
 
   ngOnInit() {
+
     this.reload();
+    localStorage.setItem('reload','false');
 
     this.buttonsClicked = [true, false, false];
 
@@ -269,7 +274,6 @@ export class PatientAccountComponent implements OnInit {
     localStorage.removeItem('displayMessage2');
     localStorage.removeItem('displayMessage3');
     this.subscriptions.unsubscribe();
-    localStorage.removeItem('reload');
   }
 
 }
