@@ -1,4 +1,4 @@
-import { Appointment } from "./appointment.interface";
+import { Appointment } from "./appointment";
 import { Feedback } from "./feedback.interface";
 import { PatientHistory } from "./patient.history.inteface";
 

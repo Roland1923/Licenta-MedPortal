@@ -14,12 +14,13 @@ export class HeaderComponent implements OnInit {
   isDoctor: boolean;
   allow: boolean;
   public href: string = "";
+  paths: Array<string> = ['/patient/account', '/patient/appointments', '/patient/medical-history', '/doctor/account'];
 
   constructor(private authService: AuthService, private router: Router) {
     this.router.events
     .subscribe((event) => {
       if (event instanceof NavigationStart) {
-        if(event.url === '/patient/account' || event.url === '/doctor/account' || event.url ==='/patient/appointments' || event.url ==='/patient/medical-history') {
+        if(this.paths.includes(event.url)) {
           this.allow=true;
         }
         else {

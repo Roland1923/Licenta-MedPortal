@@ -6,6 +6,7 @@ import { BaseService } from './base.service';
 import { ConfigService } from './config.service'
 
 import {Observable} from 'rxjs/Rx';
+import { Time } from '@angular/common';
 
 
 
@@ -27,6 +28,21 @@ export class UserService extends BaseService {
       return localStorage.getItem('user_id');
     }
     return null;
+  }
+
+  isExpired() {
+    if(!!localStorage.getItem('expiration') == true && !!localStorage.getItem('requestAt') == true) {
+      var seconds = parseInt(localStorage.getItem("expiration"));
+      var currentDate = new Date();
+      var requestAt = new Date(localStorage.getItem('requestAt'));
+      var dif = currentDate.getTime() - requestAt.getTime();
+      var secondsDiff = dif / 1000;
+      if(secondsDiff<seconds) {
+        return false;
+      }
+      return true;
+    }
+    return true;
   }
 
   doctorRegister(din: string, firstName: string, lastName: string, email: string, password: string, phoneNumber: string, description : string, speciality: string, hospital: string, city: string, country: string, address: string): Observable<any> {
@@ -103,12 +119,40 @@ export class UserService extends BaseService {
       .catch(this.handleError);
   }
 
+  addDoctorAppointment(doctorId : string, day: number, startHour: Time, endHour: Time) {
+    let body = JSON.stringify({doctorId, day, startHour, endHour});
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({ headers: headers });
+    
+    return this.http.post(this.baseUrl + "api/AppointmentIntervals", body, options)
+      .map(res => true)
+      .catch(this.handleError);
+  }
+
+  getAppointmentIntervalsForDoctor(doctorId : string) {
+    return this.http.get(this.baseUrl + "api/AppointmentIntervals/" + doctorId)
+    .map(response => response.json())
+    .catch(this.handleError);
+  }
+
+  deleteDisponibility(appointmentIntervalId : string) {
+    return this.http.delete(this.baseUrl + "api/AppointmentIntervals/" + appointmentIntervalId)
+    .map(response => response.json())
+    .catch(this.handleError);
+  }
+
   getDoctorsByFilter(name : string, hospital : string, speciality : string, city : string, skip : number, take : number) {
     let body = JSON.stringify({ name, hospital , speciality, city});
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
     return this.http.put(this.baseUrl + "api/Doctors/page/" + skip + "/" + take, body, options)
+      .map(response => response)
+      .catch(this.handleError);
+  }
+
+  getAppointmentIntervalsByFilter(doctorId : string, day: number) {
+    return this.http.get(this.baseUrl + "api/AppointmentIntervals/" + doctorId + "/" + day)
       .map(response => response)
       .catch(this.handleError);
   }

@@ -35,9 +35,9 @@
     </div>
 
     <div class="accountMenu">
-        <button type="button" class="btn active btn-primary btn-lg" (click)="toggleShow(0)">MY ACCOUNT</button>
-        <button type="button" class="btn btn-primary btn-lg" (click)="toggleShow(1)" >PASSWORD</button>
-        <button type="button" class="btn btn-primary btn-lg" (click)="toggleShow(2)" >E-MAIL</button>
+        <button type="button" [ngClass]="buttonsClicked[0] ? 'btn active btn-primary btn-lg' : 'btn btn-primary btn-lg'" (click)="toggleShow(0)">MY ACCOUNT</button>
+        <button type="button" [ngClass]="buttonsClicked[1] ? 'btn active btn-primary btn-lg' : 'btn btn-primary btn-lg'" (click)="toggleShow(1)" >PASSWORD</button>
+        <button type="button" [ngClass]="buttonsClicked[2] ? 'btn active btn-primary btn-lg' : 'btn btn-primary btn-lg'" (click)="toggleShow(2)" >E-MAIL</button>
     </div>
 
     <div *ngIf="buttonsClicked[0]"  id="divshow" >
@@ -63,10 +63,7 @@
                     <input type="email" value="{{patient.email}}" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
                   </fieldset>
                 </div>
-                <div class="col-sm-4 form-group" [ngClass]="{
-                  'is-invalid': patientEditForm.get('firstName').invalid,
-                  'is-valid': patientEditForm.get('firstName').valid 
-                }">
+                <div class="col-sm-4 form-group">
                   <fieldset>
                     <label>First Name:</label>
                     <input [ngClass]="{
@@ -75,10 +72,7 @@
                     }" type="text" value="{{patient.firstName}}" formControlName="firstName" class="form-control mb-2 mr-sm-2 mb-sm-0">
                   </fieldset>
                 </div>
-                <div class="col-sm-4 form-group" [ngClass]="{
-                  'is-invalid': patientEditForm.get('lastName').invalid,
-                  'is-valid': patientEditForm.get('lastName').valid 
-                }">
+                <div class="col-sm-4 form-group">
                   <fieldset>
                     <label>Last Name:</label>
                     <input [ngClass]="{
@@ -90,10 +84,7 @@
               </div>
           
           <div class="row">
-              <div class="col-sm-6 form-group" [ngClass]="{
-                'is-invalid': patientEditForm.get('city').invalid,
-                'is-valid': patientEditForm.get('city').valid 
-              }">
+              <div class="col-sm-6 form-group">
                 <fieldset>
                   <label>City:</label>
                   <input [ngClass]="{
@@ -102,10 +93,7 @@
                   }" type="text" value="{{patient.city}}" formControlName="city" class="form-control mb-2 mr-sm-2 mb-sm-0">
                 </fieldset>
               </div>
-              <div class="col-sm-6 form-group" [ngClass]="{
-                'is-invalid': patientEditForm.get('country').invalid,
-                'is-valid': patientEditForm.get('country').valid 
-              }">
+              <div class="col-sm-6 form-group">
                 <fieldset>
                   <label>Country:</label>
                   <input [ngClass]="{
@@ -118,22 +106,13 @@
           </div>
 
           <div class="row">
-              <div class="col-sm-4 form-group" [ngClass]="{
-                'is-invalid': patientEditForm.get('birthdate').invalid,
-                'is-valid': patientEditForm.get('birthdate').valid 
-              }">
+              <div class="col-sm-4 form-group">
                 <fieldset>
                   <label>Birthdate:</label>
-                  <input [ngClass]="{
-                    'is-invalid': patientEditForm.get('birthdate').invalid,
-                    'is-valid': patientEditForm.get('birthdate').valid 
-                  }" type="date" formControlName="birthdate" value="{{patient.birthdate | date:'yyyy-MM-dd'}}" id="txtDate" class="form-control mb-2 mr-sm-2 mb-sm-0">
+                  <input  ngbDatepicker  (click)="d.toggle()" [minDate]="minDate" [maxDate]="maxDate" id="txtDate"  #d="ngbDatepicker" class="is-valid form-control mb-2 mr-sm-2 mb-sm-0" [(ngModel)] = "birthdateValue" value="{{birthdateValue | date:'yyyy-MM-dd'}}" [ngModelOptions]="{standalone: true}">
                 </fieldset>
               </div>
-              <div class="col-sm-4 form-group" [ngClass]="{
-                'is-invalid': patientEditForm.get('phoneNumber').invalid,
-                'is-valid': patientEditForm.get('phoneNumber').valid 
-              }">
+              <div class="col-sm-4 form-group">
                 <fieldset>
                   <label>Phone:</label>
                   <input [ngClass]="{
@@ -142,10 +121,7 @@
                   }" type="text" value="{{patient.phoneNumber}}" formControlName="phoneNumber" class="form-control mb-2 mr-sm-2 mb-sm-0">
                 </fieldset>
               </div>
-              <div class="col-sm-4 form-group" [ngClass]="{
-                'is-invalid': patientEditForm.get('password').invalid && patientEditForm.get('password').dirty || submitted && patientEditForm.get('password').invalid,
-                'is-valid': patientEditForm.get('password').valid 
-              }">
+              <div class="col-sm-4 form-group">
                 <fieldset>
                   <label>Confirm Password:</label>
                   <input [ngClass]="{
@@ -179,9 +155,6 @@
       <label class="error-label" *ngIf="patientEditForm.get('phoneNumber').invalid ">
           Your Phone Number is required. (digits only)
       </label>  
-      <label class="error-label" *ngIf="patientEditForm.get('birthdate').invalid && patientEditForm.get('birthdate').dirty && !patientEditForm.get('birthdate').errors?.DOBwrong">
-          Your Birthdate is required and you must be not dead or from the future.
-      </label>  
       <label class="error-label" *ngIf="patientEditForm.get('password').invalid && patientEditForm.get('password').dirty && !patientEditForm.get('password').errors?.passConfirmation || submitted && patientEditForm.get('password').invalid && !patientEditForm.get('password').errors?.passConfirmation">
           Your Password Confirmation is required, must contain between 6 and 35 characters and must match your registered password.
       </label>    
@@ -202,10 +175,7 @@
               <form [formGroup]="patientPasswordEditForm" #f="ngForm" (ngSubmit)="editPatientPassword(f)">
     
               <div class="row">
-                  <div class="col-sm-6 form-group" [ngClass]="{
-                    'is-invalid': patientPasswordEditForm.get('password').invalid && patientPasswordEditForm.get('password').dirty || submitted2 && patientPasswordEditForm.get('password').invalid,
-                    'is-valid': patientPasswordEditForm.get('password').valid 
-                  }">
+                  <div class="col-sm-6 form-group">
                     <fieldset>
                       <label>Current Password:</label>
                       <input [ngClass]="{
@@ -217,10 +187,7 @@
               </div>
 
               <div class="row">
-                  <div class="col-sm-6 form-group"  [ngClass]="{
-                    'is-invalid': patientPasswordEditForm.get('newPassword').invalid && patientPasswordEditForm.get('newPassword').dirty || submitted2 && patientPasswordEditForm.get('newPassword').invalid,
-                    'is-valid': patientPasswordEditForm.get('newPassword').valid 
-                  }">
+                  <div class="col-sm-6 form-group">
                     <fieldset>
                       <label>New Password:</label>
                       <input  [ngClass]="{
@@ -229,10 +196,7 @@
                       }" type="password" formControlName="newPassword" class="form-control mb-2 mr-sm-2 mb-sm-0">
                     </fieldset>
                   </div>
-                  <div class="col-sm-6 form-group" [ngClass]="{
-                    'is-invalid': patientPasswordEditForm.get('confirmNewPassword').invalid && patientPasswordEditForm.get('confirmNewPassword').dirty || submitted2 && patientPasswordEditForm.get('confirmNewPassword').invalid || (patientPasswordEditForm.get('confirmNewPassword').valid && patientPasswordEditForm.get('newPassword').value!=patientPasswordEditForm.get('confirmNewPassword').value),
-                    'is-valid': patientPasswordEditForm.get('confirmNewPassword').valid 
-                  }">
+                  <div class="col-sm-6 form-group">
                     <fieldset>
                       <label>Confirm New Password:</label>
                       <input [ngClass]="{
@@ -277,10 +241,7 @@
             <form [formGroup]="patientEmailEditForm" #f="ngForm" (ngSubmit)="editPatientEmail(f)">
   
             <div class="row">
-                <div class="col-sm-6 form-group" [ngClass]="{
-                  'is-invalid': patientEmailEditForm.get('password').invalid && patientEmailEditForm.get('password').dirty || submitted3 && patientEmailEditForm.get('password').invalid,
-                  'is-valid': patientEmailEditForm.get('password').valid 
-                }">
+                <div class="col-sm-6 form-group" >
                   <fieldset>
                     <label>Confirm Password:</label>
                     <input [ngClass]="{
@@ -290,10 +251,7 @@
                   </fieldset>
                 </div>
 
-                <div class="col-sm-6 form-group"  [ngClass]="{
-                  'is-invalid': patientEmailEditForm.get('email').invalid && patientEmailEditForm.get('email').dirty || submitted3 && patientEmailEditForm.get('email').invalid,
-                  'is-valid': patientEmailEditForm.get('email').valid 
-                }">
+                <div class="col-sm-6 form-group">
                   <fieldset>
                     <label>New E-mail:</label>
                     <input  [ngClass]="{

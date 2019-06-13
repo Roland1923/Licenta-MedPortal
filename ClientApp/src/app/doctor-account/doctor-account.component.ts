@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { of, Observable, Subject, Subscription } from 'rxjs';
 import { DoctorProfile } from '../shared/models/doctor-profile';
@@ -8,6 +8,9 @@ import { Router } from '@angular/router';
 import { isUndefined } from 'util';
 import { Md5 } from 'ts-md5/dist/md5';
 import { NgForm } from '@angular/forms';
+import { AppointmentInterval } from '../shared/models/appointment-interval';
+
+import { Time } from '@angular/common';
 
 declare var $: any;
 
@@ -19,9 +22,11 @@ declare var $: any;
 export class DoctorAccountComponent implements OnInit {
 
   private buttonsClicked: boolean[];
+  menuSelected: boolean[];
   doctorEditForm: FormGroup;
   doctorPasswordEditForm: FormGroup;
   doctorEmailEditForm: FormGroup;
+  doctorAppointmentEditForm: FormGroup;
   errors: string;  
   isRequesting: boolean;
   submitted: boolean = false;
@@ -32,15 +37,21 @@ export class DoctorAccountComponent implements OnInit {
   password: string;
   doctor: DoctorProfile;
   private subscriptions = new Subscription();
+  isExpired: boolean;
+  days: Array<{value: number, label: string}>;
+  disponibilities: Array<AppointmentInterval>;
+  startHour: Time;
+  endHour: Time;
+  showErrorHoursInterval: boolean = false;
 
   toggleShow(nr) {
-    this.buttonsClicked = [false, false, false];
+    this.buttonsClicked = [false, false, false,false];
     this.buttonsClicked[nr]=true;
-    $(".accountMenu button").removeClass("active");
-    $(".accountMenu button").on("click", function() {
-      $(".accountMenu button").removeClass("active");
-      $(this).addClass("active");
-    });
+  }
+
+  daysMenu(nr) {
+    this.menuSelected = [false, false, false, false, false, false];
+    this.menuSelected[nr] = true;
   }
   
     reload() {
@@ -52,40 +63,39 @@ export class DoctorAccountComponent implements OnInit {
       }
     }
 
-  constructor(private router: Router, private userService: UserService, private formBuilder: FormBuilder) { }
-  ngOnInit() {
-    this.reload();
+  constructor(private router: Router, private userService: UserService, private formBuilder: FormBuilder) {
+    this.disponibilities = new Array<AppointmentInterval>();
+   }
 
-    this.buttonsClicked = [true, false, false];
+  ngOnInit() {
+
+    this.days = [
+      { value: 1, label: 'Monday' },
+      { value: 2, label: 'Tuesday' },
+      { value: 3, label: 'Wednesday' },
+      { value: 4, label: 'Thursday' },
+      { value: 5, label: 'Friday' },
+      { value: 6, label: 'Saturday' }
+      ];
+
+    this.reload();
+    localStorage.setItem('reload','false');
+
+    this.buttonsClicked = [true, false, false,false];
+    this.menuSelected = [true, false, false, false, false, false];
 
     this.doctorId =  this.userService.getUserId();
-    
-    if(this.doctorId != null) {
+    this.isExpired=this.userService.isExpired();
+
+    if(this.doctorId != null && !this.isExpired) {
+      this.getAppointmentIntervals();
       this.getDoctor();
     }
     else {
-        this.router.navigate(['/home']);
+        this.router.navigate(['/doctor-login']);
+        localStorage.clear();
     }
 
-    $(function(){
-      var dtToday = new Date();
-      
-      var month = (dtToday.getMonth() + 1).toString();
-      var day = dtToday.getDate().toString();
-      var year = dtToday.getFullYear().toString();
-      if(parseInt(month) < 10)
-        month = '0' + month.toString();
-      if(parseInt(day) < 10)
-        day = '0' + day.toString();
-      
-      var minDate = '1900-01-01';
-
-      var maxDate = year + '-' + month + '-' + day;
-      $('#txtDate').attr('max', maxDate);
-      $('#txtDate').attr('min', minDate);
-         
-      
-  });
 
   
     this.doctorEditForm = this.formBuilder.group({
@@ -114,7 +124,24 @@ export class DoctorAccountComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(35), this.validatePasswordConfirmation.bind(this)]],
       email: ['', [Validators.required, Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")], this.validateDoctorEmailNotTaken.bind(this)]
     });
+
+    this.doctorAppointmentEditForm = this.formBuilder.group({
+      day: [1, [Validators.required]],
+      startHour: ['08:00', [Validators.required]],
+      endHour: ['08:30', [Validators.required]]
+    },
+    {validator: this.validateDifferenceBetweenHours}
+    );
+
   }
+
+
+
+
+  validateDifferenceBetweenHours(frm: FormGroup) {
+    return frm.controls['startHour'].value < frm.controls['endHour'].value ? null : {'wrong': true};
+  }
+
 
   validateConfirmPassword(frm: FormGroup){
     return frm.controls['newPassword'].value === 
@@ -126,6 +153,29 @@ export class DoctorAccountComponent implements OnInit {
       return res ? null : { doctorEmailTaken: true };
     });
   }
+
+  transformDayOfTheWeek(day: number) {
+    switch(day) { 
+      case 1: { 
+        return "Monday";
+      } 
+      case 2: { 
+        return "Tuesday";
+      } 
+      case 3: {
+        return "Wednesday";   
+      } 
+      case 4: { 
+        return "Thursday";
+      }  
+      case 5: { 
+        return "Friday";
+     }  
+     case 6: { 
+      return "Saturday";
+     }  
+  }
+}
 
   private getDoctor() {
     this.subscriptions.add(this.userService.getDoctor(this.doctorId)
@@ -242,7 +292,127 @@ export class DoctorAccountComponent implements OnInit {
       }
       }
   
+    editDoctorAppointment({ value, valid }: { value: AppointmentInterval, valid: boolean }) {
+      this.isRequesting = true;
+      this.errors = '';
+      if (valid && this.validateHourNotTaken(this.doctorAppointmentEditForm, value.day)) {
+        this.subscriptions.add(this.userService.addDoctorAppointment(this.doctorId,
+            value.day,
+            value.startHour,
+            value.endHour)
+              .finally(() => this.isRequesting = false)
+              .subscribe(
+                  result => {
+                      if (result) {
+                          this.showErrorHoursInterval = false;
+                          this.getAppointmentIntervals();
+                      }
+                  },
+                  errors => this.errors = errors));
+      }
+      else {
+        this.isRequesting = false;
+        this.showErrorHoursInterval = true;
+      }
+      }
 
+
+    
+    getAppointmentIntervals() {
+      this.errors = '';
+  
+      this.disponibilities = [];
+ 
+      this.subscriptions.add(this.userService.getAppointmentIntervalsForDoctor(this.doctorId)
+          .subscribe((appointmentIntervals : Array<AppointmentInterval>) => {
+            this.disponibilities = appointmentIntervals;
+            this.disponibilities.sort(function(a,b){
+              if(b.startHour < a.startHour) {
+                return 1;
+              }
+              else if(b.startHour > a.startHour) {
+                return -1
+              }
+              return 0;
+            });
+        },
+        errors => this.errors = errors
+        )
+        );
+
+    }
+
+    validateHourNotTaken(frm: FormGroup, day: number) {
+      let extractedStart = frm.controls['startHour'].value.split(":");
+      let extractedEnd = frm.controls['endHour'].value.split(":");
+
+      var startHour = extractedStart[0];
+      var startMinute = extractedStart[1];
+
+      var endHour = extractedEnd[0];
+      var endMinute = extractedEnd[1];
+
+      //Create date object and set the time to that
+      var startTimeObject = new Date();
+      startTimeObject.setHours(startHour, startMinute);
+
+      //Create date object and set the time to that
+      var endTimeObject = new Date(startTimeObject);
+      endTimeObject.setHours(endHour, endMinute);
+
+      
+
+      for(let disponibility of this.disponibilities) {
+        if(disponibility.day == day) {
+          var disponibilityStringStartHour = disponibility.startHour.toString();
+          var disponibilityStringEndHour = disponibility.endHour.toString();
+  
+          let disponibilityExtractedStart = disponibilityStringStartHour.split(":");
+          let disponibilityExtractedEnd = disponibilityStringEndHour.split(":");
+    
+          var disponibilityStartHour = disponibilityExtractedStart[0];
+          var disponibilityStartMinute = disponibilityExtractedStart[1];
+    
+          var disponibilityEndHour = disponibilityExtractedEnd[0];
+          var disponibilityEndMinute = disponibilityExtractedEnd[1];
+  
+          //Create date object and set the time to that
+          var startTimeDisponibility = new Date();
+          startTimeDisponibility.setHours(parseInt(disponibilityStartHour), parseInt(disponibilityStartMinute));
+  
+          //Create date object and set the time to that
+          var endTimeDisponibility = new Date(startTimeObject);
+          endTimeDisponibility.setHours(parseInt(disponibilityEndHour), parseInt(disponibilityEndMinute));
+       
+          if(startTimeObject.getTime() == startTimeDisponibility.getTime() || endTimeObject.getTime() == endTimeDisponibility.getTime()) {
+            return false;
+          }
+          if(startTimeObject < startTimeDisponibility && endTimeObject > startTimeDisponibility) {
+            return false;
+          }
+          if(startTimeObject > startTimeDisponibility && startTimeObject < endTimeDisponibility ) {
+            return false;
+          }
+        }
+        
+      }
+      return true;
+    }
+
+
+    deleteDisponibility(id: string) {
+      this.errors = '';
+  
+      this.subscriptions.add(this.userService.deleteDisponibility(id)
+          .subscribe(() => {
+            this.getAppointmentIntervals();
+   
+        },
+        errors => this.errors = errors
+        )
+        );
+
+    }
   
   validateDOB(control: AbstractControl){
     let year = new Date(control.value).getFullYear();
@@ -284,7 +454,6 @@ export class DoctorAccountComponent implements OnInit {
     localStorage.removeItem('displayMessage2');
     localStorage.removeItem('displayMessage3');
     this.subscriptions.unsubscribe();
-    localStorage.removeItem('reload');
   }
 
 }

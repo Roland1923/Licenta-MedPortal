@@ -27,7 +27,7 @@
           Hello, <b><i><span style="color:#69D18B">{{this.doctor.firstName}} {{this.doctor.lastName}}!</span></i></b>
       </p>
       <p class="p1">
-          From your <b><i><span style="color:#343a40">ACCOUNT DASHBOARD</span></i></b> you have the ability to update your account information as personal information or password/e-mail.
+          From your <b><i><span style="color:#343a40">ACCOUNT DASHBOARD</span></i></b> you have the ability to update your account information as personal information, password/e-mail or disponibility.
       </p>
       <p class="p1">
           Select a <b><i><span style="color:#343a40">TAB</span></i></b> below to view or edit information.
@@ -35,9 +35,10 @@
     </div>
 
     <div class="accountMenu">
-        <button type="button" class="btn active btn-primary btn-lg" (click)="toggleShow(0)">MY ACCOUNT</button>
-        <button type="button" class="btn btn-primary btn-lg" (click)="toggleShow(1)" >PASSWORD</button>
-        <button type="button" class="btn btn-primary btn-lg" (click)="toggleShow(2)" >E-MAIL</button>
+        <button type="button" [ngClass]="buttonsClicked[0] ? 'btn active btn-primary btn-lg' : 'btn btn-primary btn-lg'" (click)="toggleShow(0)">MY ACCOUNT</button>
+        <button type="button" [ngClass]="buttonsClicked[1] ? 'btn active btn-primary btn-lg' : 'btn btn-primary btn-lg'" (click)="toggleShow(1)" >PASSWORD</button>
+        <button type="button" [ngClass]="buttonsClicked[2] ? 'btn active btn-primary btn-lg' : 'btn btn-primary btn-lg'" (click)="toggleShow(2)" >E-MAIL</button>
+        <button type="button" [ngClass]="buttonsClicked[3] ? 'btn active btn-primary btn-lg' : 'btn btn-primary btn-lg'" (click)="toggleShow(3)" >DISPONIBILITY</button>
     </div>
 
     <div *ngIf="buttonsClicked[0]"  id="divshow" >
@@ -67,10 +68,7 @@
               <input type="email" value="{{doctor.email}}" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
             </fieldset>
           </div>
-          <div class="col-sm-4 form-group" [ngClass]="{
-            'is-invalid': doctorEditForm.get('firstName').invalid,
-            'is-valid': doctorEditForm.get('firstName').valid 
-          }">
+          <div class="col-sm-4 form-group">
             <fieldset>
               <label>First Name:</label>
               <input [ngClass]="{
@@ -79,10 +77,7 @@
               }" type="text" value="{{doctor.firstName}}" formControlName="firstName" class="form-control mb-2 mr-sm-2 mb-sm-0">
             </fieldset>
           </div>
-          <div class="col-sm-4 form-group" [ngClass]="{
-            'is-invalid': doctorEditForm.get('lastName').invalid,
-            'is-valid': doctorEditForm.get('lastName').valid 
-          }">
+          <div class="col-sm-4 form-group">
             <fieldset>
               <label>Last Name:</label>
               <input [ngClass]="{
@@ -94,10 +89,7 @@
         </div>
           
           <div class="row">
-            <div class="col-sm-4 form-group" [ngClass]="{
-              'is-invalid': doctorEditForm.get('city').invalid,
-              'is-valid': doctorEditForm.get('city').valid 
-            }">
+            <div class="col-sm-4 form-group">
               <fieldset>
                 <label>City:</label>
                 <input [ngClass]="{
@@ -106,10 +98,7 @@
                 }" type="text" value="{{doctor.city}}" formControlName="city" class="form-control mb-2 mr-sm-2 mb-sm-0">
               </fieldset>
             </div>
-            <div class="col-sm-4 form-group" [ngClass]="{
-              'is-invalid': doctorEditForm.get('country').invalid,
-              'is-valid': doctorEditForm.get('country').valid 
-            }">
+            <div class="col-sm-4 form-group">
               <fieldset>
                 <label>Country:</label>
                 <input [ngClass]="{
@@ -118,10 +107,7 @@
                 }" type="text" value="{{doctor.country}}" formControlName="country" class="form-control mb-2 mr-sm-2 mb-sm-0">
               </fieldset>
             </div>
-            <div class="col-sm-4 form-group" [ngClass]="{
-              'is-invalid': doctorEditForm.get('address').invalid,
-              'is-valid': doctorEditForm.get('address').valid 
-            }">
+            <div class="col-sm-4 form-group">
               <fieldset>
                 <label>Address:</label>
                 <input [ngClass]="{
@@ -133,10 +119,7 @@
           </div>
 
           <div class="row">
-            <div class="col-sm-12 form-group" [ngClass]="{
-              'is-invalid': doctorEditForm.get('description').invalid,
-              'is-valid': doctorEditForm.get('description').valid 
-            }">
+            <div class="col-sm-12 form-group">
               <fieldset>
                 <label>Description:</label>
                 <input [ngClass]="{
@@ -148,10 +131,7 @@
           </div>
 
           <div class="row">
-            <div class="col-sm-6 form-group" [ngClass]="{
-              'is-invalid': doctorEditForm.get('speciality').invalid,
-              'is-valid': doctorEditForm.get('speciality').valid 
-            }">
+            <div class="col-sm-6 form-group">
               <fieldset>
                 <label>Speciality:</label>
                 <input [ngClass]="{
@@ -160,10 +140,7 @@
                 }" type="text" formControlName="speciality" value="{{doctor.speciality}}" class="form-control mb-2 mr-sm-2 mb-sm-0">
               </fieldset>
             </div>
-            <div class="col-sm-6 form-group" [ngClass]="{
-              'is-invalid': doctorEditForm.get('hospital').invalid,
-              'is-valid': doctorEditForm.get('hospital').valid 
-            }">
+            <div class="col-sm-6 form-group">
               <fieldset>
                 <label>Hospital:</label>
                 <input [ngClass]="{
@@ -175,10 +152,7 @@
           </div>
 
           <div class="row">
-              <div class="col-sm-6 form-group" [ngClass]="{
-                'is-invalid': doctorEditForm.get('phoneNumber').invalid,
-                'is-valid': doctorEditForm.get('phoneNumber').valid 
-              }">
+              <div class="col-sm-6 form-group">
                 <fieldset>
                   <label>Phone:</label>
                   <input [ngClass]="{
@@ -187,10 +161,7 @@
                   }" type="text" value="{{doctor.phoneNumber}}" formControlName="phoneNumber" class="form-control mb-2 mr-sm-2 mb-sm-0">
                 </fieldset>
               </div>
-              <div class="col-sm-6 form-group" [ngClass]="{
-                'is-invalid': doctorEditForm.get('password').invalid && doctorEditForm.get('password').dirty || submitted && doctorEditForm.get('password').invalid,
-                'is-valid': doctorEditForm.get('password').valid 
-              }">
+              <div class="col-sm-6 form-group">
                 <fieldset>
                   <label>Confirm Password:</label>
                   <input [ngClass]="{
@@ -258,10 +229,7 @@
               <form [formGroup]="doctorPasswordEditForm" #f="ngForm" (ngSubmit)="editDoctorPassword(f)">
     
               <div class="row">
-                  <div class="col-sm-6 form-group" [ngClass]="{
-                    'is-invalid': doctorPasswordEditForm.get('password').invalid && doctorPasswordEditForm.get('password').dirty || submitted2 && doctorPasswordEditForm.get('password').invalid,
-                    'is-valid': doctorPasswordEditForm.get('password').valid 
-                  }">
+                  <div class="col-sm-6 form-group">
                     <fieldset>
                       <label>Current Password:</label>
                       <input [ngClass]="{
@@ -273,10 +241,7 @@
               </div>
 
               <div class="row">
-                  <div class="col-sm-6 form-group"  [ngClass]="{
-                    'is-invalid': doctorPasswordEditForm.get('newPassword').invalid && doctorPasswordEditForm.get('newPassword').dirty || submitted2 && doctorPasswordEditForm.get('newPassword').invalid,
-                    'is-valid': doctorPasswordEditForm.get('newPassword').valid 
-                  }">
+                  <div class="col-sm-6 form-group">
                     <fieldset>
                       <label>New Password:</label>
                       <input  [ngClass]="{
@@ -285,10 +250,7 @@
                       }" type="password" formControlName="newPassword" class="form-control mb-2 mr-sm-2 mb-sm-0">
                     </fieldset>
                   </div>
-                  <div class="col-sm-6 form-group" [ngClass]="{
-                    'is-invalid': doctorPasswordEditForm.get('confirmNewPassword').invalid && doctorPasswordEditForm.get('confirmNewPassword').dirty || submitted2 && doctorPasswordEditForm.get('confirmNewPassword').invalid || (doctorPasswordEditForm.get('confirmNewPassword').valid && doctorPasswordEditForm.get('newPassword').value!=doctorPasswordEditForm.get('confirmNewPassword').value),
-                    'is-valid': doctorPasswordEditForm.get('confirmNewPassword').valid 
-                  }">
+                  <div class="col-sm-6 form-group">
                     <fieldset>
                       <label>Confirm New Password:</label>
                       <input [ngClass]="{
@@ -333,10 +295,7 @@
             <form [formGroup]="doctorEmailEditForm" #f="ngForm" (ngSubmit)="editDoctorEmail(f)">
   
             <div class="row">
-                <div class="col-sm-6 form-group" [ngClass]="{
-                  'is-invalid': doctorEmailEditForm.get('password').invalid && doctorEmailEditForm.get('password').dirty || submitted3 && doctorEmailEditForm.get('password').invalid,
-                  'is-valid': doctorEmailEditForm.get('password').valid 
-                }">
+                <div class="col-sm-6 form-group">
                   <fieldset>
                     <label>Confirm Password:</label>
                     <input [ngClass]="{
@@ -346,10 +305,7 @@
                   </fieldset>
                 </div>
 
-                <div class="col-sm-6 form-group"  [ngClass]="{
-                  'is-invalid': doctorEmailEditForm.get('email').invalid && doctorEmailEditForm.get('email').dirty || submitted3 && doctorEmailEditForm.get('email').invalid,
-                  'is-valid': doctorEmailEditForm.get('email').valid 
-                }">
+                <div class="col-sm-6 form-group" >
                   <fieldset>
                     <label>New E-mail:</label>
                     <input  [ngClass]="{
@@ -378,6 +334,264 @@
 
       
     </div>
+
+
+    <div *ngIf="buttonsClicked[3]"  id="divshow" >
+        <p class="p2head">
+            <b>CHANGE YOUR DISPONIBILITY</b>
+          </p>
+
+            <hr>
+            
+            <form [formGroup]="doctorAppointmentEditForm" #f="ngForm" (ngSubmit)="editDoctorAppointment(f)">
+  
+                <div class="row">
+                    <div class="col-sm-4 form-group">
+                      <fieldset>
+                        <label>Choose day of the week:</label>
+                        <select class="form-control is-valid mb-2 mr-sm-2 mb-sm-0" formControlName="day">
+                          <option *ngFor="let day of days" value={{day.value}} ngDefaultControl>{{day.label}}</option>                   
+                        </select>
+                      </fieldset>
+                    </div>
+                    <div class="col-sm-4 form-group">
+                        <fieldset>
+                          <label>Choose start hour:</label>
+                          <input [ngClass]="{
+                            'is-invalid': doctorAppointmentEditForm.get('startHour').invalid || doctorAppointmentEditForm.get('endHour').value < doctorAppointmentEditForm.get('startHour').value,
+                            'is-valid': doctorAppointmentEditForm.get('startHour').valid 
+                          }" type="time" onkeydown="return false" formControlName="startHour" step="600" class="form-control mb-2 mr-sm-2 mb-sm-0">
+                        </fieldset>
+                    </div>
+                    
+                    <div class="col-sm-4 form-group">
+                        <fieldset>
+                          <label>Choose end hour:</label>
+                          <input [ngClass]="{
+                            'is-invalid': doctorAppointmentEditForm.get('endHour').invalid || doctorAppointmentEditForm.get('endHour').value < doctorAppointmentEditForm.get('startHour').value,
+                            'is-valid': doctorAppointmentEditForm.get('endHour').valid 
+                          }" type="time" onkeydown="return false" formControlName="endHour" step="600" class="form-control mb-2 mr-sm-2 mb-sm-0">
+                        </fieldset>
+                    </div>
+                </div>
+
+                    <div class="addButton">
+                      <button type="submit" class="btn active btn-primary btn-lg form-control mb-2 mr-sm-2 mb-sm-0" [disabled]="f.invalid || isRequesting">ADD</button>
+                    </div>
+
+  
+          </form>
+   
+          <label class="error-label" *ngIf="f.invalid">
+              Start hour must be less than end hour and both fields are required and must not already exist.
+          </label>  
+
+
+          <hr id="hr2">
+
+
+          <div class="daysMenu">
+              <button type="button" [ngClass]="menuSelected[0] ? 'btn active btn-primary btn-lg' : 'btn btn-primary btn-lg'" (click)="daysMenu(0)">MONDAY</button>
+              <button type="button" [ngClass]="menuSelected[1] ? 'btn active btn-primary btn-lg' : 'btn btn-primary btn-lg'" (click)="daysMenu(1)" >TUESDAY</button>
+              <button type="button" [ngClass]="menuSelected[2] ? 'btn active btn-primary btn-lg' : 'btn btn-primary btn-lg'" (click)="daysMenu(2)" >WEDNESDAY</button>
+              <button type="button" [ngClass]="menuSelected[3] ? 'btn active btn-primary btn-lg' : 'btn btn-primary btn-lg'" (click)="daysMenu(3)" >THURSDAY</button>
+              <button type="button" [ngClass]="menuSelected[4] ? 'btn active btn-primary btn-lg' : 'btn btn-primary btn-lg'" (click)="daysMenu(4)" >FRIDAY</button>
+              <button type="button" [ngClass]="menuSelected[5] ? 'btn active btn-primary btn-lg' : 'btn btn-primary btn-lg'" (click)="daysMenu(5)" >SATURDAY</button>
+          </div>
+
+          <div class="days" *ngFor="let disponibility of disponibilities"> 
+              <div class="selected" *ngIf="disponibility.day==1 && menuSelected[0]">
+                  <hr>
+                  <div class="row">
+                      <div class="col-sm-4 form-group" >
+                        <fieldset>
+                          <label>Day of the week:</label>
+                          <input type="text" value={{transformDayOfTheWeek(disponibility.day)}} disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                        </fieldset>
+                      </div>
+                      <div class="col-sm-4 form-group">
+                          <fieldset>
+                            <label>Start hour:</label>
+                            <input type="time" value="{{disponibility.startHour}}" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                          </fieldset>
+                      </div>
+                      
+                      <div class="col-sm-4 form-group">
+                          <fieldset>
+                            <label>End hour:</label>
+                            <input type="time"value="{{disponibility.endHour}}" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                          </fieldset>
+                      </div>
+                  </div>
+                  <div class="addButton">
+                      <button (click)="deleteDisponibility(disponibility.appointmentIntervalId)" class="button2 btn active btn-primary btn-lg form-control mb-2 mr-sm-2 mb-sm-0">REMOVE</button>
+                  </div>
+              </div>   
+          </div>
+
+
+          
+          <div class="days" *ngFor="let disponibility of disponibilities"> 
+              <div class="selected" *ngIf="disponibility.day==2 && menuSelected[1]">
+                  <hr>
+                  <div class="row">
+                      <div class="col-sm-4 form-group" >
+                        <fieldset>
+                          <label>Day of the week:</label>
+                          <input type="text" value={{transformDayOfTheWeek(disponibility.day)}} disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                        </fieldset>
+                      </div>
+                      <div class="col-sm-4 form-group">
+                          <fieldset>
+                            <label>Start hour:</label>
+                            <input type="time" value="{{disponibility.startHour}}" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                          </fieldset>
+                      </div>
+                      
+                      <div class="col-sm-4 form-group">
+                          <fieldset>
+                            <label>End hour:</label>
+                            <input type="time"value="{{disponibility.endHour}}" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                          </fieldset>
+                      </div>
+                  </div>
+                  <div class="addButton">
+                      <button (click)="deleteDisponibility(disponibility.appointmentIntervalId)" class="button2 btn active btn-primary btn-lg form-control mb-2 mr-sm-2 mb-sm-0">REMOVE</button>
+                  </div>
+              </div>   
+          </div>
+
+          <div class="days" *ngFor="let disponibility of disponibilities"> 
+              <div class="selected" *ngIf="disponibility.day==3 && menuSelected[2]">
+                  <hr>
+                  <div class="row">
+                      <div class="col-sm-4 form-group" >
+                        <fieldset>
+                          <label>Day of the week:</label>
+                          <input type="text" value={{transformDayOfTheWeek(disponibility.day)}} disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                        </fieldset>
+                      </div>
+                      <div class="col-sm-4 form-group">
+                          <fieldset>
+                            <label>Start hour:</label>
+                            <input type="time" value="{{disponibility.startHour}}" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                          </fieldset>
+                      </div>
+                      
+                      <div class="col-sm-4 form-group">
+                          <fieldset>
+                            <label>End hour:</label>
+                            <input type="time"value="{{disponibility.endHour}}" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                          </fieldset>
+                      </div>
+                  </div>
+                  <div class="addButton">
+                      <button (click)="deleteDisponibility(disponibility.appointmentIntervalId)" class="button2 btn active btn-primary btn-lg form-control mb-2 mr-sm-2 mb-sm-0">REMOVE</button>
+                  </div>
+              </div>   
+          </div>
+
+
+          <div class="days" *ngFor="let disponibility of disponibilities"> 
+              <div class="selected" *ngIf="disponibility.day==4 && menuSelected[3]">
+                  <hr>
+                  <div class="row">
+                      <div class="col-sm-4 form-group" >
+                        <fieldset>
+                          <label>Day of the week:</label>
+                          <input type="text" value={{transformDayOfTheWeek(disponibility.day)}} disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                        </fieldset>
+                      </div>
+                      <div class="col-sm-4 form-group">
+                          <fieldset>
+                            <label>Start hour:</label>
+                            <input type="time" value="{{disponibility.startHour}}" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                          </fieldset>
+                      </div>
+                      
+                      <div class="col-sm-4 form-group">
+                          <fieldset>
+                            <label>End hour:</label>
+                            <input type="time"value="{{disponibility.endHour}}" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                          </fieldset>
+                      </div>
+                  </div>
+                  <div class="addButton">
+                      <button (click)="deleteDisponibility(disponibility.appointmentIntervalId)" class="button2 btn active btn-primary btn-lg form-control mb-2 mr-sm-2 mb-sm-0">REMOVE</button>
+                  </div>
+              </div>   
+          </div>
+
+
+
+        <div class="days" *ngFor="let disponibility of disponibilities"> 
+            <div class="selected" *ngIf="disponibility.day==5 && menuSelected[4]">
+                <hr>
+                <div class="row">
+                    <div class="col-sm-4 form-group" >
+                      <fieldset>
+                        <label>Day of the week:</label>
+                        <input type="text" value={{transformDayOfTheWeek(disponibility.day)}} disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                      </fieldset>
+                    </div>
+                    <div class="col-sm-4 form-group">
+                        <fieldset>
+                          <label>Start hour:</label>
+                          <input type="time" value="{{disponibility.startHour}}" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                        </fieldset>
+                    </div>
+                    
+                    <div class="col-sm-4 form-group">
+                        <fieldset>
+                          <label>End hour:</label>
+                          <input type="time"value="{{disponibility.endHour}}" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="addButton">
+                    <button (click)="deleteDisponibility(disponibility.appointmentIntervalId)" class="button2 btn active btn-primary btn-lg form-control mb-2 mr-sm-2 mb-sm-0">REMOVE</button>
+                </div>
+            </div>   
+        </div>
+
+
+        <div class="days" *ngFor="let disponibility of disponibilities"> 
+            <div class="selected" *ngIf="disponibility.day==6 && menuSelected[5]">
+                <hr>
+                <div class="row">
+                    <div class="col-sm-4 form-group" >
+                      <fieldset>
+                        <label>Day of the week:</label>
+                        <input type="text" value={{transformDayOfTheWeek(disponibility.day)}} disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                      </fieldset>
+                    </div>
+                    <div class="col-sm-4 form-group">
+                        <fieldset>
+                          <label>Start hour:</label>
+                          <input type="time" value="{{disponibility.startHour}}" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                        </fieldset>
+                    </div>
+                    
+                    <div class="col-sm-4 form-group">
+                        <fieldset>
+                          <label>End hour:</label>
+                          <input type="time"value="{{disponibility.endHour}}" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="addButton">
+                    <button (click)="deleteDisponibility(disponibility.appointmentIntervalId)" class="button2 btn active btn-primary btn-lg form-control mb-2 mr-sm-2 mb-sm-0">REMOVE</button>
+                </div>
+            </div>   
+        </div>
+
+        <label class="error-label" *ngIf="showErrorHoursInterval">
+            This interval already exists in your schedule.
+        </label> 
+       
+
+    </div>
+
 
   </div>
 

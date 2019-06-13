@@ -25,8 +25,8 @@ body {
     padding-bottom: 15px;
     white-space: pre-line;
     //border: 1px solid #e7e7e7;
-    
 }
+
 
 .searchCard {
     background-color: white;
@@ -37,6 +37,7 @@ body {
     box-shadow: 2px 2px 2px #dbdbdb;
     margin-left: 25px;
     margin-right: 25px;
+    border-radius: 13px;
 }
 
 .row {
@@ -53,9 +54,9 @@ body {
     border:none;
 }
 
-
 h3 {
     text-align:center;
+    font-weight: bold;
 }
 
 .fa, .fas {
@@ -67,7 +68,7 @@ h3 {
         flex: 0 0 100%;
         max-width: 100%;
     }
-    .col-12 {
+    .col-12, .col-8, .col-4 {
         margin-left: 30px;
         margin-top: 20px;
         margin-bottom: 10px;
@@ -78,7 +79,7 @@ h3 {
 }
 
 @media only screen and (max-width: 767px) {
-    .col-12 {
+    .col-12, .col-8, .col-4 {
         margin-left: 10px;
     }
 }
@@ -107,6 +108,7 @@ button:focus, button:active, .active {
      background-color: white;
      margin-left: 25px;
      margin-right: 25px;
+     border-radius: 50px 20px;
  }
 
  .photo {
@@ -165,3 +167,71 @@ span {
 button {
     color: black;
 }
+
+.goBackButton {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 25px;
+    margin-right: 25px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+hr {
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.input-group-addon2 {
+    font-weight: bold;
+}
+
+.btnDisponibility {
+    color: #69D18B;
+    background-color: transparent;
+    padding: .25rem .5rem;
+    font-size: .875rem;
+    border: 1px solid #69D18B;
+    cursor: pointer;
+    border-radius: .2rem;
+    white-space: nowrap;
+    text-align: center;
+    
+}
+
+
+.addButton {
+    border: none;
+    font-size: .7vw;
+    padding: 1vh; 
+    font-weight: bold;
+    text-align: center;
+}
+
+
+@media only screen and (min-width: 1255px) {
+    .addButton .btn {
+        border: none;
+        font-size: .7vw;
+        padding: 1vh; 
+        font-weight: bold;
+        width: 15%;
+    }
+}
+
+@media only screen and (max-width: 1255px) {
+    .addButton .btn {
+        border: none;
+        font-size: 3vw;
+        padding: 1vh; 
+        font-weight: bold;
+        width: 40%;
+    }
+}
+
+.btn[disabled] {
+    cursor: not-allowed;
+    pointer-events: all !important;
+    background-color: #EEEEEE;
+  }

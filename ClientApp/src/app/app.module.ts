@@ -22,6 +22,7 @@ import { ScheduleComponent } from './schedule/schedule.component';
 import { PatientMedicalHistoryComponent } from './patient-medical-history/patient-medical-history.component';
 import { PatientAccountComponent } from './patient-account/patient-account.component';
 import { DoctorAccountComponent } from './doctor-account/doctor-account.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { DoctorAccountComponent } from './doctor-account/doctor-account.componen
   ],
   imports: [
     BrowserModule,
+    NgbModule,
     RouterModule.forRoot([
       {path:'', redirectTo: '/home', pathMatch: 'full' },
       {path:'home', component:HomeComponent},

@@ -9,13 +9,16 @@ import { Md5 } from 'ts-md5/dist/md5';
 import { NgForm } from '@angular/forms';
 import { Location } from '@angular/common';
 import { pairwise, filter } from 'rxjs/operators';
+import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateAdapter, NgbDateNativeAdapter} from '@ng-bootstrap/ng-bootstrap';
 
 declare var $: any;
 
 @Component({
   selector: 'app-patient-account',
   templateUrl: './patient-account.component.html',
-  styleUrls: ['./patient-account.component.scss']
+  styleUrls: ['./patient-account.component.scss'],
+  providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}]
 })
 export class PatientAccountComponent implements OnInit {
 
@@ -28,20 +31,21 @@ export class PatientAccountComponent implements OnInit {
   submitted: boolean = false;
   submitted2: boolean = false;
   submitted3: boolean = false;
+  minDate: NgbDateStruct;
+  maxDate: NgbDateStruct;
+  valueDate: string;
+  now: Date = new Date();
   patientId : string;
   email: string;
   password: string;
   patient: PatientProfile;
   private subscriptions = new Subscription();
+  isExpired: boolean;
+  birthdateValue: any;
 
   toggleShow(nr) {
     this.buttonsClicked = [false, false, false];
     this.buttonsClicked[nr]=true;
-    $(".accountMenu button").removeClass("active");
-    $(".accountMenu button").on("click", function() {
-      $(".accountMenu button").removeClass("active");
-      $(this).addClass("active");
-    });
   }
 
   reload() {
@@ -54,50 +58,34 @@ export class PatientAccountComponent implements OnInit {
   }
   
   constructor(public router: Router, private userService: UserService, private formBuilder: FormBuilder) { 
+    this.minDate = {year: this.now.getFullYear()-120, month: this.now.getMonth() + 1, day: this.now.getDate()};
+    this.maxDate = {year: this.now.getFullYear(), month: this.now.getMonth() + 1, day: this.now.getDate()};
   }
 
   ngOnInit() {
-
+    
     this.reload();
     localStorage.setItem('reload','false');
 
     this.buttonsClicked = [true, false, false];
 
     this.patientId =  this.userService.getUserId();
-    
-    if(this.patientId != null) {
+    this.isExpired = this.userService.isExpired();
+
+    if(this.patientId != null && !this.isExpired) {
       this.getPatient();
     }
     else {
-        this.router.navigate(['/home']);
+      this.router.navigate(['/patient-login']);
+      localStorage.clear();
     }
 
-    $(function(){
-      var dtToday = new Date();
-      
-      var month = (dtToday.getMonth() + 1).toString();
-      var day = dtToday.getDate().toString();
-      var year = dtToday.getFullYear().toString();
-      if(parseInt(month) < 10)
-        month = '0' + month.toString();
-      if(parseInt(day) < 10)
-        day = '0' + day.toString();
-      
-      var minDate = '1900-01-01';
 
-      var maxDate = year + '-' + month + '-' + day;
-      $('#txtDate').attr('max', maxDate);
-      $('#txtDate').attr('min', minDate);
-         
-      
-  });
 
-  
     this.patientEditForm = this.formBuilder.group({
       lastName: ['Test', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
       firstName: ['Test', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
       phoneNumber: ['0745119974', [Validators.required, Validators.pattern("[0-9]+")]],
-      birthdate: ['1996-02-10', [Validators.required,this.validateDOB.bind(this)]],
       city: ['Iasi', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(35), this.validatePasswordConfirmation.bind(this)]],
       country: ['Romania', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]]    
@@ -134,11 +122,11 @@ export class PatientAccountComponent implements OnInit {
     .subscribe((patient: PatientProfile) => {
         this.patient = patient;
         this.email = patient.email;
+        this.birthdateValue = patient.birthdate;
         this.password = patient.password;
         this.patientEditForm.controls['lastName'].setValue(patient.lastName);
         this.patientEditForm.controls['firstName'].setValue(patient.firstName);
         this.patientEditForm.controls['phoneNumber'].setValue(patient.phoneNumber);
-        this.patientEditForm.controls['birthdate'].setValue(patient.birthdate);
         this.patientEditForm.controls['city'].setValue(patient.city);
         this.patientEditForm.controls['country'].setValue(patient.country);
     },
@@ -161,7 +149,7 @@ export class PatientAccountComponent implements OnInit {
           patientEditForm.value.password,
           patientEditForm.value.city,
           patientEditForm.value.country,
-          patientEditForm.value.birthdate,
+          this.birthdateValue,
           patientEditForm.value.phoneNumber)
           .finally(() => this.isRequesting = false)
           .subscribe(
@@ -234,7 +222,7 @@ export class PatientAccountComponent implements OnInit {
   
 
   
-  validateDOB(control: AbstractControl){
+  /*validateDOB(control: AbstractControl){
     let year = new Date(control.value).getFullYear();
     let today = new Date().getFullYear();
     if(today - year >= 120 || today-year<0) {
@@ -243,7 +231,7 @@ export class PatientAccountComponent implements OnInit {
     else {
       return null;
     }
-  }
+  }*/
 
   removeMessage(nr) {
     var str = "displayMessage".concat(nr);

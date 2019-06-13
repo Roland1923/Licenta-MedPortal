@@ -1,8 +1,9 @@
-import { Appointment } from "./appointment.interface";
+import { Appointment } from "./appointment";
 import { Feedback } from "./feedback.interface";
+import { AppointmentInterval } from "./appointment-interval";
 
 export interface DoctorProfile {
-    id : string;
+    doctorId : string;
     din : string;
     firstName : string;
     lastName : string;
@@ -17,6 +18,7 @@ export interface DoctorProfile {
     hospital : string;
     address : string;
 
+    appointmentIntervals : Array<AppointmentInterval>
     appointments : Array<Appointment>;
     feedbacks : Array<Feedback>;
 }

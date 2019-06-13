@@ -53,7 +53,7 @@ export class RegisterComponent implements OnInit {
       var maxDate = year + '-' + month + '-' + day;
       $('#txtDate').attr('max', maxDate);
       $('#txtDate').attr('min', minDate);
-  });
+    });
 
 
     this.doctorRegisterForm = this.formBuilder.group({
