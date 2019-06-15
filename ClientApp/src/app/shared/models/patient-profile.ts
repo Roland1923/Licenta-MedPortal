@@ -3,7 +3,7 @@ import { Feedback } from "./feedback.interface";
 import { PatientHistory } from "./patient.history.inteface";
 
 export interface PatientProfile {
-    id : string;
+    patientId : string;
     nin : string;
     firstName : string;
     lastName : string;

@@ -165,22 +165,40 @@
 
   <hr>
 
-  <div class="searchCard" *ngIf="dateSelected && appointmentIntervalsList.length!=0">
+  <div class="searchCard" *ngIf="dateSelected && appointmentIntervalsListWithValidSchedule.length!=0">
+
       <div class="row">
         <div class="col-12 col-md-1">
           <span class="input-group-addon2">
                 HOUR:</span>
         </div>
       
-        <div class="col-12 col-md-1" *ngFor="let appointmentInterval of appointmentIntervalsList">
+        <div class="col-12 col-md-1" *ngFor="let appointmentInterval of appointmentIntervalsListWithValidSchedule">
+     
+
           <button [ngClass]="activeDisponibility[appointmentInterval.appointmentIntervalId] ? 'btnDisponibility active' : 'btnDisponibility'"  (click)="activateDisponibility(appointmentInterval.appointmentIntervalId)">{{appointmentInterval.startHour}}</button>
         </div>
       </div>
-    </div>
 
-    <div class="addButton">
-        <button type="submit" class="btn active btn-primary btn-lg form-control mb-2 mr-sm-2 mb-sm-0" [disabled]="!dateSelected || !disponibilitySelected">SCHEDULE</button>
-    </div>
+  </div>
+
+
+  
+  <div class="searchCard" *ngIf="dateSelected && appointmentIntervalsListWithValidSchedule.length==0">
+        <div class="row">
+          <div class="col-12">
+            <span class="input-group-addon2">
+                  No appointment available for date selected, choose other.</span>
+
+        </div>
+      </div>
+
+  </div>
+
+  <div class="addButton">
+      <button class="btn active btn-primary btn-lg form-control mb-2 mr-sm-2 mb-sm-0" (click)="scheduleAppointment()" [disabled]="!dateSelected || !disponibilitySelected">SCHEDULE</button>
+  </div>
+
 
 
 </div>

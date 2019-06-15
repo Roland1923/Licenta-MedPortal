@@ -109,7 +109,7 @@
               <div class="col-sm-4 form-group">
                 <fieldset>
                   <label>Birthdate:</label>
-                  <input  ngbDatepicker  (click)="d.toggle()" [minDate]="minDate" [maxDate]="maxDate" id="txtDate"  #d="ngbDatepicker" class="is-valid form-control mb-2 mr-sm-2 mb-sm-0" [(ngModel)] = "birthdateValue" value="{{birthdateValue | date:'yyyy-MM-dd'}}" [ngModelOptions]="{standalone: true}">
+                  <input  ngbDatepicker  (click)="d.toggle()" [minDate]="minDate" [maxDate]="maxDate" id="txtDate"  #d="ngbDatepicker" placeholder="{{birthdateValue | date:'yyyy-MM-dd'}}" class="is-valid form-control mb-2 mr-sm-2 mb-sm-0" [(ngModel)] = "birthdateValue" value="{{birthdateValue | date:'yyyy-MM-dd'}}" [ngModelOptions]="{standalone: true}">
                 </fieldset>
               </div>
               <div class="col-sm-4 form-group">

@@ -8,6 +8,8 @@ import { Response } from '@angular/http/src/static_response';
 import { Subscription } from 'rxjs';
 import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 import { AppointmentInterval } from '../shared/models/appointment-interval';
+import { PatientProfile } from '../shared/models/patient-profile';
+import * as moment from 'moment'
 
 declare var $: any;
 
@@ -49,6 +51,11 @@ export class ScheduleComponent implements OnInit {
   day_of_week: number;
   dateSelected: boolean = false;
   disponibilitySelected: boolean = false;
+  appointmentDate: Date;
+  patientId: string;
+  patient: PatientProfile;
+  appointmentIntervalId: string;
+  appointmentIntervalsListWithValidSchedule:  Array<AppointmentInterval>;
 
   constructor(private router: Router, private userService: UserService, private formBuilder: FormBuilder, _applicationRef: ApplicationRef) {
       
@@ -76,8 +83,13 @@ export class ScheduleComponent implements OnInit {
       name: ['']
     });
 
-    this.isExpired=this.userService.isExpired();
-    if(this.isExpired) {
+    this.patientId =  this.userService.getUserId();
+    this.isExpired = this.userService.isExpired();
+
+    if(this.patientId != null && !this.isExpired) {
+      this.getPatient();
+    }
+    else {
       this.router.navigate(['/patient-login']);
       localStorage.clear();
     }
@@ -86,28 +98,88 @@ export class ScheduleComponent implements OnInit {
     this.getDoctorsByFilter(this.doctorSearch, 0);
   }
 
+  private getPatient() {
+    this.subscriptions.add(this.userService.getPatient(this.patientId)
+    .subscribe((patient: PatientProfile) => {
+        this.patient = patient;
+    },
+    errors => this.errors = errors
+    ));
+  }
+
+
   goBack () {
     this.scheduleNotClicked = true;
-    this.appointmentIntervalsList = [];
+    this.appointmentIntervalsListWithValidSchedule = [];
     this.dateSelected = false;
     this.disponibilitySelected = false;
+    this.appointmentDate = null;
+  }
+
+  scheduleAppointment() {
+
+      this.errors = '';
+
+      this.subscriptions.add(this.userService.appointmentRegister(this.patient.patientId, this.doctor.doctorId, this.appointmentDate, this.appointmentIntervalId)
+        .subscribe(
+            result => {
+                if (result) {
+                  this.router.navigate(['/patient/account']);
+                }
+            },
+            errors => this.errors = errors));
   }
 
   listScheduleForDate(pickedDate: NgbDateStruct) {
     this.dateSelected = true;
-    let dateString = pickedDate.year + "-" + pickedDate.month + "-" + pickedDate.day;
+    let dateString = pickedDate.month  + "-" + pickedDate.day + "-" + pickedDate.year + " 23:15:30";
+
     let date = new Date(dateString);
+    this.appointmentDate = new Date(date);
+
     let day_of_week = date.getDay();
 
     this.errors = '';
 
     this.appointmentIntervalsList = [];
+    this.appointmentIntervalsListWithValidSchedule = [];
 
-
-    this.subscriptions.add(this.userService.getAppointmentIntervalsByFilter(this.doctor.doctorId, day_of_week)
-        .subscribe((response : Response) => {
-
+    this.subscriptions.add(this.userService.getAppointmentIntervals()
+        .subscribe(response => {
           this.appointmentIntervalsList = response.json();
+          for(var appointmentInterval of this.appointmentIntervalsList) {
+            var appointmentExist = false;
+            if(appointmentInterval.day==day_of_week && appointmentInterval.doctorId===this.doctor.doctorId) 
+            {
+              if(appointmentInterval.appointments!=null) {
+                for(var appointment of appointmentInterval.appointments) {
+
+                  var appDate = new Date(appointment.appointmentDate);
+    
+                  appDate.setHours(6,0,0,0);
+                  this.appointmentDate.setHours(6,0,0,0);
+    
+                  if(appDate.getTime() === this.appointmentDate.getTime()) {
+                    appointmentExist = true;
+                  }
+                }
+              }
+              if(!appointmentExist) {
+                this.appointmentIntervalsListWithValidSchedule.push(appointmentInterval);
+              }
+             
+            }
+          }
+            
+          this.appointmentIntervalsListWithValidSchedule.sort(function(a,b){
+            if(b.startHour < a.startHour) {
+              return 1;
+            }
+            else if(b.startHour > a.startHour) {
+              return -1
+            }
+            return 0;
+          });
       },
       errors => this.errors = errors
       ));
@@ -122,6 +194,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   activateDisponibility(id) {
+    this.appointmentIntervalId = id;
     this.disponibilitySelected = true;
     if(!this.activeDisponibility[id]) {
       for(let activeDisp in this.activeDisponibility) {

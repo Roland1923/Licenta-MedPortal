@@ -90,6 +90,17 @@ export class UserService extends BaseService {
       .map(users => !users.length);
   }
 
+  appointmentRegister(patientId: string, doctorId: string, appointmentDate: Date, appointmentIntervalId: string) {
+
+    let body = JSON.stringify({appointmentIntervalId, appointmentDate, doctorId, patientId});
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({ headers: headers });
+    
+    return this.http.post(this.baseUrl + "api/Appointments", body, options)
+      .map(res => true)
+      .catch(this.handleError);
+  }
+
   checkPatientNINNotTaken(nin: string) {
     return this.http
       .get(this.baseUrl + "api/Patients")
@@ -127,6 +138,13 @@ export class UserService extends BaseService {
     return this.http.post(this.baseUrl + "api/AppointmentIntervals", body, options)
       .map(res => true)
       .catch(this.handleError);
+  }
+
+
+  getAppointmentIntervals() {
+    return this.http.get(this.baseUrl + "api/AppointmentIntervals/")
+    .map(response => response)
+    .catch(this.handleError);
   }
 
   getAppointmentIntervalsForDoctor(doctorId : string) {
