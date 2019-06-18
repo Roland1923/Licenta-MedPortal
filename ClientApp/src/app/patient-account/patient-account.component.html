@@ -38,6 +38,7 @@
         <button type="button" [ngClass]="buttonsClicked[0] ? 'btn active btn-primary btn-lg' : 'btn btn-primary btn-lg'" (click)="toggleShow(0)">MY ACCOUNT</button>
         <button type="button" [ngClass]="buttonsClicked[1] ? 'btn active btn-primary btn-lg' : 'btn btn-primary btn-lg'" (click)="toggleShow(1)" >PASSWORD</button>
         <button type="button" [ngClass]="buttonsClicked[2] ? 'btn active btn-primary btn-lg' : 'btn btn-primary btn-lg'" (click)="toggleShow(2)" >E-MAIL</button>
+        <button type="button" [ngClass]="buttonsClicked[3] ? 'btn active btn-primary btn-lg' : 'btn btn-primary btn-lg'" (click)="toggleShow(3)" >APPOINTMENTS</button>
     </div>
 
     <div *ngIf="buttonsClicked[0]"  id="divshow" >
@@ -280,6 +281,152 @@
 
       
     </div>
+
+
+
+
+
+    <div *ngIf="buttonsClicked[3]"  id="divshow1"> 
+
+      <div class="list" *ngFor="let appointment of appointmentsListValidated"> 
+
+  
+    
+              <div class="searchCard" *ngIf="!lengthIsZero">
+                  
+                    <div class="row">
+                      <div class="col-md-7 col-12">
+                        <div class="row">
+                            <div class="col-auto">
+                                <img class="photo" src="assets/img/doctor-avatar2.png">
+                            </div>
+                            <div class="col-auto">
+                              <h3 class="card-doctor-name">Dr. {{appointment.doctor.firstName}} {{appointment.doctor.lastName}}</h3>
+                              <div class="card-spec">{{appointment.appointmentDate | date:'yyyy-MM-dd'}}</div>
+                              <div class="card-spec">{{appointment.appointmentInterval.startHour}} - {{appointment.appointmentInterval.endHour}}</div>
+                              <span class="input-group-addon"> <i class="fas fa-hospital"> </i><div class="details">{{appointment.doctor.hospital}}</div></span>
+                              <span class="input-group-addon"> <i class="fa fa-map-marker"> </i><div class="details">{{appointment.doctor.address}}, {{appointment.doctor.city}}</div></span>
+                              <span class="input-group-addon"> <i class="fas fa-stethoscope"></i><div class="details">{{appointment.doctor.speciality}}</div></span> 
+                              <span class="input-group-addon"> <i class="fa fa-envelope"></i><div class="details">{{appointment.doctor.email}}</div></span> 
+                              <span class="input-group-addon"> <i class="fa fa-phone"></i><div class="details">{{appointment.doctor.phoneNumber}}</div></span> 
+                            </div>
+                        </div>
+                      </div>
+                      
+
+              
+                      <div class="col-md-5 col-12"  *ngIf="reviewsSubscribed.get(appointment.doctor.doctorId)"> 
+
+
+                          <div class="row-auto">
+                  
+                               <span class="doctor-rating">Doctor Rating</span>
+                               <ng-template #t let-fill="fill">
+                                   <span class="star" [class.full]="fill === 100">
+                                     <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                                   </span>
+                                 </ng-template>
+                                 
+                               <ngb-rating [rate]="starsMean.get(appointment.doctor.doctorId)" [starTemplate]="t" [readonly]="true" max="5"></ngb-rating>
+                               
+                               
+                             
+                      
+                          </div>
+               
+                          <div class="row">
+                             <span class="input-group-addon"> <i class="far fa-comments"> </i><div class="details">{{starsMean.get(appointment.doctor.doctorId)}} average based on {{totalReviews.get(appointment.doctor.doctorId)}} reviews</div></span> 
+                          </div>
+               
+                          <hr>
+               
+                          <div class="row">
+                             <div class="col-xs-1">
+                               <span class="nrStars">5 <i class="fa fa-star"></i> - {{fiveStars.get(appointment.doctor.doctorId)}}</span>
+                             </div>
+                             <div class="col-8">
+                               <div class="bar-container">
+                                 <div class="bar5" [ngStyle]="{'width': width5.get(appointment.doctor.doctorId) + '%'}"></div>
+                               </div>
+                             </div> 
+                          </div>
+               
+                          <div class="row">
+                             <div class="col-xs-1">
+                                 <span class="nrStars">4 <i class="fa fa-star"></i> - {{fourStars.get(appointment.doctor.doctorId)}}</span>
+                               </div>
+                               <div class="col-8">
+                                   <div class="bar-container">
+                                       <div class="bar4" [ngStyle]="{'width': width4.get(appointment.doctor.doctorId) + '%'}"></div>
+                                     </div>
+                               </div> 
+                           </div>
+               
+                         <div class="row">
+                             <div class="col-xs-1">
+                                 <span class="nrStars">3 <i class="fa fa-star"></i> - {{threeStars.get(appointment.doctor.doctorId)}}</span>
+                               </div>
+                               <div class="col-8">
+                                   <div class="bar-container">
+                                       <div class="bar3" [ngStyle]="{'width': width3.get(appointment.doctor.doctorId) + '%'}"></div>
+                                     </div>
+                               </div> 
+                         </div>
+               
+                         <div class="row">
+                             <div class="col-xs-1">
+                                 <span class="nrStars">2 <i class="fa fa-star"></i> - {{twoStars.get(appointment.doctor.doctorId)}}</span>
+                               </div>
+                               <div class="col-8">
+                                   <div class="bar-container">
+                                       <div class="bar2" [ngStyle]="{'width': width2.get(appointment.doctor.doctorId) + '%'}"></div>
+                                     </div>
+                               </div> 
+                         </div>
+               
+                           <div class="row">
+                               <div class="col-xs-1">
+                                   <span class="nrStars">1 <i class="fa fa-star"></i> - {{oneStar.get(appointment.doctor.doctorId)}}</span>
+                                 </div>
+                                 <div class="col-8">
+                                     <div class="bar-container">
+                                         <div class="bar1" [ngStyle]="{'width': width1.get(appointment.doctor.doctorId) + '%'}"></div>
+                                       </div>
+                                 </div> 
+                         </div>
+               
+                       </div>
+               
+        
+
+
+
+
+                    </div>
+
+
+           
+
+
+        </div>
+        <div class="addButton">
+            <button (click)="deleteAppointment(appointment.appointmentId)" class="button2 btn active btn-primary btn-lg form-control mb-2 mr-sm-2 mb-sm-0">REMOVE</button>
+        </div>
+      </div>
+
+      <div class="searchCard" *ngIf="lengthIsZero">
+            <div class="row">
+                <div class="col-12">
+                  <span class="input-group-addon2">
+                      You have no upcoming appointments.</span>
+              </div>
+            </div>
+      </div>
+
+
+    </div>
+
+
 
   </div>
 

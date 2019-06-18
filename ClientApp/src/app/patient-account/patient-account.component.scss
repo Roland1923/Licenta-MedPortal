@@ -2,7 +2,7 @@
     font-size: 16px;  
     padding: 22px 0;
     background: #343a40!important;
-    color: white;
+    color: white!important;
     margin-top: 2%;
     bottom: 0;
     position: static;
@@ -29,6 +29,8 @@
     padding-bottom: 1vw;
 }
 
+
+
 @media only screen and (min-width: 1255px) {
     .accountMenu .btn {
         background-color: rgb(248, 248, 248);
@@ -38,7 +40,7 @@
         font-size: .7vw;
         padding: 2vh;
         font-weight: bold;
-        width: 33.3%;
+        width: 25%;
     }
 }
 
@@ -91,6 +93,22 @@ button:focus, button:active, .active {
     width: auto;
 }
 
+#divshow1 {
+    padding-top: 1vw;
+    margin-left: 8vw;
+    margin-right: 8vw;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 15px;
+    width: auto;
+}
+
+@media only screen and (max-width: 1222px) {
+    .col-md-4 {
+        margin-right: 25px;
+    }
+}
+
 .row {
     margin-bottom: 1vw;
 }
@@ -130,6 +148,229 @@ button:focus, button:active, .active {
         width: 100%;
     }
 }
+
+.photo {
+    height: auto;
+    max-width: 211px;
+    max-height: 211.6px;
+ }
+
+.searchCard {
+
+    background-color: white;
+    padding: 12px;
+    margin-top: 17px;
+    margin-bottom: 17px;
+    border: 1px solid #dbdbdb;
+    box-shadow: 2px 2px 2px #dbdbdb;
+    margin-left: 25px;
+    margin-right: 25px;
+    border-radius: 13px;
+}
+
+.card-spec {
+    font-style: italic;
+    margin-top: -10px;
+    margin-bottom: 5px;
+}
+
+.button2, .button2:focus, .button2:active {
+    width: 25%;
+    border: none;
+    outline: none !important;
+    box-shadow: none !important;
+    color: white !important;
+    background-color:  rgb(180, 0, 0) !important;
+ }
+
+ .input-group-addon2 {
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin-top: 5px;
+}
+
+
+.bar5 {
+    margin-right:10px;
+    width: 60%; 
+    height: 16px; 
+    background-color: #69D18B;
+}
+
+.bar4 {
+    margin-right:10px;
+    width: 20%; 
+    height: 16px; 
+    background-color: #2196F3;
+}
+
+.bar3 {
+    margin-right:10px;
+    width: 5%; 
+    height: 16px; 
+    background-color: #00bcd4;
+}
+
+.bar2 {
+    margin-right:10px;
+    width: 5%; 
+    height: 16px; 
+    background-color: #ff9800;
+}
+
+.bar1 {
+    margin-right:10px;
+    width: 10%; 
+    height: 16px; 
+    background-color: #f44336;
+}
+
+.bar-container {
+    width: 100%;
+    background-color: #f1f1f1;
+    text-align: center;
+    color: white;
+}
+
+.doctor-rating {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-right:35px;
+}
+
+.nrStars {
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+ngb-rating {
+    outline: none;
+}
+
+
+  .filled {
+    color: #69D18B;
+  }
+  .bad {
+    color: #deb0b0;
+  }
+  .filled.bad {
+    color: #ff1e1e;
+  }
+
+  .star {
+    position: relative;
+    display: inline-block;
+    font-size: 2.5rem;
+    color: #d3d3d3;
+}
+  
+  .full {
+    color: red;
+  }
+
+  .half {
+    position: absolute;
+    display: inline-block;
+    overflow: hidden;
+    color: #69D18B;
+}
+
+
+.titleCustom {
+    font-weight: bold;
+    margin-bottom: -11px;
+    margin-left: 25px;
+    font-size: 32px;
+    margin-right: 25px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #dbdbdb;
+}
+
+.titleCustom1 {
+    font-weight: bold;
+    margin-bottom: -11px;
+    margin-left: 25px;
+    font-size: 21px;
+    margin-right: 25px;
+    margin-bottom: 10px;
+}
+
+
+.col-12 {
+    text-align: center;
+}
+
+ .addButton {
+    border: none;
+    font-size: .7vw;
+    padding: 1vh; 
+    font-weight: bold;
+    margin-top: -10px;
+    text-align: center;
+}
+
+ @media only screen and (min-width: 1255px) {
+    .addButton .btn {
+        border: none;
+        font-size: .7vw;
+        padding: 1vh; 
+        font-weight: bold;
+        margin-top: -10px;
+        width: 15%;
+    }
+}
+
+@media only screen and (max-width: 1255px) {
+    .addButton .btn {
+        border: none;
+        font-size: 3vw;
+        padding: 1vh; 
+        font-weight: bold;
+        margin-top: -10px;
+        width: 40%;
+    }
+}
+
+ 
+.row {
+    align-items: center;
+}
+
+.fa, .fas, .far {
+    margin-right:5px;
+}
+
+.reviews {
+    background-color: #f8f8f8;
+    margin-left: 8vw;
+    margin-right: 8vw;
+    margin-top: 1.5vw;
+    margin-bottom: 3vw;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    white-space: pre-line;
+    //border: 1px solid #e7e7e7;
+}
+
+hr {
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+
+h3 {
+    text-align:center;
+    font-weight: bold;
+}
+
+.input-group-addon {
+    background: white;
+    color: black;
+    border:none;
+    margin-bottom: -10px;
+}
+
 
 .content {
     min-height: calc(100vh - 40px);

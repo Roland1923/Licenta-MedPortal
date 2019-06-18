@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { of, Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { PatientProfile } from '../shared/models/patient-profile';
 import { UserService } from '../shared/services/user.service';
-import { Router, RoutesRecognized, NavigationEnd } from '@angular/router';
-import { isUndefined } from 'util';
+import { Router } from '@angular/router';
 import { Md5 } from 'ts-md5/dist/md5';
-import { NgForm } from '@angular/forms';
-import { Location } from '@angular/common';
-import { pairwise, filter } from 'rxjs/operators';
-import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {NgbDateAdapter, NgbDateNativeAdapter} from '@ng-bootstrap/ng-bootstrap';
+import { AuthService } from '../shared/services/auth.service';
+import { Appointment } from '../shared/models/appointment';
+import { Time } from '@angular/common';
+import { Feedback } from '../shared/models/feedback.interface';
 
-declare var $: any;
 
 @Component({
   selector: 'app-patient-account',
@@ -42,9 +41,33 @@ export class PatientAccountComponent implements OnInit {
   private subscriptions = new Subscription();
   isExpired: boolean;
   birthdateValue: any;
+  lengthIsZero: boolean = true;
+  appointmentsList: Array<Appointment>;
+  appointmentsListValidated: Array<Appointment>;
+  time: Time = {
+    hours: 10,
+    minutes: 10
+  };
+  time1InMinutesForTime1: number;
+  time1InMinutesForTime2: number;
+
+  oneStar: Map<string, number> = new Map<string,number>();
+  twoStars: Map<string, number> = new Map<string,number>();
+  threeStars: Map<string, number> = new Map<string,number>();
+  fourStars: Map<string, number> = new Map<string,number>();
+  fiveStars: Map<string, number> = new Map<string,number>();
+  totalReviews: Map<string, number> = new Map<string,number>();
+  starsMean: Map<string, number> = new Map<string,number>();
+  reviewsSubscribed: Map<string, boolean> = new Map<string,boolean>();
+  
+  width1: Map<string, number> = new Map<string,number>();
+  width2: Map<string, number> = new Map<string,number>();
+  width3: Map<string, number> = new Map<string,number>();
+  width4: Map<string, number> = new Map<string,number>();
+  width5: Map<string, number> = new Map<string,number>();
 
   toggleShow(nr) {
-    this.buttonsClicked = [false, false, false];
+    this.buttonsClicked = [false, false, false, false];
     this.buttonsClicked[nr]=true;
   }
 
@@ -57,7 +80,7 @@ export class PatientAccountComponent implements OnInit {
     }
   }
   
-  constructor(public router: Router, private userService: UserService, private formBuilder: FormBuilder) { 
+  constructor(public router: Router, private authService: AuthService, private userService: UserService, private formBuilder: FormBuilder) { 
     this.minDate = {year: this.now.getFullYear()-120, month: this.now.getMonth() + 1, day: this.now.getDate()};
     this.maxDate = {year: this.now.getFullYear(), month: this.now.getMonth() + 1, day: this.now.getDate()};
   }
@@ -74,13 +97,14 @@ export class PatientAccountComponent implements OnInit {
 
     if(this.patientId != null && !this.isExpired) {
       this.getPatient();
+      
     }
     else {
       this.router.navigate(['/patient-login']);
       localStorage.clear();
     }
 
-
+    this.generateRatings();
 
     this.patientEditForm = this.formBuilder.group({
       lastName: ['Test', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
@@ -117,7 +141,17 @@ export class PatientAccountComponent implements OnInit {
     });
   }
 
+
+
+
+
+
   private getPatient() {
+    this.isExpired = this.userService.isExpired();
+    if(this.isExpired) {
+      this.authService.logout();
+    }
+
     this.subscriptions.add(this.userService.getPatient(this.patientId)
     .subscribe((patient: PatientProfile) => {
         this.patient = patient;
@@ -129,6 +163,7 @@ export class PatientAccountComponent implements OnInit {
         this.patientEditForm.controls['phoneNumber'].setValue(patient.phoneNumber);
         this.patientEditForm.controls['city'].setValue(patient.city);
         this.patientEditForm.controls['country'].setValue(patient.country);
+        this.listAppointments();
     },
     errors => this.errors = errors
     ));
@@ -136,7 +171,254 @@ export class PatientAccountComponent implements OnInit {
 
 
 
+  generateRatings() {
+
+    this.isExpired = this.userService.isExpired();
+    if(this.isExpired) {
+      this.authService.logout();
+    }
+    this.errors = '';
+
+    this.subscriptions.add(this.userService.getReviews()
+    .subscribe((reviews: Array<Feedback>) => {
+      for(var feedback of reviews) {
+        if(this.reviewsSubscribed.has(feedback.doctorId)) {
+
+          var totalReviews = this.totalReviews.get(feedback.doctorId);
+          this.totalReviews.set(feedback.doctorId, totalReviews+1);
+          var mean = this.starsMean.get(feedback.doctorId);
+          this.starsMean.set(feedback.doctorId, mean+feedback.rating);
+          switch(feedback.rating) { 
+            case 1: { 
+              if(this.oneStar.has(feedback.doctorId)) {
+                var oneStar = this.oneStar.get(feedback.doctorId)+1;
+                this.oneStar.set(feedback.doctorId, oneStar);
+              }
+              else {
+                this.oneStar.set(feedback.doctorId,1);
+              }
+           
+               break; 
+            } 
+            case 2: { 
+              if(this.twoStars.has(feedback.doctorId)) {
+                var twoStars = this.twoStars.get(feedback.doctorId)+1;
+                this.twoStars.set(feedback.doctorId, twoStars);
+              }
+              else {
+                this.twoStars.set(feedback.doctorId,1);
+              }
+               break; 
+            } 
+            case 3: { 
+              if(this.threeStars.has(feedback.doctorId)) {
+                var threeStars = this.threeStars.get(feedback.doctorId)+1;
+                this.threeStars.set(feedback.doctorId, threeStars);
+              }
+              else {
+                this.threeStars.set(feedback.doctorId,1);
+              }
+              break; 
+            } 
+              case 4: { 
+                if(this.fourStars.has(feedback.doctorId)) {
+                  var fourStars = this.fourStars.get(feedback.doctorId)+1;
+                  this.fourStars.set(feedback.doctorId, fourStars);
+                }
+                else {
+                  this.fourStars.set(feedback.doctorId,1);
+                }
+              break; 
+            } 
+             case 5: { 
+              if(this.fiveStars.has(feedback.doctorId)) {
+                var fiveStars = this.fiveStars.get(feedback.doctorId)+1;
+                this.fiveStars.set(feedback.doctorId, fiveStars);
+              }
+              else {
+                this.fiveStars.set(feedback.doctorId,1);
+              }
+              break; 
+             } 
+         }
+        }
+
+        else {
+          this.reviewsSubscribed.set(feedback.doctorId,true);
+          this.totalReviews.set(feedback.doctorId,1);
+          this.starsMean.set(feedback.doctorId,feedback.rating);
+
+           switch(feedback.rating) { 
+            case 1: { 
+              this.oneStar.set(feedback.doctorId,1);
+              this.twoStars.set(feedback.doctorId,0);
+              this.threeStars.set(feedback.doctorId,0);
+              this.fourStars.set(feedback.doctorId,0);
+              this.fiveStars.set(feedback.doctorId,0);
+               break; 
+            } 
+            case 2: { 
+              this.twoStars.set(feedback.doctorId,1);
+              this.oneStar.set(feedback.doctorId,0);
+              this.threeStars.set(feedback.doctorId,0);
+              this.fourStars.set(feedback.doctorId,0);
+              this.fiveStars.set(feedback.doctorId,0);
+               break; 
+            } 
+            case 3: { 
+              this.threeStars.set(feedback.doctorId,1);
+              this.twoStars.set(feedback.doctorId,0);
+              this.oneStar.set(feedback.doctorId,0);
+              this.fourStars.set(feedback.doctorId,0);
+              this.fiveStars.set(feedback.doctorId,0);
+              break; 
+            } 
+              case 4: { 
+                this.fourStars.set(feedback.doctorId,1);
+                this.twoStars.set(feedback.doctorId,0);
+                this.threeStars.set(feedback.doctorId,0);
+                this.oneStar.set(feedback.doctorId,0);
+                this.fiveStars.set(feedback.doctorId,0);
+              break; 
+            } 
+             case 5: { 
+              this.fiveStars.set(feedback.doctorId,1);
+              this.twoStars.set(feedback.doctorId,0);
+              this.threeStars.set(feedback.doctorId,0);
+              this.fourStars.set(feedback.doctorId,0);
+              this.oneStar.set(feedback.doctorId,0);
+              break; 
+             } 
+         }
+
+        } 
+      }
+      this.starsMean.forEach((value: number, key: string) => {
+        var number = value / this.totalReviews.get(key);
+        number = parseFloat(number.toPrecision(2));
+        this.starsMean.set(key, number);
+        var precision = parseFloat((100/this.totalReviews.get(key)).toPrecision(2));
+        this.width1.set(key, precision*this.oneStar.get(key));
+        this.width2.set(key, precision*this.twoStars.get(key));
+        this.width3.set(key, precision*this.threeStars.get(key));
+        this.width4.set(key, precision*this.fourStars.get(key));
+        this.width5.set(key, precision*this.fiveStars.get(key));
+
+      });
+
+
+
+    },
+    errors => this.errors = errors
+    ));
+    return true;
+  }
+
+
+
+
+
+  listAppointments() {
+    this.isExpired = this.userService.isExpired();
+    if(this.isExpired) {
+      this.authService.logout();
+    }
+    
+    this.errors = '';
+
+    this.appointmentsList = [];
+    this.appointmentsListValidated = [];
+    this.lengthIsZero=true;
+
+    var now = new Date();
+    this.time.hours=now.getHours();
+    this.time.minutes=now.getMinutes();
+    now.setHours(6,0,0,0);
+
+    this.subscriptions.add(this.userService.getAppointments()
+        .subscribe(response => {
+          this.appointmentsList = response.json();
+          for(var appointment of this.appointmentsList) {
+            var appointmentGood = true;
+            if(appointment.patientId===this.patient.patientId)
+            {
+              let time1String = this.time.hours  + ":" + this.time.minutes;
+
+              this.time1InMinutesForTime1 = this.getTimeAsNumberOfMinutes(time1String);
+              this.time1InMinutesForTime2 = this.getTimeAsNumberOfMinutes(appointment.appointmentInterval.startHour.toString());
+          
+              var appDate = new Date(appointment.appointmentDate);
+              appDate.setHours(6,0,0,0);
+              if(now.getTime() === appDate.getTime()) {
+
+                if(this.time1InMinutesForTime1 > this.time1InMinutesForTime2) {
+                  appointmentGood = false; //de fapt sa nu fi trecut ora de inceput
+                }
+              }
+              if(appointmentGood) {
+                this.appointmentsListValidated.push(appointment);
+              }
+              
+            }
+
+          }
+
+          this.appointmentsListValidated.sort(function(a,b){
+            if(b.appointmentDate < a.appointmentDate) {
+              return 1;
+            }
+            else if(b.appointmentDate > a.appointmentDate) {
+              return -1
+            }
+            return 0;
+          });
+
+          
+    
+
+          if(this.appointmentsListValidated.length>0) {
+            this.lengthIsZero=false;
+          }
+
+      },
+      errors => this.errors = errors
+      ));
+    
+  }
+
+  getTimeAsNumberOfMinutes(time)
+  {
+      var timeParts = time.split(":");
+  
+      var timeInMinutes = Number((timeParts[0] * 60)) + Number(timeParts[1]);
+  
+      return Number(timeInMinutes);
+  }
+
+  deleteAppointment(id: string) {
+    this.isExpired = this.userService.isExpired();
+    if(this.isExpired) {
+      this.authService.logout();
+    }
+    this.errors = '';
+
+    this.subscriptions.add(this.userService.deleteAppointment(id)
+        .subscribe(() => {
+          this.listAppointments();
+ 
+      },
+      errors => this.errors = errors
+      )
+      );
+
+  }
+
   editPatientProfile(patientEditForm: FormGroup) {
+  this.isExpired = this.userService.isExpired();
+  if(this.isExpired) {
+    this.authService.logout();
+  }
+
   this.submitted = true;
   this.isRequesting = true;
   this.errors = '';
@@ -165,6 +447,11 @@ export class PatientAccountComponent implements OnInit {
   }
 
   editPatientPassword({ value, valid }: { value: PatientProfile, valid: boolean }) {
+    this.isExpired = this.userService.isExpired();
+    if(this.isExpired) {
+      this.authService.logout();
+    }
+
     this.submitted2 = true;
     this.isRequesting = true;
     this.errors = '';
@@ -193,6 +480,11 @@ export class PatientAccountComponent implements OnInit {
     }
 
     editPatientEmail({ value, valid }: { value: PatientProfile, valid: boolean }) {
+      this.isExpired = this.userService.isExpired();
+      if(this.isExpired) {
+        this.authService.logout();
+      }
+
       this.submitted3 = true;
       this.isRequesting = true;
       this.errors = '';
@@ -255,7 +547,6 @@ export class PatientAccountComponent implements OnInit {
       return null;
     }
   }
-
 
   ngOnDestroy() {
     localStorage.removeItem('displayMessage1');

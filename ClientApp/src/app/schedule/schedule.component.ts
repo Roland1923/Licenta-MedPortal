@@ -1,17 +1,19 @@
-import { Component, OnInit, ApplicationRef, NgZone } from '@angular/core';
+import { Component, OnInit, ApplicationRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../shared/services/user.service';
-import { FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { DoctorProfile } from '../shared/models/doctor-profile';
 import { DoctorFilter } from '../shared/models/doctor-filter';
 import { Response } from '@angular/http/src/static_response';
 import { Subscription } from 'rxjs';
-import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import { AppointmentInterval } from '../shared/models/appointment-interval';
 import { PatientProfile } from '../shared/models/patient-profile';
-import * as moment from 'moment'
+import { AuthService } from '../shared/services/auth.service';
+import { getTranslationForTemplate } from '@angular/core/src/render3/i18n';
+import { Time } from '@angular/common';
 
-declare var $: any;
+
 
 @Component({
   selector: 'app-schedule',
@@ -56,8 +58,18 @@ export class ScheduleComponent implements OnInit {
   patient: PatientProfile;
   appointmentIntervalId: string;
   appointmentIntervalsListWithValidSchedule:  Array<AppointmentInterval>;
+  lengthIsZero: boolean;
+  datePicked;
+  time: Time = {
+    hours: 10,
+    minutes: 10
+  };
+  time1InMinutesForTime1: number;
+  time1InMinutesForTime2: number;
+  savedHour: number;
+  savedMinutes: number;
 
-  constructor(private router: Router, private userService: UserService, private formBuilder: FormBuilder, _applicationRef: ApplicationRef) {
+  constructor(private router: Router, private userService: UserService, private authService: AuthService, private formBuilder: FormBuilder, _applicationRef: ApplicationRef) {
       
     this.minDate = {year: this.now.getFullYear(), month: this.now.getMonth() + 1, day: this.now.getDate()};
     this.nrOfMonthsTillNextYear = 12 - this.now.getMonth();
@@ -113,13 +125,19 @@ export class ScheduleComponent implements OnInit {
     this.appointmentIntervalsListWithValidSchedule = [];
     this.dateSelected = false;
     this.disponibilitySelected = false;
-    this.appointmentDate = null;
+    this.datePicked = null;
   }
 
   scheduleAppointment() {
-
+      this.isExpired = this.userService.isExpired();
+      if(this.isExpired) {
+        this.authService.logout();
+      }
       this.errors = '';
 
+      this.appointmentDate.setHours(this.savedHour+3, this.savedMinutes);
+      
+      console.log(this.appointmentDate);
       this.subscriptions.add(this.userService.appointmentRegister(this.patient.patientId, this.doctor.doctorId, this.appointmentDate, this.appointmentIntervalId)
         .subscribe(
             result => {
@@ -131,11 +149,18 @@ export class ScheduleComponent implements OnInit {
   }
 
   listScheduleForDate(pickedDate: NgbDateStruct) {
+    this.isExpired = this.userService.isExpired();
+    if(this.isExpired) {
+      this.authService.logout();
+    }
     this.dateSelected = true;
-    let dateString = pickedDate.month  + "-" + pickedDate.day + "-" + pickedDate.year + " 23:15:30";
+    //let dateString = pickedDate.month  + "-" + pickedDate.day + "-" + pickedDate.year + " 23:15:30";
+    let date = new Date(pickedDate.year, pickedDate.month-1, pickedDate.day, 23, 15, 30);
 
-    let date = new Date(dateString);
     this.appointmentDate = new Date(date);
+    this.savedHour = this.appointmentDate.getHours();
+    this.savedMinutes = this.appointmentDate.getMinutes();
+    this.appointmentDate.setHours(6,0,0,0);
 
     let day_of_week = date.getDay();
 
@@ -143,10 +168,18 @@ export class ScheduleComponent implements OnInit {
 
     this.appointmentIntervalsList = [];
     this.appointmentIntervalsListWithValidSchedule = [];
+    this.lengthIsZero=true;
+
+    var now = new Date();
+
+    this.time.hours=now.getHours();
+    this.time.minutes=now.getMinutes();
+    now.setHours(6,0,0,0);
 
     this.subscriptions.add(this.userService.getAppointmentIntervals()
         .subscribe(response => {
           this.appointmentIntervalsList = response.json();
+
           for(var appointmentInterval of this.appointmentIntervalsList) {
             var appointmentExist = false;
             if(appointmentInterval.day==day_of_week && appointmentInterval.doctorId===this.doctor.doctorId) 
@@ -157,13 +190,31 @@ export class ScheduleComponent implements OnInit {
                   var appDate = new Date(appointment.appointmentDate);
     
                   appDate.setHours(6,0,0,0);
-                  this.appointmentDate.setHours(6,0,0,0);
+                  
     
+
+
                   if(appDate.getTime() === this.appointmentDate.getTime()) {
                     appointmentExist = true;
                   }
+
                 }
               }
+            
+              let time1String = this.time.hours  + ":" + this.time.minutes;
+              
+              this.time1InMinutesForTime1 = this.getTimeAsNumberOfMinutes(time1String);
+              this.time1InMinutesForTime2 = this.getTimeAsNumberOfMinutes(appointmentInterval.startHour.toString());
+          
+ 
+              if(now.getTime() === this.appointmentDate.getTime()) {
+
+                if(this.time1InMinutesForTime1 > this.time1InMinutesForTime2) {
+
+                  appointmentExist = true; //de fapt sa nu fi trecut ora de inceput
+                }
+              }
+
               if(!appointmentExist) {
                 this.appointmentIntervalsListWithValidSchedule.push(appointmentInterval);
               }
@@ -180,10 +231,22 @@ export class ScheduleComponent implements OnInit {
             }
             return 0;
           });
+
+          if(this.appointmentIntervalsListWithValidSchedule.length>0) {
+            this.lengthIsZero=false;
+          }
       },
       errors => this.errors = errors
       ));
     
+  }
+
+  getTimeAsNumberOfMinutes(time)
+  {
+      var timeParts = time.split(":");
+      var timeInMinutes = Number((timeParts[0] * 60)) + Number(timeParts[1]);
+  
+      return Number(timeInMinutes);
   }
 
   activate(page) {
@@ -207,6 +270,10 @@ export class ScheduleComponent implements OnInit {
   }
 
   getDoctorsByFilter({ value, valid }: { value: DoctorFilter, valid: boolean }, skip : number) {
+    this.isExpired = this.userService.isExpired();
+    if(this.isExpired) {
+      this.authService.logout();
+    }
     this.submitted = true;
     this.isRequesting = true;
     this.errors = '';

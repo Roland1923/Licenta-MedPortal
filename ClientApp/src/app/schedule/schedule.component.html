@@ -4,8 +4,9 @@
 
 <body>
 
+
 <div class="schedule" *ngIf="scheduleNotClicked">
-  <h3>AVAILABLE DOCTORS</h3>
+  <div class="titleCustom">Search a doctor and book an appointment</div>
 
   <form [formGroup]="doctorSearch" #f="ngForm" (ngSubmit)="getDoctorsByFilter(doctorSearch, 0)" class="form-horizontal" id="formSearch">
     <div class="searchCard">
@@ -44,28 +45,27 @@
         <div class="col-md-7 col-12">
           <div class="row">
             <div class="col-auto">
-                <img class="photo" src="assets/img/avatar-doctor.png">
+                <img class="photo" src="assets/img/doctor-avatar2.png">
             </div>
             <div class="col-auto">
-              <h4 class="card-doctor-name">Dr. {{doctor.firstName}} {{doctor.lastName}}</h4>
-              <p class="card-spec">{{doctor.speciality}}</p>
-              <div class="card-rating">
-                <div class="fill-rating">
-                    <div>★★★★★</div>
-                </div>
-                <span class="rating">5.00 (1 rating)</span>
-              </div>
+              <h3 class="card-doctor-name">Dr. {{doctor.firstName}} {{doctor.lastName}}</h3>
+              <div class="card-spec">{{doctor.speciality}}</div>
+              <span class="input-group-addon"> <i class="fas fa-hospital"> </i><div class="details">{{doctor.hospital}}</div></span>
+              <span class="input-group-addon"> <i class="fa fa-map-marker"></i><div class="details">{{doctor.address}}, {{doctor.city}}</div></span> 
+              <span class="input-group-addon"> <i class="fa fa-envelope"></i><div class="details">{{doctor.email}}</div></span> 
+              <span class="input-group-addon"> <i class="fa fa-phone"></i><div class="details">{{doctor.phoneNumber}}</div></span> 
+              <span class="input-group-addon"> <i class="fa fa-star"></i><div class="details">3 reviews</div></span> 
+              <button class="btn btn-primary schedule-button" (click)="scheduleClicked(doctor)">
+                  SCHEDULE
+              </button>
             </div>
           </div>
         </div>
 
         <div class="col-md-5 col-12">
         
-            <span class="input-group-addon"> <i class="fas fa-hospital"> </i><div class="institute">{{doctor.hospital}}</div></span>
-            <span class="input-group-addon"> <i class="fa fa-map-marker"></i><div class="card-spec">{{doctor.address}}, {{doctor.city}}</div></span> 
-            <button class="btn btn-primary schedule-button" (click)="scheduleClicked(doctor)">
-              SCHEDULE YOURSELF
-            </button>
+           
+
         </div>
       </div>
       
@@ -104,36 +104,35 @@
   </div>
 
   <div class="doctors">
-    <div class="doctor-card">
-
-      <div class="row">
-        <div class="col-md-7 col-12">
-          <div class="row">
-            <div class="col-auto">
-                <img class="photo" src="assets/img/avatar-doctor.png">
-            </div>
-            <div class="col-auto">
-              <h4 class="card-doctor-name">Dr. {{doctor.firstName}} {{doctor.lastName}}</h4>
-              <p class="card-spec">{{doctor.speciality}}</p>
-              <div class="card-rating">
-                <div class="fill-rating">
-                    <div>★★★★★</div>
-                </div>
-                <span class="rating">5.00 (1 rating)</span>
+      <div class="doctor-card">
+  
+        <div class="row">
+          <div class="col-md-7 col-12">
+            <div class="row">
+              <div class="col-auto">
+                  <img class="photo" src="assets/img/doctor-avatar2.png">
+              </div>
+              <div class="col-auto">
+                <h3 class="card-doctor-name">Dr. {{doctor.firstName}} {{doctor.lastName}}</h3>
+                <div class="card-spec">{{doctor.speciality}}</div>
+                <span class="input-group-addon"> <i class="fas fa-hospital"> </i><div class="details">{{doctor.hospital}}</div></span>
+                <span class="input-group-addon"> <i class="fa fa-map-marker"></i><div class="details">{{doctor.address}}, {{doctor.city}}</div></span> 
+                <span class="input-group-addon"> <i class="fa fa-envelope"></i><div class="details">{{doctor.email}}</div></span> 
+                <span class="input-group-addon"> <i class="fa fa-phone"></i><div class="details">{{doctor.phoneNumber}}</div></span> 
+                <span class="input-group-addon"> <i class="fas fa-edit"></i><div class="details">{{doctor.description}}</div></span> 
+                <span class="input-group-addon"> <i class="fa fa-star"></i><div class="details">3 reviews</div></span> 
               </div>
             </div>
           </div>
+  
+          <div class="col-md-5 col-12">
+          
+             
+  
+          </div>
         </div>
-
-        <div class="col-md-5 col-12">
-            <span class="input-group-addon"> <i class="fas fa-hospital"> </i><div class="institute">{{doctor.hospital}}</div></span>
-            <span class="input-group-addon"> <i class="fa fa-map-marker"></i><div class="card-spec">{{doctor.address}}, {{doctor.city}}</div></span> 
-            <span class="input-group-addon"> <i class="fas fa-info"></i><div class="card-spec">{{doctor.description}}</div></span> 
-        </div>
-
+        
       </div>
-      
-    </div>
    
 </div>
 
@@ -165,8 +164,8 @@
 
   <hr>
 
-  <div class="searchCard" *ngIf="dateSelected && appointmentIntervalsListWithValidSchedule.length!=0">
-
+  <div class="searchCard" *ngIf="dateSelected && !lengthIsZero">
+    
       <div class="row">
         <div class="col-12 col-md-1">
           <span class="input-group-addon2">
@@ -174,26 +173,24 @@
         </div>
       
         <div class="col-12 col-md-1" *ngFor="let appointmentInterval of appointmentIntervalsListWithValidSchedule">
-     
-
           <button [ngClass]="activeDisponibility[appointmentInterval.appointmentIntervalId] ? 'btnDisponibility active' : 'btnDisponibility'"  (click)="activateDisponibility(appointmentInterval.appointmentIntervalId)">{{appointmentInterval.startHour}}</button>
         </div>
       </div>
 
   </div>
 
-
   
-  <div class="searchCard" *ngIf="dateSelected && appointmentIntervalsListWithValidSchedule.length==0">
+  <div class="searchCard" *ngIf="dateSelected && lengthIsZero">
+
         <div class="row">
-          <div class="col-12">
-            <span class="input-group-addon2">
-                  No appointment available for date selected, choose other.</span>
+            <div class="col-12">
+              <span class="input-group-addon2">
+                    No appointments available for date selected, choose other.</span>
 
+          </div>
         </div>
-      </div>
-
-  </div>
+    
+</div>
 
   <div class="addButton">
       <button class="btn active btn-primary btn-lg form-control mb-2 mr-sm-2 mb-sm-0" (click)="scheduleAppointment()" [disabled]="!dateSelected || !disponibilitySelected">SCHEDULE</button>

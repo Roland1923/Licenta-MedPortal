@@ -11,6 +11,7 @@ export interface Appointment {
     appointmentDate : Date;
     appointmentIntervalId : string;
     appointmentInterval : AppointmentInterval;
+    haveFeedback: boolean;
 }
 
 

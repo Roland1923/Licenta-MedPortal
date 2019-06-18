@@ -1,8 +1,8 @@
 ::ng-deep footer{
     font-size: 16px;  
     padding: 22px 0;
-    background: #343a40!important;
-    color: white;
+    background: #343a40 !important;
+    color: white !important;
     margin-top: 2%;
     position: relative;
     width: 100%;
@@ -49,14 +49,28 @@ body {
 }
 
 .input-group-addon {
-    background: white;
+    background: transparent;
     color: black;
     border:none;
+    margin-top: -10px;
+    margin-bottom: -10px;
 }
+
 
 h3 {
     text-align:center;
     font-weight: bold;
+}
+
+.titleCustom {
+    font-weight: bold;
+    margin-bottom: -11px;
+    margin-left: 25px;
+    animation-name: fadeInUp;
+    font-size: 32px;
+    margin-right: 25px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #dbdbdb;
 }
 
 .fa, .fas {
@@ -93,7 +107,7 @@ h3 {
     margin-right: 10px;
 }
 
-button:focus, button:active, .active {
+button:focus, button:hover, button:active, .active {
     outline: none !important;
     box-shadow: none !important;
     color: white !important;
@@ -113,8 +127,8 @@ button:focus, button:active, .active {
 
  .photo {
     height: auto;
-    max-width: 120px;
-    max-height: 153.6px;
+    max-width: 220px;
+    max-height: 220.6px;
  }
 
 .col-xs-auto {
@@ -127,6 +141,13 @@ button:focus, button:active, .active {
     flex-direction: row;
     color: yellow;
 }
+
+.card-spec {
+    font-style: italic;
+    margin-top: -10px;
+    margin-bottom: 5px;
+}
+
 
 .rating {
     margin-left: 6px;

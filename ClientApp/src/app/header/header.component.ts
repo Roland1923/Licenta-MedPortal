@@ -1,7 +1,6 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../shared/services/auth.service';
-import { Location } from '@angular/common';
-import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
+import { Router, NavigationStart } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +13,7 @@ export class HeaderComponent implements OnInit {
   isDoctor: boolean;
   allow: boolean;
   public href: string = "";
-  paths: Array<string> = ['/patient/account', '/patient/appointments', '/patient/medical-history', '/doctor/account'];
+  paths: Array<string> = ['/patient/account', '/patient/appointments', '/patient/medical-history', '/doctor/account', '/doctor/appointments', '/patient/doctor-reviews'];
 
   constructor(private authService: AuthService, private router: Router) {
     this.router.events

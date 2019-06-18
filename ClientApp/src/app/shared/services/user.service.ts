@@ -16,6 +16,7 @@ import { Time } from '@angular/common';
 
 export class UserService extends BaseService {
 
+
   baseUrl: string = '';
 
   constructor(private http: Http, private configService: ConfigService) {
@@ -91,9 +92,10 @@ export class UserService extends BaseService {
   }
 
   appointmentRegister(patientId: string, doctorId: string, appointmentDate: Date, appointmentIntervalId: string) {
-
     let body = JSON.stringify({appointmentIntervalId, appointmentDate, doctorId, patientId});
-    let headers = new Headers({'Content-Type': 'application/json'});
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({ headers: headers });
     
     return this.http.post(this.baseUrl + "api/Appointments", body, options)
@@ -112,7 +114,9 @@ export class UserService extends BaseService {
 
   editPatientProfile(id : string, NIN : string, firstName: string, lastName: string, email: string, password: string, city: string, country: string, birthdate: Date, phoneNumber: string): Observable<any> {
     let body = JSON.stringify({ NIN, firstName, lastName, email, password, city, country, birthdate, phoneNumber });
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({ headers: headers });
     
     return this.http.put(this.baseUrl + "api/Patients/" + id, body, options)
@@ -122,7 +126,9 @@ export class UserService extends BaseService {
 
   editDoctorProfile(id : string, DIN : string, firstName: string, lastName: string, email: string, password: string, city: string, country: string, description: string, speciality: string, address: string, hospital: string, phoneNumber: string): Observable<any> {
     let body = JSON.stringify({ DIN, firstName, lastName, email, password, city, country, description, speciality, address, hospital, phoneNumber });
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({ headers: headers });
     
     return this.http.put(this.baseUrl + "api/Doctors/" + id, body, options)
@@ -130,9 +136,35 @@ export class UserService extends BaseService {
       .catch(this.handleError);
   }
 
+  updateAppointment(appointmentId: string, appointmentIntervalId: string, appointmentDate: Date, doctorId: string, patientId: string, haveFeedback: boolean) {
+    let body = JSON.stringify({appointmentIntervalId, appointmentDate, doctorId, patientId, haveFeedback});
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    
+    return this.http.put(this.baseUrl + "api/Appointments/" + appointmentId, body, options)
+      .map(res => true)
+      .catch(this.handleError);
+  }
+
+  addReview(rating: number, description: string, doctorId: string, patientId: string) {
+    let body = JSON.stringify({rating, description, doctorId, patientId});
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    
+    return this.http.post(this.baseUrl + "api/Feedbacks", body, options)
+      .map(res => true)
+      .catch(this.handleError);
+  }
+
   addDoctorAppointment(doctorId : string, day: number, startHour: Time, endHour: Time) {
     let body = JSON.stringify({doctorId, day, startHour, endHour});
-    let headers = new Headers({'Content-Type': 'application/json'});
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({ headers: headers });
     
     return this.http.post(this.baseUrl + "api/AppointmentIntervals", body, options)
@@ -140,28 +172,73 @@ export class UserService extends BaseService {
       .catch(this.handleError);
   }
 
+  getAppointments() {
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.http.get(this.baseUrl + "api/Appointments/", options)
+    .map(response => response)
+    .catch(this.handleError);
+  }
+
+  getReviews() {
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.http.get(this.baseUrl + "api/Feedbacks/", options)
+    .map(response => response.json())
+    .catch(this.handleError);
+  }
+
 
   getAppointmentIntervals() {
-    return this.http.get(this.baseUrl + "api/AppointmentIntervals/")
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.http.get(this.baseUrl + "api/AppointmentIntervals/", options)
     .map(response => response)
     .catch(this.handleError);
   }
 
   getAppointmentIntervalsForDoctor(doctorId : string) {
-    return this.http.get(this.baseUrl + "api/AppointmentIntervals/" + doctorId)
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.http.get(this.baseUrl + "api/AppointmentIntervals/" + doctorId, options)
     .map(response => response.json())
     .catch(this.handleError);
   }
 
   deleteDisponibility(appointmentIntervalId : string) {
-    return this.http.delete(this.baseUrl + "api/AppointmentIntervals/" + appointmentIntervalId)
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.http.delete(this.baseUrl + "api/AppointmentIntervals/" + appointmentIntervalId, options)
     .map(response => response.json())
     .catch(this.handleError);
   }
 
+  deleteAppointment(appointmentId : string) {
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.http.delete(this.baseUrl + "api/Appointments/" + appointmentId, options)
+    .map(response => response.json())
+    .catch(this.handleError);
+  }
+
+
   getDoctorsByFilter(name : string, hospital : string, speciality : string, city : string, skip : number, take : number) {
     let body = JSON.stringify({ name, hospital , speciality, city});
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({ headers: headers });
 
     return this.http.put(this.baseUrl + "api/Doctors/page/" + skip + "/" + take, body, options)
@@ -170,19 +247,31 @@ export class UserService extends BaseService {
   }
 
   getAppointmentIntervalsByFilter(doctorId : string, day: number) {
-    return this.http.get(this.baseUrl + "api/AppointmentIntervals/" + doctorId + "/" + day)
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.http.get(this.baseUrl + "api/AppointmentIntervals/" + doctorId + "/" + day, options)
       .map(response => response)
       .catch(this.handleError);
   }
 
   getPatient (id : string) {
-    return this.http.get(this.baseUrl + "api/Patients/" + id)
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.http.get(this.baseUrl + "api/Patients/" + id, options)
       .map(response => response.json())
       .catch(this.handleError);
   }
 
   getDoctor (id : string) {
-    return this.http.get(this.baseUrl + "api/Doctors/" + id)
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.http.get(this.baseUrl + "api/Doctors/" + id, options)
       .map(response => response.json())
       .catch(this.handleError);
   }

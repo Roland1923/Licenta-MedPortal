@@ -1,0 +1,353 @@
+::ng-deep footer{
+    font-size: 16px;  
+    padding: 22px 0;
+    background: #343a40 !important;
+    color: white !important;
+    margin-top: 2%;
+    position: relative;
+    width: 100%;
+    clear: both;
+}
+
+body {
+    font-family: 'Source Sans Pro';
+    height: 100%;
+    min-height: 100vh;
+}
+
+.nrStars {
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.titleCustom {
+    font-weight: bold;
+    margin-bottom: -11px;
+    margin-left: 25px;
+    font-size: 32px;
+    margin-right: 25px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #dbdbdb;
+}
+
+.titleCustom1 {
+    font-weight: bold;
+    margin-bottom: -11px;
+    margin-left: 25px;
+    font-size: 21px;
+    margin-right: 25px;
+    margin-bottom: 10px;
+}
+
+ngb-rating {
+    outline: none;
+}
+
+
+  .filled {
+    color: #69D18B;
+  }
+  .bad {
+    color: #deb0b0;
+  }
+  .filled.bad {
+    color: #ff1e1e;
+  }
+
+  .star {
+    position: relative;
+    display: inline-block;
+    font-size: 2.5rem;
+    color: #d3d3d3;
+}
+  
+  .full {
+    color: red;
+  }
+
+  .half {
+    position: absolute;
+    display: inline-block;
+    overflow: hidden;
+    color: #69D18B;
+}
+
+
+
+textarea:focus {
+    border-radius: none;
+}
+
+.doctor-rating {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-right:15px;
+}
+
+.bar5 {
+    margin-right:10px;
+    width: 60%; 
+    height: 16px; 
+    background-color: #69D18B;
+}
+
+.bar4 {
+    margin-right:10px;
+    width: 20%; 
+    height: 16px; 
+    background-color: #2196F3;
+}
+
+.bar3 {
+    margin-right:10px;
+    width: 5%; 
+    height: 16px; 
+    background-color: #00bcd4;
+}
+
+.bar2 {
+    margin-right:10px;
+    width: 5%; 
+    height: 16px; 
+    background-color: #ff9800;
+}
+
+.bar1 {
+    margin-right:10px;
+    width: 10%; 
+    height: 16px; 
+    background-color: #f44336;
+}
+
+.bar-container {
+    width: 100%;
+    background-color: #f1f1f1;
+    text-align: center;
+    color: white;
+}
+
+
+
+@media only screen and (min-width: 1255px) {
+    label.error-label {
+        clear: both;
+        background: #b11116;
+        color: #fff;
+        padding: 2px 5px;
+        font-weight: normal;
+        font-size: 0.8rem;
+        min-height: auto;
+        text-align: center;
+        display: block;
+        width: 33.3%;
+        margin-left: 35%;
+    }
+}
+
+@media only screen and (max-width: 1255px) {
+    label.error-label {
+        clear: both;
+        background: #b11116;
+        color: #fff;
+        padding: 2px 5px;
+        font-weight: normal;
+        font-size: 0.8rem;
+        min-height: auto;
+        text-align: center;
+        display: block;
+        width: 100%;
+    }
+}
+
+.container {
+    text-align: center;
+}
+
+
+textarea {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 2px dashed rgba(0,0,0,.2);
+    width: 100%;
+}
+
+.col-centered{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+.fa, .fas, .far {
+    margin-right:5px;
+}
+
+.reviews {
+    background-color: #f8f8f8;
+    margin-left: 8vw;
+    margin-right: 8vw;
+    margin-top: 1.5vw;
+    margin-bottom: 3vw;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    white-space: pre-line;
+    //border: 1px solid #e7e7e7;
+}
+
+hr {
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.doctor-card {
+    padding: 12px;
+    border: 1px solid #dbdbdb;
+    box-shadow: 2px 2px 2px #dbdbdb;
+    margin-top: 18px;
+    background-color: white;
+    margin-left: 25px;
+    margin-right: 25px;
+    border-radius: 50px 20px;
+}
+
+h3 {
+    text-align:center;
+    font-weight: bold;
+}
+
+.addButton {
+    border: none;
+    font-size: .7vw;
+    padding: 1vh; 
+    font-weight: bold;
+    text-align: center;
+}
+
+
+@media only screen and (min-width: 1255px) {
+    .addButton .btn {
+        border: none;
+        font-size: .7vw;
+        padding: 1vh; 
+        font-weight: bold;
+        width: 15%;
+    }
+}
+
+@media only screen and (max-width: 1255px) {
+    .addButton .btn {
+        border: none;
+        font-size: 3vw;
+        padding: 1vh; 
+        font-weight: bold;
+        width: 40%;
+    }
+}
+
+button:focus, button:hover, button:active, .active {
+    outline: none !important;
+    box-shadow: none !important;
+    color: white !important;
+    background-color:  #69D18B !important;
+ }
+
+ @media only screen and (min-width: 1255px) {
+    .addButton .btn {
+        border: none;
+        font-size: .7vw;
+        padding: 1vh; 
+        font-weight: bold;
+        width: 15%;
+    }
+}
+
+@media only screen and (max-width: 1255px) {
+    .addButton .btn {
+        border: none;
+        font-size: 3vw;
+        padding: 1vh; 
+        font-weight: bold;
+        width: 40%;
+    }
+}
+
+.btn[disabled] {
+    cursor: not-allowed;
+    pointer-events: all !important;
+    background-color: #EEEEEE;
+  }
+
+  .btn {
+    background-color: #69D18B;
+    border: none;
+    cursor: pointer;
+    color: white;
+    min-width: 30px;
+    margin-right: 10px;
+}
+
+
+.photo {
+    height: auto;
+    max-width: 220px;
+    max-height: 220.6px;
+ }
+
+ .card-spec {
+    font-style: italic;
+    margin-top: -10px;
+    margin-bottom: 5px;
+}
+
+
+.row {
+    align-items: center;
+}
+
+.goBackButton {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 25px;
+    margin-right: 25px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.input-group-addon {
+    background: transparent;
+    color: black;
+    border:none;
+    margin-bottom: -10px;
+}
+
+span {
+    white-space: pre-line;
+}
+
+.input-group-addon2 {
+    font-weight: bold;
+}
+
+.schedule-button {
+    white-space: pre-line;
+    margin-top: 15px;
+    margin-left: 10px;
+}
+
+button:focus, button:active, .active {
+    outline: none !important;
+    box-shadow: none !important;
+    color: white !important;
+    background-color:  #69D18B !important;
+ }
+
+ .btn {
+    background-color: #69D18B;
+    border: none;
+    cursor: pointer;
+    color: white;
+    min-width: 30px;
+    margin-right: 10px;
+}

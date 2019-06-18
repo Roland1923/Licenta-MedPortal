@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+
+<body>
+<div class="schedule">
+  <div class="searchCard">
+    <div class="row">
+
+
+      <div class="col-12 col-md-6">
+        <span class="input-group-addon2">
+        CHOOSE A DATE:</span>
+      </div>
+
+
+      <div class="col-12 col-md-6">
+        <span class="input-group-addon"><i class="fa fa-calendar"> </i> 
+              <input class="form-control" onkeydown="return false" placeholder="Click and select a date" [(ngModel)]="datePicked" (ngModelChange)="listScheduleForDate(datePicked)" (click)="d.toggle()" 
+              ngbDatepicker [minDate]="minDate" [maxDate]="maxDate" #d="ngbDatepicker">
+
+          </span>
+      </div>
+
+    </div>
+  </div>
+
+
+  <hr>
+  <div class="row" *ngIf="!lengthIsZero">
+  <div class="col-12 col-md-auto" *ngFor="let appointment of appointmentsListValidated">
+    <div class="searchCard">
+          <div class="row">
+            <div class="col-12 col-12 col-md-6">
+                <img class="photo" src="assets/img/patient-avatar.png">
+            </div>
+            <div class="col-12 col-12 col-md-6">
+              <h4 class="card-doctor-name">{{appointment.patient.firstName}} {{appointment.patient.lastName}}</h4>
+              <div class="card-spec">{{appointment.appointmentDate | date:'yyyy-MM-dd'}}</div>
+              <div class="card-spec">{{appointment.appointmentInterval.startHour}} - {{appointment.appointmentInterval.endHour}}</div>
+              <span class="input-group-addon"> <i class="fa fa-birthday-cake"> </i><div class="details">{{appointment.patient.birthdate | date:'yyyy-MM-dd'}}</div></span>
+              <span class="input-group-addon"> <i class="fa fa-phone"></i><div class="details">{{appointment.patient.phoneNumber}}</div></span> 
+              <span class="input-group-addon"> <i class="fa fa-envelope"></i><div class="details">{{appointment.patient.email}}</div></span> 
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  
+  <div class="searchCard" *ngIf="lengthIsZero">
+
+        <div class="row">
+            <div class="col-12">
+              <span class="input-group-addon2">
+                    No appointments available for date selected, choose other.</span>
+          </div>
+        </div>
+    
+</div>
+
+
+
+
+</div>
+
+</body>
+
+</html>
