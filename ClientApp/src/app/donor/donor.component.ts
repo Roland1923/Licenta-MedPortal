@@ -311,7 +311,7 @@ export class DonorComponent implements OnInit {
             this.bloodDonorsList = response.json();
 
             for(let bloodDonor of this.bloodDonorsList) {
-              if (bloodDonor.haveDonated==false && bloodDonor.patientId!=this.patientId) {
+              if (bloodDonor.haveDonated!=false && bloodDonor.patientId!=this.patientId) {
                 this.bloodDonorsListValidated.push(bloodDonor);
               } 
               else {
