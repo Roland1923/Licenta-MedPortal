@@ -34,7 +34,7 @@ namespace WebApp.Apis
         { 
             try
             {
-                string[] includes = { "PatientHistory" };
+                string[] includes = { "BloodDonor", "PatientHistory" };
                 var patients = await _repository.GetAllAsync(includes);
                 return Ok(patients);
             }

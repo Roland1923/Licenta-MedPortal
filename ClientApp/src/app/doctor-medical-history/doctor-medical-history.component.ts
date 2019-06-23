@@ -7,7 +7,6 @@ import { UserService } from '../shared/services/user.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Appointment } from '../shared/models/appointment';
 import { PatientHistory } from '../shared/models/patient.history.inteface';
-import * as CryptoJS from 'crypto-js';  
 
 @Component({
   selector: 'app-doctor-medical-history',
@@ -179,6 +178,10 @@ export class DoctorMedicalHistoryComponent implements OnInit {
   }
 
   updateMedicalHistory({ value, valid }: { value: PatientHistory, valid: boolean }) {
+    this.isExpired = this.userService.isExpired();
+    if(this.isExpired) {
+      this.authService.logout();
+    }
     this.errors = '';
     if (valid) {
       if(value.consultations!=null){

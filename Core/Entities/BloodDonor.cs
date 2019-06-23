@@ -17,6 +17,7 @@ namespace Core.Entities
         public bool PatientConfirmed { get; private set; }
         public string PendingPatientId { get; private set; }
 
+
         private BloodDonor() { }
 
         public static BloodDonor Create(string type, Guid patientId, DateTime applyDate)

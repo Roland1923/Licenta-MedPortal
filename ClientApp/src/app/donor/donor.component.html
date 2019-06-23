@@ -50,7 +50,7 @@
   
         </div>
         <div class="col-md-6 aligncenter">
-          <i class="fas fa-hand-holding-heart"></i>
+          <i class="bigIcon fas fa-hand-holding-heart"></i>
         </div>
       </div>
     </div>
@@ -85,11 +85,61 @@
                 <a data-toggle="collapse" data-parent="#accordion" href="#toggle-content1">Join as volunteer and help people in need</a>
               </div>
             </div>
-            <div id="toggle-content1" class="panel-collapse collapse">
-                adfsafdsafdafdsa
+            <div id="toggle-content1" class="panel-collapse collapse" *ngIf="!bloodDonorFailed">
+                <form [formGroup]="joinBloodDonor" #f="ngForm" (ngSubmit)="addBloodDonor(joinBloodDonor)">
+                    <div class="row">
+      
+                      <div class="col-sm-4 offset-4 form-group">
+                          <div class="input-group">
+                              <span class="input-group-addon"><i class="fa fa-donate"></i></span> 
+                              <select class="form-control" formControlName="type">
+                                  <option id="undefined" [value]=null disabled  selected> Select blood type:</option>
+                                  <option value="A-positive">
+                                      A-positive
+                                  </option>
+                                  <option value="A-negative">
+                                      A-negative
+                                  </option>  
+                                  <option value="B-positive">
+                                      B-positive
+                                  </option>
+                                  <option value="B-negative">
+                                      B-negative
+                                  </option>
+                                  <option value="AB-positive">
+                                      AB-positive
+                                  </option>
+                                  <option value="AB-negative">
+                                      AB-negative
+                                    </option>
+                                    <option value="O-positive">
+                                        O-positive
+                                    </option>
+
+                                    <option value="O-negative">
+                                        O-negative
+                                      </option>
+                              </select>
+                          </div><!-- /input-group -->
+                      </div>
+
+                      
+                    </div>
+                    <div class="updateButton">
+                        <button type="submit" class="btn active btn-primary btn-lg" [disabled]="f.invalid">JOIN</button>
+                    </div>
+                  </form>
+            </div>
+
+            <div id="toggle-content1" class="panel-collapse collapse" *ngIf="bloodDonorFailed">
+                <div class="error-message">Sorry, you have already donated blood in the past eight weeks or you are not eligible to donate!</div>
             </div>
           </div>
    
+
+
+
+
           <div class="panel panel-default">
               <div class="panel-heading">
                 <div class="panel-title">
@@ -97,10 +147,126 @@
                 </div>
               </div>
               <div id="toggle-content2" class="panel-collapse collapse">
-                  adfsafdsafdafdsa
+
+                <form [formGroup]="bloodDonorSearch" #f="ngForm" (ngSubmit)="getBloodDonorsByFilter(bloodDonorSearch, 0)" class="form-horizontal" id="formSearch">
+                  <div class="searchCard">
+                    <div class="row">
+                      <div class="col-12 col-md-6 ">
+                          <div class="input-group">
+                              <span class="input-group-addon"><i class="fa fa-donate"></i></span> 
+                              <select class="form-control" formControlName="type">
+                                  <option id="undefined" [value]=null disabled  selected> Select blood type:</option>
+                                  <option value="A-positive">
+                                      A-positive
+                                  </option>
+                                  <option value="A-negative">
+                                      A-negative
+                                  </option>  
+                                  <option value="B-positive">
+                                      B-positive
+                                  </option>
+                                  <option value="B-negative">
+                                      B-negative
+                                  </option>
+                                  <option value="AB-positive">
+                                      AB-positive
+                                  </option>
+                                  <option value="AB-negative">
+                                      AB-negative
+                                    </option>
+                                    <option value="O-positive">
+                                        O-positive
+                                    </option>
+
+                                    <option value="O-negative">
+                                        O-negative
+                                      </option>
+                              </select>
+                          </div><!-- /input-group -->
+                      </div>
+                      <div class="col-12 col-md-4 ">
+                        
+                        <span class="input-group-addon"><i class="fas fa-city"></i>
+                        <input class="form-control text-box single-line" formControlName="city" placeholder="Search by city" type="text" value=""></span>
+                      </div>
+                      
+                      <div class="col-12 col-md-2">
+                        <button class="btn btn-primary pull-right" type="submit">
+                          <i class="fas fa-search"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+
+                <div class="bloodDonors" *ngIf="bloodDonorsListValidated.length!=0">
+                    <div class="bloodDonor-card" *ngFor="let bloodDonor of bloodDonorsListValidated">
+                      <div class="row">
+
+                              <div class="col-md-auto">
+                                  <img class="photo" src="assets/img/patient-avatar.png">
+                              </div>
+                              <div class="col-md-auto">
+                                <h3 class="card-doctor-name">{{bloodDonor.patient.firstName}} {{bloodDonor.patient.lastName}}</h3>
+                                <div class="card-spec">{{bloodDonor.patient.city}}, {{bloodDonor.patient.country}}</div>
+                                <span class="input-group-addon addon2"> <i class="fas fa-donate"> </i>{{bloodDonor.type}}</span>
+                                <span class="input-group-addon addon2"> <i class="fa fa-envelope"></i>{{bloodDonor.patient.email}}</span> 
+                                <span class="input-group-addon addon2"> <i class="fa fa-phone"></i>{{bloodDonor.patient.phoneNumber}}</span> 
+                                <button class="btn btn-primary schedule-button" (click)="needBlood(bloodDonor)">
+                                    TAKE OPPORTUNITY
+                                </button>
+                              </div>
+                   
+                    </div>                  
+                  </div>
+                </div>
+
+                <div *ngIf="bloodDonorsListValidated.length==0">
+                    <div class="error-message">No results found!</div>
+                </div>
+
+
+
+
+                <div id="pagination-div">
+                    <nav aria-label="pagination" class="row align-items-center justify-content-center" *ngIf="bloodDonorsListValidated.length!=0">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item"><a class="page-link" (click)="getBloodDonorsByFilter(bloodDonorSearch, 0); activate(1);"> << </a></li>
+                            
+                            <li class="page-item" *ngFor="let page of numbers"><button [ngClass]=" active[page] ? 'page-link active' : 'page-link'"  (click)="getBloodDonorsByFilter(bloodDonorSearch, page-1); activate(page);">{{page}}</button></li>
+              
+                            <li class="page-item"><a class="page-link" (click)="getBloodDonorsByFilter(bloodDonorSearch, lastPage-1); activate(lastPage);"> >> </a></li>
+                        </ul>
+                    </nav>
+                  </div>
+
+
               </div>
             </div>
-     
+
+
+
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                  <div class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#toggle-content3">Confirm that you donate already</a>
+                  </div>
+                </div>
+                <div id="toggle-content3" class="panel-collapse collapse" *ngIf="!nothingToConfirm">
+                    <h3 class="aligncenter">{{pendingPatient.firstName}} {{pendingPatient.lastName}} - {{pendingPatient.city}}, {{pendingPatient.country}}</h3>
+                    <div class="updateButton">
+                        <button  class="button1 btn active btn-primary btn-lg" (click)="confirmDonate()">YES, I DONATED</button>
+                        <button  class="button2 btn active btn-primary btn-lg" (click)="declineDonate()">NO, I DIDN`T DONATE</button>
+                    </div>
+                   
+                </div>
+                <div id="toggle-content3" class="panel-collapse collapse" *ngIf="nothingToConfirm">
+                    <div class="error-message">No requests available!</div>
+                </div>
+              </div>
 
 
      

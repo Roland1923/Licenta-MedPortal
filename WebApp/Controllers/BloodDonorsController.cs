@@ -6,6 +6,9 @@ using Core.Entities;
 using Core.IRepositories;
 using Infrastructure.Attributes;
 using WebApp.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace WebApp.Apis
 {
@@ -26,13 +29,51 @@ namespace WebApp.Apis
         [NoCache]
         [ProducesResponseType(typeof(List<BloodDonor>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
-        public async Task<ActionResult> BloodDonors()
+        public async Task<ActionResult> BloodDonors([FromHeader(Name = "Authorization")]string value)
         {
+
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(value);
+            var issuer = token.Claims.First(claim => claim.Type == "iss").Value;
+            var audience = token.Claims.First(claim => claim.Type == "aud").Value;
+            if (issuer != "MyIssuer" || audience != "MyAudience")
+            {
+                return Unauthorized();
+            }
             try
             {
-                string[] includes = { };
+                string[] includes = { "Patient" };
                 var bloodDonors = await _repository.GetAllAsync(includes);
                 return Ok(bloodDonors);
+            }
+            catch
+            {
+                return BadRequest(new ApiResponse { Status = false });
+            }
+        }
+
+
+        // GET api/BloodDonors/page/name/10/10
+        [HttpPut("page/{skip}/{take}")]
+        [NoCache]
+        [ProducesResponseType(typeof(List<BloodDonor>), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<ActionResult> BloodDonorsNamePage([FromBody]BloodDonorFilterModel filter, int skip, int take, [FromHeader(Name = "Authorization")]string value)
+        {
+
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(value);
+            var issuer = token.Claims.First(claim => claim.Type == "iss").Value;
+            var audience = token.Claims.First(claim => claim.Type == "aud").Value;
+            if (issuer != "MyIssuer" && audience != "MyAudience")
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                string[] includes = { "Patient" };
+                var pagingResult = await _repository.GetByFilter(FilterDelegate(filter.Type, filter.City), skip, take, includes);
+                Response.Headers.Add("X-InlineCount", pagingResult.TotalRecords.ToString());
+                return Ok(pagingResult.Records);
             }
             catch
             {
@@ -83,8 +124,16 @@ namespace WebApp.Apis
         //[ValidateAntiForgeryToken]
         [ProducesResponseType(typeof(ApiResponse), 201)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
-        public async Task<ActionResult> CreateBloodDonor([FromBody]BloodDonorModel bloodDonor)
+        public async Task<ActionResult> CreateBloodDonor([FromBody]BloodDonorModel bloodDonor, [FromHeader(Name = "Authorization")]string value)
         {
+
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(value);
+            var issuer = token.Claims.First(claim => claim.Type == "iss").Value;
+            var audience = token.Claims.First(claim => claim.Type == "aud").Value;
+            if (issuer != "MyIssuer" || audience != "MyAudience")
+            {
+                return Unauthorized();
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -113,8 +162,16 @@ namespace WebApp.Apis
         //[ValidateAntiForgeryToken]
         [ProducesResponseType(typeof(ApiResponse), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
-        public async Task<ActionResult> UpdateBloodDonor(Guid id, [FromBody]BloodDonorModel bloodDonor)
+        public async Task<ActionResult> UpdateBloodDonor(Guid id, [FromBody]BloodDonorModel bloodDonor, [FromHeader(Name = "Authorization")]string value)
         {
+
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(value);
+            var issuer = token.Claims.First(claim => claim.Type == "iss").Value;
+            var audience = token.Claims.First(claim => claim.Type == "aud").Value;
+            if (issuer != "MyIssuer" || audience != "MyAudience")
+            {
+                return Unauthorized();
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -184,6 +241,21 @@ namespace WebApp.Apis
             }
         }
 
+        private static Expression<Func<BloodDonor, bool>> FilterDelegate(string type, string city)
+        {
+            if (type != "" && city != "")
+                return x => x.Type.Contains(type) &&
+                            x.Patient.City.Contains(city);
 
+
+            if (type == "" && city != "")
+                return x => x.Patient.City.Contains(city);
+
+            if (type != "" && city == "")
+                return x => x.Type.Contains(type);
+
+            return x => x.Patient.City.Contains(city);
+
+        }
     }
 }

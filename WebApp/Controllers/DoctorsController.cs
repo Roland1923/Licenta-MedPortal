@@ -64,7 +64,8 @@ namespace WebApp.Apis
 
             try
             {
-                var pagingResult = await _repository.GetByFilter(FilterDelegate(filter.Name, filter.Hospital, filter.Speciality, filter.City), skip, take);
+                string[] includes = {  };
+                var pagingResult = await _repository.GetByFilter(FilterDelegate(filter.Name, filter.Hospital, filter.Speciality, filter.City), skip, take, includes);
                 Response.Headers.Add("X-InlineCount", pagingResult.TotalRecords.ToString());
                 return Ok(pagingResult.Records);
             }

@@ -52,11 +52,25 @@ namespace Infrastructure.Repositories.BaseRepositories
             return new PagingResult<TEntity>(entity, totalRecords);
         }
 
-        public async Task<PagingResult<TEntity>> GetByFilter(Expression<Func<TEntity, bool>> predicate, int skip, int take)
+        public async Task<PagingResult<TEntity>> GetByFilter(Expression<Func<TEntity, bool>> predicate, int skip, int take, string[] includes)
         {
-            var totalRecords = await DatabaseService.Set<TEntity>().Where(predicate)
+
+            var query = DatabaseService.Set<TEntity>().AsQueryable();
+            if (includes != null)
+            {
+                foreach (string include in includes)
+                {
+                    //System.Diagnostics.Debug.WriteLine("SomeText", query.ToList());
+                    query = query.Include(include).AsNoTracking();
+                    //System.Diagnostics.Debug.WriteLine("SomeText2", query.ToList());
+
+                }
+            }
+
+
+            var totalRecords = await query.Where(predicate)
                 .CountAsync();
-            var records = await DatabaseService.Set<TEntity>().Where(predicate)
+            var records = await query.Where(predicate)
                 .Skip(skip)
                 .Take(take)
                 .ToListAsync();

@@ -73,20 +73,30 @@ a {
 
 #toggle-content {
     background: #F7F7F7;
-    margin-top: -6px;
+    margin-top: -5px;
     padding: 15px 20px;
+    margin-bottom: 10px;
 }
 
 #toggle-content1 {
     background: #F7F7F7;
-    margin-top: -6px;
+    margin-top: -5px;
     padding: 15px 20px;
+    margin-bottom: 10px;
 }
 
 #toggle-content2 {
     background: #F7F7F7;
-    margin-top: -6px;
+    margin-top: -5px;
     padding: 15px 20px;
+    margin-bottom: 10px;
+}
+
+#toggle-content3 {
+    background: #F7F7F7;
+    margin-top: -5px;
+    padding: 15px 20px;
+    margin-bottom: 10px;
 }
 
 .details {
@@ -132,7 +142,7 @@ blockquote cite {
     font-size: 12px;
 }
 
-.fas {
+.bigIcon.fas {
     font-size: 10em;
     display: inline;
     width: auto;
@@ -154,3 +164,162 @@ blockquote.large:before {
     content: "\f10d";
     margin-right: 20px;
 }
+
+.button2, .button2:focus, .button2:active {
+    width: 25%;
+    border: none;
+    outline: none !important;
+    box-shadow: none !important;
+    color: white !important;
+    border: none !important;
+    background-color:  rgb(180, 0, 0) !important;
+ }
+
+
+
+.updateButton {
+    text-align: center;
+    margin-left: 8vw;
+    margin-right: 8vw;
+    padding-bottom: 1vw;
+}
+
+
+@media only screen and (min-width: 1255px) {
+    .updateButton .btn {
+        border: 1px ridge #e7e7e7;
+        margin-top: 1vw;
+        font-size: .7vw;
+        padding: 1.5vh; 
+        font-weight: bold;
+        width: 25%;
+        margin-right:25px;
+    }
+}
+
+@media only screen and (max-width: 1255px) {
+    .updateButton .btn {
+        border: 1px ridge #e7e7e7;
+        margin-top: 1vw;
+        font-size: 3vw;
+        padding: 1.5vh; 
+        font-weight: bold;
+        width: 100%;
+    }
+}
+
+.fa, .fas, .far {
+    margin-right:5px;
+}
+.input-group-addon {
+    background: transparent;
+    color: black;
+    border:none;
+    margin-bottom: 29px;
+}
+
+.input-group-addon.addon2{
+
+        margin-top: -10px !important;
+        margin-bottom: -10px !important;
+
+}
+
+.button1:focus, .button1:active, .button1.active {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: white !important;
+    background-color:  #69D18B !important;
+ }
+ 
+ .btn:not(.active):hover{
+     background-color: rgb(236, 236, 236)!important;
+ }
+
+ .btn:not(:disabled) {
+     cursor:pointer;
+ }
+
+ .btn {
+    background-color: #69D18B;
+    border: none;
+    cursor: pointer;
+    color: white;
+    min-width: 30px;
+    margin-right: 10px;
+}
+
+ .col-sm-4, .col-md-2, .col-md-6 {
+     margin-top: 15px;
+ }
+ .col-md-4 {
+     margin-top:10px;
+ }
+
+ .error-message {
+     font-weight: bold;
+     text-align: center;
+     margin-top: 13px;
+     margin-bottom: 12px;
+     font-size: 20px;
+ }
+
+
+ .bloodDonor-card {
+    padding: 12px;
+    border: 1px solid #dbdbdb;
+    box-shadow: 2px 2px 2px #dbdbdb;
+    margin-top: 18px;
+    background-color: white;
+    margin-left: 25px;
+    margin-right: 25px;
+    border-radius: 50px 20px;
+    width:50%;
+    margin-left: 25%;
+}
+
+.photo {
+    height: auto;
+    max-width: 220px;
+    max-height: 220.6px;
+ }
+
+.col-xs-auto {
+    margin-left: 17px;
+}
+
+.card-spec {
+    font-style: italic;
+    margin-top: -10px;
+    margin-bottom: 5px;
+}
+
+.schedule-button {
+    margin-top: 33px;
+}
+
+.page-link {
+    cursor: pointer;
+}
+
+.pagination {
+    margin-top: 3%;
+}
+
+.page-item.active .page-link{
+    background-color: #69D18B !important;
+    color: white  !important;
+    border: none  !important;
+}
+
+button {
+    color: black;
+}
+
+button:focus, button:hover, button:active, .active {
+    outline: none !important;
+    box-shadow: none !important;
+    color: white !important;
+    background-color:  #69D18B !important;
+ }

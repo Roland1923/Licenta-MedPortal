@@ -171,6 +171,18 @@ export class UserService extends BaseService {
       .catch(this.handleError);
   }
 
+  updateBloodDonor(bloodDonorId: string, applyDate: Date, patientId: string, pendingPatientId: string, type: string, haveDonated: boolean, patientConfirmed: boolean) {
+    let body = JSON.stringify({applyDate, patientId, pendingPatientId, type, haveDonated, patientConfirmed});
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    
+    return this.http.put(this.baseUrl + "api/BloodDonors/" + bloodDonorId, body, options)
+      .map(res => true)
+      .catch(this.handleError);
+  }
+
 
   updateMedicalHistory(historyId: string, patientId: string, smoke: string, drink: string, gender: string, weight: string, height: string, healthConditions: string, allergies: string, consultations: string, lastVisit: Date) {
     let body = JSON.stringify({patientId, smoke, drink, gender, weight, height, healthConditions, allergies, consultations, lastVisit});
@@ -197,6 +209,19 @@ export class UserService extends BaseService {
       .catch(this.handleError);
   }
 
+  addBloodDonor(patientId: string, type: string, applyDate: Date) {
+
+    let body = JSON.stringify({patientId, type, applyDate});
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    
+    return this.http.post(this.baseUrl + "api/BloodDonors", body, options)
+      .map(res => true)
+      .catch(this.handleError);
+  }
+
   addDoctorAppointment(doctorId : string, day: number, startHour: Time, endHour: Time) {
     let body = JSON.stringify({doctorId, day, startHour, endHour});
     let headers = new Headers();
@@ -218,6 +243,17 @@ export class UserService extends BaseService {
     .map(response => response)
     .catch(this.handleError);
   }
+
+  getBloodDonors() {
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.http.get(this.baseUrl + "api/BloodDonors/", options)
+    .map(response => response)
+    .catch(this.handleError);
+  }
+
 
   getReviews() {
     let headers = new Headers();
@@ -310,6 +346,18 @@ export class UserService extends BaseService {
     let options = new RequestOptions({ headers: headers });
 
     return this.http.put(this.baseUrl + "api/Doctors/page/" + skip + "/" + take, body, options)
+      .map(response => response)
+      .catch(this.handleError);
+  }
+
+  getBloodDonorsByFilter(type : string, city : string, skip : number, take : number) {
+    let body = JSON.stringify({ type, city});
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.put(this.baseUrl + "api/BloodDonors/page/" + skip + "/" + take, body, options)
       .map(response => response)
       .catch(this.handleError);
   }

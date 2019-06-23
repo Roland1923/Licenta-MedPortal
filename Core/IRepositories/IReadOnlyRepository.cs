@@ -10,7 +10,7 @@ namespace Core.IRepositories
         Task<List<T>> GetAllAsync(string[] includes);
         Task<T> GetByIdAsync(Guid id);
         Task<PagingResult<T>> GetAllPageAsync(int skip, int take);
-        Task<PagingResult<T>> GetByFilter(Expression<Func<T, bool>> predicate, int skip, int take);
+        Task<PagingResult<T>> GetByFilter(Expression<Func<T, bool>> predicate, int skip, int take, string[] includes);
         Task<List<T>> GetByConditionsAsync(Expression<Func<T, bool>> predicate, string[] includes);
     }
 }

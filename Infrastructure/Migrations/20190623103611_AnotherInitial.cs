@@ -4,23 +4,10 @@ using System.Collections.Generic;
 
 namespace Infrastructure.Migrations
 {
-    public partial class Initial : Migration
+    public partial class AnotherInitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "BloodDonors",
-                columns: table => new
-                {
-                    BloodDonorId = table.Column<Guid>(nullable: false),
-                    PatientId = table.Column<Guid>(nullable: false),
-                    Type = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BloodDonors", x => x.BloodDonorId);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Doctors",
                 columns: table => new
@@ -46,27 +33,6 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Patients",
-                columns: table => new
-                {
-                    PatientId = table.Column<Guid>(nullable: false),
-                    Birthdate = table.Column<DateTime>(nullable: false),
-                    City = table.Column<string>(nullable: true),
-                    Country = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    FirstName = table.Column<string>(nullable: true),
-                    HistoryId = table.Column<Guid>(nullable: false),
-                    LastName = table.Column<string>(nullable: true),
-                    NIN = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Patients", x => x.PatientId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AppointmentIntervals",
                 columns: table => new
                 {
@@ -84,6 +50,80 @@ namespace Infrastructure.Migrations
                         column: x => x.DoctorId,
                         principalTable: "Doctors",
                         principalColumn: "DoctorId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Appointments",
+                columns: table => new
+                {
+                    AppointmentId = table.Column<Guid>(nullable: false),
+                    AppointmentDate = table.Column<DateTime>(nullable: false),
+                    AppointmentIntervalId = table.Column<Guid>(nullable: true),
+                    DoctorId = table.Column<Guid>(nullable: false),
+                    HaveFeedback = table.Column<bool>(nullable: false),
+                    HaveMedicalHistory = table.Column<bool>(nullable: false),
+                    PatientId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Appointments", x => x.AppointmentId);
+                    table.ForeignKey(
+                        name: "FK_Appointments_AppointmentIntervals_AppointmentIntervalId",
+                        column: x => x.AppointmentIntervalId,
+                        principalTable: "AppointmentIntervals",
+                        principalColumn: "AppointmentIntervalId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Doctors_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "Doctors",
+                        principalColumn: "DoctorId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Patients",
+                columns: table => new
+                {
+                    PatientId = table.Column<Guid>(nullable: false),
+                    Birthdate = table.Column<DateTime>(nullable: false),
+                    BloodDonorId = table.Column<Guid>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    Country = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    FirstName = table.Column<string>(nullable: true),
+                    HistoryId = table.Column<Guid>(nullable: false),
+                    LastName = table.Column<string>(nullable: true),
+                    NIN = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Patients", x => x.PatientId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BloodDonors",
+                columns: table => new
+                {
+                    BloodDonorId = table.Column<Guid>(nullable: false),
+                    ApplyDate = table.Column<DateTime>(nullable: false),
+                    HaveDonated = table.Column<bool>(nullable: false),
+                    PatientConfirmed = table.Column<bool>(nullable: false),
+                    PatientId = table.Column<Guid>(nullable: false),
+                    PendingPatientId = table.Column<string>(nullable: true),
+                    Type = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BloodDonors", x => x.BloodDonorId);
+                    table.ForeignKey(
+                        name: "FK_BloodDonors_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "PatientId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -143,41 +183,6 @@ namespace Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Appointments",
-                columns: table => new
-                {
-                    AppointmentId = table.Column<Guid>(nullable: false),
-                    AppointmentDate = table.Column<DateTime>(nullable: false),
-                    AppointmentIntervalId = table.Column<Guid>(nullable: true),
-                    DoctorId = table.Column<Guid>(nullable: false),
-                    HaveFeedback = table.Column<bool>(nullable: false),
-                    HaveMedicalHistory = table.Column<bool>(nullable: false),
-                    PatientId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Appointments", x => x.AppointmentId);
-                    table.ForeignKey(
-                        name: "FK_Appointments_AppointmentIntervals_AppointmentIntervalId",
-                        column: x => x.AppointmentIntervalId,
-                        principalTable: "AppointmentIntervals",
-                        principalColumn: "AppointmentIntervalId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Appointments_Doctors_DoctorId",
-                        column: x => x.DoctorId,
-                        principalTable: "Doctors",
-                        principalColumn: "DoctorId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Appointments_Patients_PatientId",
-                        column: x => x.PatientId,
-                        principalTable: "Patients",
-                        principalColumn: "PatientId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AppointmentIntervals_DoctorId",
                 table: "AppointmentIntervals",
@@ -199,6 +204,11 @@ namespace Infrastructure.Migrations
                 column: "PatientId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BloodDonors_PatientId",
+                table: "BloodDonors",
+                column: "PatientId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Feedbacks_DoctorId",
                 table: "Feedbacks",
                 column: "DoctorId");
@@ -213,15 +223,37 @@ namespace Infrastructure.Migrations
                 table: "PatientHistories",
                 column: "PatientId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Patients_BloodDonorId",
+                table: "Patients",
+                column: "BloodDonorId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Appointments_Patients_PatientId",
+                table: "Appointments",
+                column: "PatientId",
+                principalTable: "Patients",
+                principalColumn: "PatientId",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Patients_BloodDonors_BloodDonorId",
+                table: "Patients",
+                column: "BloodDonorId",
+                principalTable: "BloodDonors",
+                principalColumn: "BloodDonorId",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Appointments");
+            migrationBuilder.DropForeignKey(
+                name: "FK_BloodDonors_Patients_PatientId",
+                table: "BloodDonors");
 
             migrationBuilder.DropTable(
-                name: "BloodDonors");
+                name: "Appointments");
 
             migrationBuilder.DropTable(
                 name: "Feedbacks");
@@ -233,10 +265,13 @@ namespace Infrastructure.Migrations
                 name: "AppointmentIntervals");
 
             migrationBuilder.DropTable(
+                name: "Doctors");
+
+            migrationBuilder.DropTable(
                 name: "Patients");
 
             migrationBuilder.DropTable(
-                name: "Doctors");
+                name: "BloodDonors");
         }
     }
 }

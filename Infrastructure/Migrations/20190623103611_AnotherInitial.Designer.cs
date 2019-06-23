@@ -11,8 +11,8 @@ using System;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseService))]
-    [Migration("20190623051921_BloodDonor")]
-    partial class BloodDonor
+    [Migration("20190623103611_AnotherInitial")]
+    partial class AnotherInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
