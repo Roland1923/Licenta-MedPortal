@@ -14,18 +14,19 @@ namespace Tests.IntegrationTests
         public void Given_PatientHistoryRepository_When_AddAsyncingAPatientHistory_Then_ThePatientHistoryShouldBeProperlySaved()
         {
             var patient = Patient.Create("1234", "Roland", "Iordache", "roland.iordache96@gmail.com", "asfdsdssd", "Iasi", "Romania", new DateTime(1996, 02, 10), "0746524459", null);
-            var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu");
+            var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu", true);
 
             RunOnDatabase(async ctx => {
                 //Arrange
                 var repository = new PatientHistoryRepository(ctx);
-                var patientHistory = PatientHistory.Create(patient.PatientId, doctor.DoctorId, "Paracetamol", "Febra", "Odihna", new DateTime(1996, 02, 10));
+                var patientHistory = PatientHistory.Create(patient.PatientId);
 
                 //Act
                 await repository.AddAsync(patientHistory);
 
                 //Assert
-                Assert.AreEqual(repository.GetAllAsync().Result.Count, 1);
+                string[] includes = {" "};
+                Assert.AreEqual(repository.GetAllAsync(includes).Result.Count, 1);
             });
         }
 
@@ -33,19 +34,20 @@ namespace Tests.IntegrationTests
         public void Given_PatientHistoryRepository_When_DeletingAPatientHistory_Then_ThePatientHistoryShouldBeProperlyRemoved()
         {
             var patient = Patient.Create("1234", "Roland", "Iordache", "roland.iordache96@gmail.com", "asfdsdssd", "Iasi", "Romania", new DateTime(1996, 02, 10), "0746524459", null);
-            var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu");
+            var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu", true);
 
             RunOnDatabase(async ctx => {
                 //Arrange
                 var repository = new PatientHistoryRepository(ctx);
-                var patientHistory = PatientHistory.Create(patient.PatientId, doctor.DoctorId, "Paracetamol", "Febra", "Odihna", new DateTime(1996, 02, 10));
+                var patientHistory = PatientHistory.Create(patient.PatientId);
                 await repository.AddAsync(patientHistory);
 
                 //Act
                 await repository.DeleteAsync(patientHistory.HistoryId);
 
                 //Assert
-                Assert.AreEqual(repository.GetAllAsync().Result.Count, 0);
+                string[] includes = { };
+                Assert.AreEqual(repository.GetAllAsync(includes).Result.Count, 0);
             });
         }
 
@@ -53,23 +55,23 @@ namespace Tests.IntegrationTests
         public void Given_PatientHistoryRepository_When_EditingAPatientHistory_Then_ThePatientHistoryShouldBeProperlyEdited()
         {
             var patient = Patient.Create("1234", "Roland", "Iordache", "roland.iordache96@gmail.com", "asfdsdssd", "Iasi", "Romania", new DateTime(1996, 02, 10), "0746524459", null);
-            var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu");
+            var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu", true);
 
             RunOnDatabase(async ctx => {
                 //Arrange
                 var repository = new PatientHistoryRepository(ctx);
-                var patientHistory = PatientHistory.Create(patient.PatientId, doctor.DoctorId, "Paracetamol", "Febra", "Odihna", new DateTime(1996, 02, 10));
+                var patientHistory = PatientHistory.Create(patient.PatientId);
                 await repository.AddAsync(patientHistory);
 
-                var prescription = patientHistory.Prescription;
-                patientHistory.Update(patient.PatientId, doctor.DoctorId, "Fervex", "Febra", "Odihna", new DateTime(1996, 02, 10));
-                var newPrescription = patientHistory.Prescription;
+                var drink = patientHistory.Drink;
+                patientHistory.Update(null, null, null, null, null, null, null, null, null);
+                var newDrink = patientHistory.Drink;
 
                 //Act
                 await repository.UpdateAsync(patientHistory);
 
                 //Assert
-                Assert.AreNotEqual(prescription, newPrescription);
+                Assert.AreNotEqual(drink, newDrink);
             });
         }
 
@@ -77,13 +79,13 @@ namespace Tests.IntegrationTests
         public void Given_PatientHistoryRepository_When_ReturningAPatientHistory_Then_ThePatientHistoryShouldBeProperlyReturned()
         {
             var patient = Patient.Create("1234", "Roland", "Iordache", "roland.iordache96@gmail.com", "asfdsdssd", "Iasi", "Romania", new DateTime(1996, 02, 10), "0746524459", null);
-            var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu");
+            var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu", true);
 
 
             RunOnDatabase(async ctx => {
                 //Arrange
                 var repository = new PatientHistoryRepository(ctx);
-                var patientHistory = PatientHistory.Create(patient.PatientId, doctor.DoctorId, "Paracetamol", "Febra", "Odihna", new DateTime(1996, 02, 10));
+                var patientHistory = PatientHistory.Create(patient.PatientId);
                 await repository.AddAsync(patientHistory);
 
                 //Act
@@ -98,17 +100,19 @@ namespace Tests.IntegrationTests
         public void Given_PatientHistoryRepository_When_ReturningAllPatientHistories_Then_AllPatientHistoriesShouldBeProperlyReturned()
         {
             var patient = Patient.Create("1234", "Roland", "Iordache", "roland.iordache96@gmail.com", "asfdsdssd", "Iasi", "Romania", new DateTime(1996, 02, 10), "0746524459", null);
-            var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu");
+            var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu", true);
 
 
             RunOnDatabase(async ctx => {
                 //Arrange
                 var repository = new PatientHistoryRepository(ctx);
-                var patientHistory = PatientHistory.Create(patient.PatientId, doctor.DoctorId, "Paracetamol", "Febra", "Odihna", new DateTime(1996, 02, 10));
+                var patientHistory = PatientHistory.Create(patient.PatientId);
                 await repository.AddAsync(patientHistory);
 
                 //Act
-                var count = repository.GetAllAsync().Result.Count;
+                string[] includes = { };
+
+                var count = repository.GetAllAsync(includes).Result.Count;
 
                 //Assert
                 Assert.AreEqual(count, 1);

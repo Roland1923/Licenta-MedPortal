@@ -4,8 +4,8 @@ import { DoctorRegistration } from '../shared/models/doctor-registration';
 import { PatientRegistration } from '../shared/models/patient-registration';
 import { UserService } from '../shared/services/user.service';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { Subscription } from 'rxjs';
+import { Md5 } from 'ts-md5/dist/md5';
 
 declare var $: any;
 
@@ -66,6 +66,7 @@ export class RegisterComponent implements OnInit {
       speciality: ['', [Validators.required]],
       hospital: ['', [Validators.required]],
       address: ['', [Validators.required]],
+      gender: ['', [Validators.required]],
       city: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
       country: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern("[a-zA-Z]+")]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(35)]],
@@ -107,7 +108,8 @@ export class RegisterComponent implements OnInit {
   }
 
   validateDoctorDINNotTaken(control: AbstractControl) {
-    return this.userService.checkDoctorDINNotTaken(control.value).map(res => {
+    var hash = Md5.hashStr(JSON.stringify(control.value));
+    return this.userService.checkDoctorDINNotTaken(hash.toString()).map(res => {
       return res ? null : { dinTaken: true };
     });
   }
@@ -119,7 +121,8 @@ export class RegisterComponent implements OnInit {
   }
 
   validatePatientNINNotTaken(control: AbstractControl) {
-    return this.userService.checkPatientNINNotTaken(control.value).map(res => {
+    var hash = Md5.hashStr(JSON.stringify(control.value));
+    return this.userService.checkPatientNINNotTaken(hash.toString()).map(res => {
       return res ? null : { ninTaken: true };
     });
   }
@@ -137,6 +140,12 @@ export class RegisterComponent implements OnInit {
     this.isRequesting = true;
     this.errors = '';
     if (valid) {
+      if(value.gender=="true") {
+        value.isMale=true;
+      }
+      else {
+        value.isMale=false;
+      }
       this.subscriptions.add(this.userService.doctorRegister(value.din,
                 value.firstName,
                 value.lastName,
@@ -148,7 +157,8 @@ export class RegisterComponent implements OnInit {
                 value.hospital,
                 value.city,
                 value.country,
-                value.address)
+                value.address,
+                value.isMale)
                 .finally(() => this.isRequesting = false)
                 .subscribe(
                     result => {
@@ -174,15 +184,24 @@ export class RegisterComponent implements OnInit {
                 value.country,
                 value.birthdate,
                 value.phoneNumber)
-                .finally(() => this.isRequesting = false)
+
                 .subscribe(
-                    result => {
-                        if (result) {
-                            this.router.navigate(['/patient-login']);
-                        }
+                    (result) => {
+                      this.subscriptions.add(this.userService.createMedicalHistory(result['patient']['patientId'])
+                          .finally(() => this.isRequesting = false)
+                          .subscribe(
+                              result => {
+                                  if (result) {
+                                    this.router.navigate(['/patient-login']);
+                                  }
+                              },
+                              errors => this.errors = errors));
+
+               
                     },
                     errors => this.errors = errors));
     }
+   
   }
 
   ngOnDestroy() {

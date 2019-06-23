@@ -8,6 +8,8 @@ using Core.IRepositories;
 using Infrastructure.Attributes;
 using WebApp.Common;
 using WebApp.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 
 namespace WebApp.Apis
 {
@@ -29,11 +31,11 @@ namespace WebApp.Apis
         [ProducesResponseType(typeof(List<Patient>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
         public async Task<ActionResult> Patients()
-        {
+        { 
             try
             {
-                string[] includes = { "Appointments", "Feedbacks", "PatientHistories" };
-                var patients = await _repository.GetAllAsync();
+                string[] includes = { "PatientHistory" };
+                var patients = await _repository.GetAllAsync(includes);
                 return Ok(patients);
             }
             catch
@@ -67,8 +69,16 @@ namespace WebApp.Apis
         [NoCache]
         [ProducesResponseType(typeof(Patient), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
-        public async Task<ActionResult> Patients(Guid id)
+        public async Task<ActionResult> Patients(Guid id, [FromHeader(Name = "Authorization")]string value)
         {
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(value);
+            var issuer = token.Claims.First(claim => claim.Type == "iss").Value;
+            var audience = token.Claims.First(claim => claim.Type == "aud").Value;
+            if (issuer != "MyIssuer" || audience != "MyAudience")
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var patient = await _repository.GetByIdAsync(id);
@@ -94,9 +104,9 @@ namespace WebApp.Apis
 
             MD5 md5Hash = MD5.Create();
             string passwordHash = PasswordHashMd5.GetMd5Hash(md5Hash, patient.Password);
+            string ninHash = PasswordHashMd5.GetMd5Hash(md5Hash, patient.NIN);
 
-
-            var instance = Patient.Create(patient.NIN, patient.FirstName, patient.LastName, patient.Email, passwordHash, patient.City, patient.Country, patient.Birthdate, patient.PhoneNumber, null);
+            var instance = Patient.Create(ninHash, patient.FirstName, patient.LastName, patient.Email, passwordHash, patient.City, patient.Country, patient.Birthdate, patient.PhoneNumber, null);
 
             try
             {
@@ -119,8 +129,17 @@ namespace WebApp.Apis
         //[ValidateAntiForgeryToken]
         [ProducesResponseType(typeof(ApiResponse), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
-        public async Task<ActionResult> UpdatePatient(Guid id, [FromBody]PatientModel patient)
+        public async Task<ActionResult> UpdatePatient(Guid id, [FromBody]PatientModel patient, [FromHeader(Name = "Authorization")]string value)
         {
+
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(value);
+            var issuer = token.Claims.First(claim => claim.Type == "iss").Value;
+            var audience = token.Claims.First(claim => claim.Type == "aud").Value;
+            if (issuer != "MyIssuer" || audience != "MyAudience")
+            {
+                return Unauthorized();
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -129,12 +148,10 @@ namespace WebApp.Apis
             MD5 md5Hash = MD5.Create();
             string passwordHash = PasswordHashMd5.GetMd5Hash(md5Hash, patient.Password);
 
-
             var instance = await _repository.GetByIdAsync(id);
 
             try
             {
-
                 instance.Update(patient.NIN, patient.FirstName, patient.LastName, patient.Email, passwordHash, patient.City, patient.Country, patient.Birthdate, patient.PhoneNumber);
 
                 var status = await _repository.UpdateAsync(instance);
@@ -160,6 +177,28 @@ namespace WebApp.Apis
             try
             {
                 var status = await _repository.DeleteAsync(id);
+                if (!status)
+                {
+                    return BadRequest(new ApiResponse { Status = false });
+                }
+                return Ok(new ApiResponse { Status = true });
+            }
+            catch
+            {
+                return BadRequest(new ApiResponse { Status = false });
+            }
+        }
+
+        // DELETE api/Patients
+        [HttpDelete]
+        // [ValidateAntiForgeryToken]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<ActionResult> DeleteAll()
+        {
+            try
+            {
+                var status = await _repository.DeleteAll();
                 if (!status)
                 {
                     return BadRequest(new ApiResponse { Status = false });

@@ -206,11 +206,28 @@
           }" type="number" class="form-control" formControlName="din" placeholder="Enter DIN">  
         </div>
       <label class="error-label" *ngIf="doctorRegisterForm.get('din').invalid && doctorRegisterForm.get('din').dirty && !doctorRegisterForm.get('din').errors.dinTaken || submitted && doctorRegisterForm.get('din').invalid && !doctorRegisterForm.get('din').errors.dinTaken">
-          Your DIN is required.
+          Your DIN is required and must contain only digits.
       </label>
       <label class="error-label" *ngIf="doctorRegisterForm.get('din').errors && doctorRegisterForm.get('din').errors.dinTaken">
           This DIN is already taken!
       </label>
+
+        <p class="field-title">First Name</p>
+        <div class="form-group input-group" [ngClass]="{
+          'has-danger': doctorRegisterForm.get('firstName').invalid && doctorRegisterForm.get('firstName').dirty || (submitted && doctorRegisterForm.get('firstName').invalid),
+          'has-success': doctorRegisterForm.get('firstName').valid && doctorRegisterForm.get('firstName').dirty
+        }">
+          <span class="input-group-addon"><i class="fa fa-user"></i></span> 
+          <input [ngClass]="{
+            'has-danger': doctorRegisterForm.get('firstName').invalid && doctorRegisterForm.get('firstName').dirty || (submitted && doctorRegisterForm.get('firstName').invalid),
+            'has-success': doctorRegisterForm.get('firstName').valid && doctorRegisterForm.get('firstName').dirty
+          }" type="text" class="form-control" placeholder="Enter First Name" formControlName="firstName" >
+        </div>
+        <label class="error-label" *ngIf="doctorRegisterForm.get('firstName').invalid && !doctorRegisterForm.get('firstName').pristine || (submitted && doctorRegisterForm.get('firstName').invalid)">
+            Your First Name is required and must contain between 3 and 30 letters. (alphabets only)
+        </label>  
+
+
 
         <p class="field-title">Last Name</p>
         <div class="form-group input-group" [ngClass]="{
@@ -227,19 +244,22 @@
             Your Last Name is required and must contain between 3 and 30 letters. (alphabets only)
         </label>  
 
-        <p class="field-title">First Name</p>
+        <p class="field-title">Gender</p>
         <div class="form-group input-group" [ngClass]="{
-          'has-danger': doctorRegisterForm.get('firstName').invalid && doctorRegisterForm.get('firstName').dirty || (submitted && doctorRegisterForm.get('firstName').invalid),
-          'has-success': doctorRegisterForm.get('firstName').valid && doctorRegisterForm.get('firstName').dirty
+          'has-danger': doctorRegisterForm.get('gender').invalid && doctorRegisterForm.get('gender').dirty || (submitted && doctorRegisterForm.get('gender').invalid),
+          'has-success': doctorRegisterForm.get('gender').valid && doctorRegisterForm.get('gender').dirty
         }">
-          <span class="input-group-addon"><i class="fa fa-user"></i></span> 
-          <input [ngClass]="{
-            'has-danger': doctorRegisterForm.get('firstName').invalid && doctorRegisterForm.get('firstName').dirty || (submitted && doctorRegisterForm.get('firstName').invalid),
-            'has-success': doctorRegisterForm.get('firstName').valid && doctorRegisterForm.get('firstName').dirty
-          }" type="text" class="form-control" formControlName="firstName" placeholder="Enter First Name">
+          <span class="input-group-addon"><i class="fa fa-intersex"></i></span> 
+          <select [ngClass]="{
+            'has-danger': doctorRegisterForm.get('gender').invalid && doctorRegisterForm.get('gender').dirty || (submitted && doctorRegisterForm.get('gender').invalid),
+            'has-success': doctorRegisterForm.get('gender').valid && doctorRegisterForm.get('gender').dirty
+          }" id="gender" class="form-control" formControlName="gender" placeholder="Enter your gender">
+            <option value="true">Male</option>
+            <option value="false">Female</option>
+          </select>
         </div>
-        <label class="error-label" *ngIf="doctorRegisterForm.get('firstName').invalid && !doctorRegisterForm.get('firstName').pristine || (submitted && doctorRegisterForm.get('firstName').invalid)">
-            Your First Name is required and must contain between 3 and 30 letters. (alphabets only)
+        <label class="error-label" *ngIf="doctorRegisterForm.get('gender').invalid && !doctorRegisterForm.get('gender').pristine || (submitted && doctorRegisterForm.get('gender').invalid)">
+          You must select your gender.
         </label>  
 
         <p class="field-title">E-mail</p>

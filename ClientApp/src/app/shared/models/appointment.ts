@@ -12,6 +12,7 @@ export interface Appointment {
     appointmentIntervalId : string;
     appointmentInterval : AppointmentInterval;
     haveFeedback: boolean;
+    haveMedicalHistory: boolean;
 }
 
 

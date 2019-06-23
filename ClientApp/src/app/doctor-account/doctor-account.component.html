@@ -39,6 +39,7 @@
         <button type="button" [ngClass]="buttonsClicked[1] ? 'btn active btn-primary btn-lg' : 'btn btn-primary btn-lg'" (click)="toggleShow(1)" >PASSWORD</button>
         <button type="button" [ngClass]="buttonsClicked[2] ? 'btn active btn-primary btn-lg' : 'btn btn-primary btn-lg'" (click)="toggleShow(2)" >E-MAIL</button>
         <button type="button" [ngClass]="buttonsClicked[3] ? 'btn active btn-primary btn-lg' : 'btn btn-primary btn-lg'" (click)="toggleShow(3)" >DISPONIBILITY</button>
+        <button type="button" [ngClass]="buttonsClicked[4] ? 'btn active btn-primary btn-lg' : 'btn btn-primary btn-lg'" (click)="toggleShow(4)" >FEEDBACKS</button>
     </div>
 
     <div *ngIf="buttonsClicked[0]"  id="divshow" >
@@ -336,6 +337,7 @@
     </div>
 
 
+
     <div *ngIf="buttonsClicked[3]"  id="divshow" >
         <p class="p2head">
             <b>CHANGE YOUR DISPONIBILITY</b>
@@ -592,6 +594,46 @@
 
     </div>
 
+    
+    <div *ngIf="buttonsClicked[4]"  id="divshow" >
+
+        <p class="p2head">
+            <b>FEEDBACKS</b>
+        </p>
+      
+        <div class="reviewsLoaded" *ngIf="reviewsLoaded">
+            <div class="allReviews" *ngFor="let review of allReviews">
+              <hr>
+                <div class="searchCard">
+                    <div class="row">
+                      <div class="text-center col-md-2 ">
+                        <div class="row mx-3">
+                          <span class="reviewRating">
+                            {{review.rating}}
+                          </span>
+                        </div>
+                        <div class="row mx-3">
+                          <span style="font-weight:bold"> {{review.patient.lastName}} {{review.patient.firstName}}</span>
+                        </div>
+                        <div class="row mx-3">
+                          <span style="font-style:italic; color: #697379;">{{review.reviewDate | date:'yyyy-MM-dd'}}</span>
+                        </div>
+                        <div class="row mx-3">
+                            <span style="font-style:italic; color: #697379;">Visit date: {{review.appointmentDate | date:'yyyy-MM-dd'}}</span>
+                          </div>
+                      </div>
+                  
+                      <div class="col-md-10">
+                        <span class="ml-md-2">
+                           
+                            {{review.description}}
+                        </span>
+                    </div>
+                  </div>
+                  </div>
+            </div>
+  </div>
+      </div>
 
   </div>
 

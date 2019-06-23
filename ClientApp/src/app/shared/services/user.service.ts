@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 
-import { DoctorRegistration } from '../../shared/models/doctor-registration'
 import { BaseService } from './base.service';
 import { ConfigService } from './config.service'
 
 import {Observable} from 'rxjs/Rx';
 import { Time } from '@angular/common';
-
 
 
 @Injectable({
@@ -46,8 +44,8 @@ export class UserService extends BaseService {
     return true;
   }
 
-  doctorRegister(din: string, firstName: string, lastName: string, email: string, password: string, phoneNumber: string, description : string, speciality: string, hospital: string, city: string, country: string, address: string): Observable<any> {
-    let body = JSON.stringify({ din, firstName, lastName , email, password, phoneNumber, description, speciality, hospital, city, country, address });
+  doctorRegister(din: string, firstName: string, lastName: string, email: string, password: string, phoneNumber: string, description : string, speciality: string, hospital: string, city: string, country: string, address: string, isMale: boolean): Observable<any> {
+    let body = JSON.stringify({ din, firstName, lastName , email, password, phoneNumber, description, speciality, hospital, city, country, address, isMale });
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     return this.http.post(this.baseUrl + "api/Doctors", body, options)
@@ -60,13 +58,26 @@ export class UserService extends BaseService {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     return this.http.post(this.baseUrl + "api/Patients", body, options)
-    .map (res => true)
+    .map (res => res.json())
+    .catch (this.handleError);
+  }
+
+  createMedicalHistory(patientId: string) {
+    let body = JSON.stringify({ patientId });
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post(this.baseUrl + "api/PatientHistories", body, options)
+    .map (response => true)
     .catch (this.handleError);
   }
 
   checkDoctorEmailNotTaken(email: string) {
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
     return this.http
-      .get(this.baseUrl + "api/Doctors")
+      .get(this.baseUrl + "api/Doctors", options)
       .delay(1000)
       .map(res => res.json())
       .map(users => users.filter(user => user.email === email))
@@ -74,8 +85,12 @@ export class UserService extends BaseService {
   }
 
   checkPatientEmailNotTaken(email: string) {
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
     return this.http
-      .get(this.baseUrl + "api/Patients")
+      .get(this.baseUrl + "api/Patients", options)
       .delay(1000)
       .map(res => res.json())
       .map(users => users.filter(user => user.email === email))
@@ -83,8 +98,12 @@ export class UserService extends BaseService {
   }
 
   checkDoctorDINNotTaken(din: string) {
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
     return this.http
-      .get(this.baseUrl + "api/Doctors")
+      .get(this.baseUrl + "api/Doctors", options)
       .delay(1000)
       .map(res => res.json())
       .map(users => users.filter(user => user.din == din))
@@ -104,8 +123,12 @@ export class UserService extends BaseService {
   }
 
   checkPatientNINNotTaken(nin: string) {
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
     return this.http
-      .get(this.baseUrl + "api/Patients")
+      .get(this.baseUrl + "api/Patients", options)
       .delay(1000)
       .map(res => res.json())
       .map(users => users.filter(user => user.nin == nin))
@@ -136,8 +159,8 @@ export class UserService extends BaseService {
       .catch(this.handleError);
   }
 
-  updateAppointment(appointmentId: string, appointmentIntervalId: string, appointmentDate: Date, doctorId: string, patientId: string, haveFeedback: boolean) {
-    let body = JSON.stringify({appointmentIntervalId, appointmentDate, doctorId, patientId, haveFeedback});
+  updateAppointment(appointmentId: string, appointmentIntervalId: string, appointmentDate: Date, doctorId: string, patientId: string, haveFeedback: boolean, haveMedicalHistory: boolean) {
+    let body = JSON.stringify({appointmentIntervalId, appointmentDate, doctorId, patientId, haveFeedback, haveMedicalHistory});
     let headers = new Headers();
     headers.append('Authorization', localStorage.getItem("token"));
     headers.append('Content-Type', 'application/json');
@@ -148,8 +171,22 @@ export class UserService extends BaseService {
       .catch(this.handleError);
   }
 
-  addReview(rating: number, description: string, doctorId: string, patientId: string) {
-    let body = JSON.stringify({rating, description, doctorId, patientId});
+
+  updateMedicalHistory(historyId: string, patientId: string, smoke: string, drink: string, gender: string, weight: string, height: string, healthConditions: string, allergies: string, consultations: string, lastVisit: Date) {
+    let body = JSON.stringify({patientId, smoke, drink, gender, weight, height, healthConditions, allergies, consultations, lastVisit});
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    
+    return this.http.put(this.baseUrl + "api/PatientHistories/" + historyId, body, options)
+      .map(res => true)
+      .catch(this.handleError);
+  }
+
+
+  addReview(rating: number, description: string, doctorId: string, patientId: string, appointmentDate: Date) {
+    let body = JSON.stringify({rating, description, doctorId, patientId, appointmentDate});
     let headers = new Headers();
     headers.append('Authorization', localStorage.getItem("token"));
     headers.append('Content-Type', 'application/json');
@@ -188,6 +225,37 @@ export class UserService extends BaseService {
     headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({ headers: headers });
     return this.http.get(this.baseUrl + "api/Feedbacks/", options)
+    .map(response => response.json())
+    .catch(this.handleError);
+  }
+
+  getDoctors() {
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.http.get(this.baseUrl + "api/Doctors/", options)
+    .map(response => response.json())
+    .catch(this.handleError);
+  }
+  
+  getMedicalHistory() {
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+   
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.http.get(this.baseUrl + "api/PatientHistories/", options)
+    .map(response => response.json())
+    .catch(this.handleError);
+  }
+
+  getPatients() {
+    let headers = new Headers();
+    headers.append('Authorization', localStorage.getItem("token"));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.http.get(this.baseUrl + "api/Patients/", options)
     .map(response => response.json())
     .catch(this.handleError);
   }

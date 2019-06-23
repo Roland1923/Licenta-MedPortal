@@ -12,6 +12,7 @@ import { PatientProfile } from '../shared/models/patient-profile';
 import { AuthService } from '../shared/services/auth.service';
 import { getTranslationForTemplate } from '@angular/core/src/render3/i18n';
 import { Time } from '@angular/common';
+import { Feedback } from '../shared/models/feedback.interface';
 
 
 
@@ -68,6 +69,22 @@ export class ScheduleComponent implements OnInit {
   time1InMinutesForTime2: number;
   savedHour: number;
   savedMinutes: number;
+  reviewsLoaded: boolean = false;
+  allReviews: Array<Feedback>;
+  oneStar: Map<string, number> = new Map<string,number>();
+  twoStars: Map<string, number> = new Map<string,number>();
+  threeStars: Map<string, number> = new Map<string,number>();
+  fourStars: Map<string, number> = new Map<string,number>();
+  fiveStars: Map<string, number> = new Map<string,number>();
+  totalReviews: Map<string, number> = new Map<string,number>();
+  starsMean: Map<string, number> = new Map<string,number>();
+  reviewsSubscribed: Map<string, boolean> = new Map<string,boolean>();
+  
+  width1: Map<string, number> = new Map<string,number>();
+  width2: Map<string, number> = new Map<string,number>();
+  width3: Map<string, number> = new Map<string,number>();
+  width4: Map<string, number> = new Map<string,number>();
+  width5: Map<string, number> = new Map<string,number>();
 
   constructor(private router: Router, private userService: UserService, private authService: AuthService, private formBuilder: FormBuilder, _applicationRef: ApplicationRef) {
       
@@ -78,12 +95,14 @@ export class ScheduleComponent implements OnInit {
     this.doctorsList = new Array<DoctorProfile>();
     this.numbers = new Array<number>();
     this.active = new Array<boolean>();
+    this.allReviews = new Array<Feedback>();
     this.active[1]=true;
    }
 
    scheduleClicked(doctor: DoctorProfile) {
      this.scheduleNotClicked = false;
      this.doctor = doctor;
+     this.generateReviews(this.doctor.doctorId);
    }
 
   ngOnInit() {
@@ -106,7 +125,7 @@ export class ScheduleComponent implements OnInit {
       localStorage.clear();
     }
 
-
+    this.generateRatings();
     this.getDoctorsByFilter(this.doctorSearch, 0);
   }
 
@@ -126,6 +145,31 @@ export class ScheduleComponent implements OnInit {
     this.dateSelected = false;
     this.disponibilitySelected = false;
     this.datePicked = null;
+    this.reviewsLoaded = false;
+    this.allReviews = [];
+  }
+
+
+  generateReviews(doctorId: string) {
+    this.isExpired = this.userService.isExpired();
+    if(this.isExpired) {
+      this.authService.logout();
+    }
+    this.errors = '';
+    this.allReviews = [];
+    
+    this.subscriptions.add(this.userService.getReviews()
+      .subscribe(
+          result => {
+             this.reviewsLoaded = true;
+                for(let review of result){
+                  if(review.doctorId==doctorId) {
+                    this.allReviews.push(review);
+                  }
+                }
+
+          },
+          errors => this.errors = errors));
   }
 
   scheduleAppointment() {
@@ -137,7 +181,6 @@ export class ScheduleComponent implements OnInit {
 
       this.appointmentDate.setHours(this.savedHour+3, this.savedMinutes);
       
-      console.log(this.appointmentDate);
       this.subscriptions.add(this.userService.appointmentRegister(this.patient.patientId, this.doctor.doctorId, this.appointmentDate, this.appointmentIntervalId)
         .subscribe(
             result => {
@@ -268,6 +311,185 @@ export class ScheduleComponent implements OnInit {
         this.activeDisponibility[id] = true;
     }
   }
+
+  generateNullRatings() {
+    this.isExpired = this.userService.isExpired();
+    if(this.isExpired) {
+      this.authService.logout();
+    }
+    this.errors = '';
+
+    this.subscriptions.add(this.userService.getDoctors()
+    .subscribe((doctors: Array<DoctorProfile>) => {
+      for(var doctor of doctors) {
+        if(!this.reviewsSubscribed.has(doctor.doctorId)) {
+
+          this.reviewsSubscribed.set(doctor.doctorId,true);
+          this.totalReviews.set(doctor.doctorId,0);
+          this.starsMean.set(doctor.doctorId,0);
+          this.oneStar.set(doctor.doctorId,0);
+          this.twoStars.set(doctor.doctorId,0);
+          this.threeStars.set(doctor.doctorId,0);
+          this.fourStars.set(doctor.doctorId,0);
+          this.fiveStars.set(doctor.doctorId,0);
+          this.width1.set(doctor.doctorId, 0);
+          this.width2.set(doctor.doctorId, 0);
+          this.width3.set(doctor.doctorId, 0);
+          this.width4.set(doctor.doctorId, 0);
+          this.width5.set(doctor.doctorId, 0);
+         }
+
+        } 
+
+    },
+    errors => this.errors = errors
+    ));
+  }
+
+  generateRatings() {
+
+    this.isExpired = this.userService.isExpired();
+    if(this.isExpired) {
+      this.authService.logout();
+    }
+    this.errors = '';
+
+    this.subscriptions.add(this.userService.getReviews()
+    .subscribe((reviews: Array<Feedback>) => {
+      for(var feedback of reviews) {
+        if(this.reviewsSubscribed.has(feedback.doctorId)) {
+
+          var totalReviews = this.totalReviews.get(feedback.doctorId);
+          this.totalReviews.set(feedback.doctorId, totalReviews+1);
+          var mean = this.starsMean.get(feedback.doctorId);
+          this.starsMean.set(feedback.doctorId, mean+feedback.rating);
+          switch(feedback.rating) { 
+            case 1: { 
+              if(this.oneStar.has(feedback.doctorId)) {
+                var oneStar = this.oneStar.get(feedback.doctorId)+1;
+                this.oneStar.set(feedback.doctorId, oneStar);
+              }
+              else {
+                this.oneStar.set(feedback.doctorId,1);
+              }
+           
+               break; 
+            } 
+            case 2: { 
+              if(this.twoStars.has(feedback.doctorId)) {
+                var twoStars = this.twoStars.get(feedback.doctorId)+1;
+                this.twoStars.set(feedback.doctorId, twoStars);
+              }
+              else {
+                this.twoStars.set(feedback.doctorId,1);
+              }
+               break; 
+            } 
+            case 3: { 
+              if(this.threeStars.has(feedback.doctorId)) {
+                var threeStars = this.threeStars.get(feedback.doctorId)+1;
+                this.threeStars.set(feedback.doctorId, threeStars);
+              }
+              else {
+                this.threeStars.set(feedback.doctorId,1);
+              }
+              break; 
+            } 
+              case 4: { 
+                if(this.fourStars.has(feedback.doctorId)) {
+                  var fourStars = this.fourStars.get(feedback.doctorId)+1;
+                  this.fourStars.set(feedback.doctorId, fourStars);
+                }
+                else {
+                  this.fourStars.set(feedback.doctorId,1);
+                }
+              break; 
+            } 
+             case 5: { 
+              if(this.fiveStars.has(feedback.doctorId)) {
+                var fiveStars = this.fiveStars.get(feedback.doctorId)+1;
+                this.fiveStars.set(feedback.doctorId, fiveStars);
+              }
+              else {
+                this.fiveStars.set(feedback.doctorId,1);
+              }
+              break; 
+             } 
+         }
+        }
+
+        else {
+          this.reviewsSubscribed.set(feedback.doctorId,true);
+          this.totalReviews.set(feedback.doctorId,1);
+          this.starsMean.set(feedback.doctorId,feedback.rating);
+
+           switch(feedback.rating) { 
+            case 1: { 
+              this.oneStar.set(feedback.doctorId,1);
+              this.twoStars.set(feedback.doctorId,0);
+              this.threeStars.set(feedback.doctorId,0);
+              this.fourStars.set(feedback.doctorId,0);
+              this.fiveStars.set(feedback.doctorId,0);
+               break; 
+            } 
+            case 2: { 
+              this.twoStars.set(feedback.doctorId,1);
+              this.oneStar.set(feedback.doctorId,0);
+              this.threeStars.set(feedback.doctorId,0);
+              this.fourStars.set(feedback.doctorId,0);
+              this.fiveStars.set(feedback.doctorId,0);
+               break; 
+            } 
+            case 3: { 
+              this.threeStars.set(feedback.doctorId,1);
+              this.twoStars.set(feedback.doctorId,0);
+              this.oneStar.set(feedback.doctorId,0);
+              this.fourStars.set(feedback.doctorId,0);
+              this.fiveStars.set(feedback.doctorId,0);
+              break; 
+            } 
+              case 4: { 
+                this.fourStars.set(feedback.doctorId,1);
+                this.twoStars.set(feedback.doctorId,0);
+                this.threeStars.set(feedback.doctorId,0);
+                this.oneStar.set(feedback.doctorId,0);
+                this.fiveStars.set(feedback.doctorId,0);
+              break; 
+            } 
+             case 5: { 
+              this.fiveStars.set(feedback.doctorId,1);
+              this.twoStars.set(feedback.doctorId,0);
+              this.threeStars.set(feedback.doctorId,0);
+              this.fourStars.set(feedback.doctorId,0);
+              this.oneStar.set(feedback.doctorId,0);
+              break; 
+             } 
+         }
+
+        } 
+      }
+      this.starsMean.forEach((value: number, key: string) => {
+        var number = value / this.totalReviews.get(key);
+        number = parseFloat(number.toPrecision(2));
+        this.starsMean.set(key, number);
+        var precision = parseFloat((100/this.totalReviews.get(key)).toPrecision(2));
+        this.width1.set(key, precision*this.oneStar.get(key));
+        this.width2.set(key, precision*this.twoStars.get(key));
+        this.width3.set(key, precision*this.threeStars.get(key));
+        this.width4.set(key, precision*this.fourStars.get(key));
+        this.width5.set(key, precision*this.fiveStars.get(key));
+
+      });
+
+      this.generateNullRatings();
+
+    },
+    errors => this.errors = errors
+    ));
+
+    return true;
+  }
+
 
   getDoctorsByFilter({ value, valid }: { value: DoctorFilter, valid: boolean }, skip : number) {
     this.isExpired = this.userService.isExpired();

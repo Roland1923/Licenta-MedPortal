@@ -41,6 +41,20 @@ namespace Infrastructure.Repositories.BaseRepositories
             }
         }
 
+        public async Task<bool> DeleteAll()
+        {
+            foreach (var entity in DatabaseService.Set<TEntity>())
+                DatabaseService.Set<TEntity>().Remove(entity);
+            try
+            {
+                return await DatabaseService.SaveChangesAsync(new CancellationToken()) > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public async Task<bool> UpdateAsync(TEntity entity)
         {
             DatabaseService.Set<TEntity>().Attach(entity);

@@ -13,7 +13,8 @@ export class HeaderComponent implements OnInit {
   isDoctor: boolean;
   allow: boolean;
   public href: string = "";
-  paths: Array<string> = ['/patient/account', '/patient/appointments', '/patient/medical-history', '/doctor/account', '/doctor/appointments', '/patient/doctor-reviews'];
+  paths: Array<string> = ['/patient/account', '/patient/appointments', '/patient/medical-history', '/doctor/account', '/doctor/appointments', '/patient/doctor-reviews',
+  '/doctor/medical-history', '/patient/medical-history', '/patient/donor'];
 
   constructor(private authService: AuthService, private router: Router) {
     this.router.events

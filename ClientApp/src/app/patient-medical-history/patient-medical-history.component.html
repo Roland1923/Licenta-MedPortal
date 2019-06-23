@@ -1,10 +1,101 @@
 <!DOCTYPE html>
 <html>
 
-
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
 <body>
 
+
+   
+
+    <div *ngIf="showMedicalHistory" id="divshow" >
+   
+          <p class="p2head">
+              <b>PATIENT DETAILS</b>
+          </p>
+    
+          <hr>
+
+              <div class="row">
+
+                <div class="col-sm-4 form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-intersex"></i></span> 
+                        <input type="text" value="{{medicalHistory.gender || 'NOT COMPLETED'}} " disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                    </div><!-- /input-group -->
+                </div>
+
+                <div class="col-sm-4 form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fas fa-beer"></i></span> 
+                        <input type="text" value="{{medicalHistory.drink || 'NOT COMPLETED'}}" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                    </div><!-- /input-group -->
+                </div>
+
+                <div class="col-sm-4 form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fas fa-smoking"></i></span> 
+                        <input type="text" value="{{medicalHistory.smoke || 'NOT COMPLETED'}}" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                    </div><!-- /input-group -->
+                </div>
+
+              </div>
+
+              <div class="row">
+
+                  <div class="col-sm-6 form-group">
+                      <div class="input-group">
+                          <span class="input-group-addon"><i class="fas fa-weight"></i></span> 
+                          <input type="text" value="{{medicalHistory.weight || 'NOT COMPLETED'}}" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                      </div><!-- /input-group -->
+                  </div>
   
+                  <div class="col-sm-6 form-group">
+                      <div class="input-group">
+                          <span class="input-group-addon"><i class="fas fa-angle-double-up"></i></span> 
+                          <input type="text" value="{{medicalHistory.height || 'NOT COMPLETED'}}" disabled class="form-control mb-2 mr-sm-2 mb-sm-0">
+                      </div><!-- /input-group -->
+                  </div>
+
+                </div>
+
+                <hr id="hr2">
+
+
+                <p class="p2head">
+                    <b>ALLERGIES & HEALTH CONDITIONS</b>
+                </p>
+          
+                <hr>
+
+              
+                  <b>Allergies: </b> <div *ngFor="let allergy of allergies">- {{allergy}}</div> <div *ngIf="allergies.length === 0">UNKNOWN</div>  <br>
+                  <b>Health Conditions: </b><div *ngFor="let healthCondition of healthConditions">- {{healthCondition}}</div> <div *ngIf="healthConditions.length === 0">UNKNOWN</div>
+        
+               
+               
+
+                <hr id="hr2">
+
+
+                <p class="p2head">
+                    <b>CONSULTATIONS</b>
+                </p>
+              
+                <hr>
+                <div *ngFor="let consultation of consultations">- {{consultation}}</div> <div *ngIf="consultations.length === 0">UNKNOWN</div>
+             
+
+
+          
+
+         
+    </div>
+
+    
+    
+
 </body>
 
 </html>

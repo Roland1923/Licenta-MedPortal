@@ -20,19 +20,21 @@ namespace Core.Entities
         public string City { get; private set; }
         public string Country { get; private set; }
         public string Address { get; private set; }
-        public List<Appointment> Appointments => null;
+        public bool IsMale { get; private set; }
+        public List<AppointmentInterval> AppointmentIntervals => null;
+        public List<Appointment> Appointments { get; private set; }
         public List<Feedback> Feedbacks => null;
 
         private Doctor() { }
 
-        public static Doctor Create(string DIN, string firstName, string lastName, string email, string password, string phoneNumber, string description, string speciality, string hospital, string city, string country, string address)
+        public static Doctor Create(string DIN, string firstName, string lastName, string email, string password, string phoneNumber, string description, string speciality, string hospital, string city, string country, string address, bool isMale)
         {
             var instance = new Doctor { DoctorId = Guid.NewGuid() };
-            instance.Update(DIN, firstName, lastName, email, password, phoneNumber, description, speciality, hospital, city, country, address);
+            instance.Update(DIN, firstName, lastName, email, password, phoneNumber, description, speciality, hospital, city, country, address, isMale);
             return instance;
         }
 
-        public void Update(string din, string firstName, string lastName, string email, string password, string phoneNumber, string description, string speciality, string hospital, string city, string country, string address)
+        public void Update(string din, string firstName, string lastName, string email, string password, string phoneNumber, string description, string speciality, string hospital, string city, string country, string address, bool isMale)
         {
             DIN = din;
             FirstName = firstName;
@@ -46,6 +48,7 @@ namespace Core.Entities
             City = city;
             Country = country;
             Address = address;
+            IsMale = isMale;
         }
     }
 }

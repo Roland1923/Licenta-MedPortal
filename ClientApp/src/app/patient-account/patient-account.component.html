@@ -298,7 +298,8 @@
                       <div class="col-md-7 col-12">
                         <div class="row">
                             <div class="col-auto">
-                                <img class="photo" src="assets/img/doctor-avatar2.png">
+                                <img class="photo" src="assets/img/doctor-avatar2.png" *ngIf="appointment.doctor.isMale">
+                                <img class="photo" src="assets/img/doctor-female-avatar.png" *ngIf="!appointment.doctor.isMale">
                             </div>
                             <div class="col-auto">
                               <h3 class="card-doctor-name">Dr. {{appointment.doctor.firstName}} {{appointment.doctor.lastName}}</h3>

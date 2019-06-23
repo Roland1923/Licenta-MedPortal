@@ -117,6 +117,25 @@ h1{
     border-bottom: 1px solid green !important;
 }
 
+
+.login-box select option {
+    color: black;
+
+}
+
+.login-box select
+{
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #fff;
+    background: transparent;
+    outline: none;
+    height: 40px;
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 0 !important;
+}
+
 .login-box input
 {
     width: 100%;

@@ -2,7 +2,6 @@
 using Infrastructure.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-
 namespace Tests.IntegrationTests
 {
     [TestClass]
@@ -14,13 +13,14 @@ namespace Tests.IntegrationTests
             RunOnDatabase(async ctx => {
                 //Arrange
                 var repository = new DoctorRepository(ctx);
-                var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu");
+                var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu", true);
 
                 //Act
                 await repository.AddAsync(doctor);
 
                 //Assert
-                Assert.AreEqual(repository.GetAllAsync().Result.Count, 1);
+                string[] includes = { };
+                Assert.AreEqual(repository.GetAllAsync(includes).Result.Count, 1);
             });
         }
 
@@ -30,14 +30,15 @@ namespace Tests.IntegrationTests
             RunOnDatabase(async ctx => {
                 // Arrange
                 var repository = new DoctorRepository(ctx);
-                var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu");
+              var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu", true);
                 await repository.AddAsync(doctor);
 
                 //Act
                 await repository.DeleteAsync(doctor.DoctorId);
 
                 //Assert
-                Assert.AreEqual(repository.GetAllAsync().Result.Count, 0);
+                string[] includes = { };
+                Assert.AreEqual(repository.GetAllAsync(includes).Result.Count, 1);
             });
         }
 
@@ -47,12 +48,12 @@ namespace Tests.IntegrationTests
             RunOnDatabase(async ctx => {
                 //Arrange
                 var repository = new DoctorRepository(ctx);
-                var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu");
+              var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu", true);
                 await repository.AddAsync(doctor);
 
                 var firstName = doctor.FirstName;
 
-                doctor.Update("1234", "Axinte", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu");
+               doctor.Update("1234", "Axinte", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu", true);
 
                 var newFirstName = doctor.FirstName;
 
@@ -70,7 +71,7 @@ namespace Tests.IntegrationTests
             RunOnDatabase(async ctx => {
                 //Arrange
                 var repository = new DoctorRepository(ctx);
-                var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu");
+              var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu", true);
                 await repository.AddAsync(doctor);
 
                 //Act
@@ -87,11 +88,13 @@ namespace Tests.IntegrationTests
             RunOnDatabase(async ctx => {
                 //Arrange
                 var repository = new DoctorRepository(ctx);
-                var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu");
+              var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu", true);
                 await repository.AddAsync(doctor);
 
                 //Act
-                var count = repository.GetAllAsync().Result.Count;
+                string[] includes = { };
+
+                var count = repository.GetAllAsync(includes).Result.Count;
 
                 //Assert
                 Assert.AreEqual(count, 1);

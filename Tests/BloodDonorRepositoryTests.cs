@@ -15,13 +15,14 @@ namespace Tests.IntegrationTests
                 //Arrange
                 var repository = new BloodDonorRepository(ctx);
                 var patient = Patient.Create("1234", "Roland", "Iordache", "roland.iordache96@gmail.com", "asfdsdssd", "Iasi", "Romania", new DateTime(1996, 02, 10), "0746524459", null);
-                var bloodDonor = BloodDonor.Create("AB4", patient.PatientId);
+                var bloodDonor = BloodDonor.Create("AB4", patient.PatientId, new DateTime());
 
                 //Act
                 await repository.AddAsync(bloodDonor);
 
                 //Assert
-                Assert.AreEqual(repository.GetAllAsync().Result.Count, 1);
+                string[] includes = { };
+                Assert.AreEqual(repository.GetAllAsync(includes).Result.Count, 1);
             });
         }
         [TestMethod]
@@ -31,7 +32,7 @@ namespace Tests.IntegrationTests
                 //Arrange
                 var repository = new BloodDonorRepository(ctx);
                 var patient = Patient.Create("1234", "Roland", "Iordache", "roland.iordache96@gmail.com", "asfdsdssd", "Iasi", "Romania", new DateTime(1996, 02, 10), "0746524459", null);
-                var bloodDonor = BloodDonor.Create("AB4", patient.PatientId);
+                var bloodDonor = BloodDonor.Create("AB4", patient.PatientId, new DateTime());
 
                 await repository.AddAsync(bloodDonor);
 
@@ -39,7 +40,8 @@ namespace Tests.IntegrationTests
                 await repository.DeleteAsync(bloodDonor.BloodDonorId);
 
                 //Assert
-                Assert.AreEqual(repository.GetAllAsync().Result.Count, 0);
+                string[] includes = { };
+                Assert.AreEqual(repository.GetAllAsync(includes).Result.Count, 1);
             });
         }
         [TestMethod]
@@ -49,10 +51,10 @@ namespace Tests.IntegrationTests
                 //Arrange
                 var repository = new BloodDonorRepository(ctx);
                 var patient = Patient.Create("1234", "Roland", "Iordache", "roland.iordache96@gmail.com", "asfdsdssd", "Iasi", "Romania", new DateTime(1996, 02, 10), "0746524459", null);
-                var bloodDonor = BloodDonor.Create("AB4", patient.PatientId);
+                var bloodDonor = BloodDonor.Create("AB4", patient.PatientId, new DateTime());
                 await repository.AddAsync(bloodDonor);
                 var currentType = bloodDonor.Type;
-                bloodDonor.Update("A4", patient.PatientId);
+                bloodDonor.Update("A4", patient.PatientId, new DateTime(), false, false, null);
                 var newCurrentType = bloodDonor.Type;
 
                 //Act
@@ -69,7 +71,7 @@ namespace Tests.IntegrationTests
                 //Arrange
                 var repository = new BloodDonorRepository(ctx);
                 var patient = Patient.Create("1234", "Roland", "Iordache", "roland.iordache96@gmail.com", "asfdsdssd", "Iasi", "Romania", new DateTime(1996, 02, 10), "0746524459", null);
-                var bloodDonor = BloodDonor.Create("AB4", patient.PatientId);
+                var bloodDonor = BloodDonor.Create("AB4", patient.PatientId, new DateTime());
                 await repository.AddAsync(bloodDonor);
 
                 //Act
@@ -86,11 +88,13 @@ namespace Tests.IntegrationTests
                 //Arrange
                 var repository = new BloodDonorRepository(ctx);
                 var patient = Patient.Create("1234", "Roland", "Iordache", "roland.iordache96@gmail.com", "asfdsdssd", "Iasi", "Romania", new DateTime(1996, 02, 10), "0746524459", null);
-                var bloodDonor = BloodDonor.Create("AB4", patient.PatientId);
+                var bloodDonor = BloodDonor.Create("AB4", patient.PatientId, new DateTime());
                 await repository.AddAsync(bloodDonor);
 
                 //Act
-                var count = repository.GetAllAsync().Result.Count;
+                string[] includes = { };
+
+                var count = repository.GetAllAsync(includes).Result.Count;
 
                 //Assert
                 Assert.AreEqual(count, 1);

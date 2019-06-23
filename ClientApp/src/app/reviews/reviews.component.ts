@@ -110,7 +110,7 @@ export class ReviewsComponent implements OnInit {
     }
     this.errors = '';
 
-    this.subscriptions.add(this.userService.addReview(currentRate, description, this.doctor.doctorId, this.patientId)
+    this.subscriptions.add(this.userService.addReview(currentRate, description, this.doctor.doctorId, this.patientId, this.appointment.appointmentDate)
     .subscribe(
       result => {
           if (result) {
@@ -124,6 +124,41 @@ export class ReviewsComponent implements OnInit {
           }
       },
       errors => this.errors = errors));
+  }
+
+
+  generateNullRatings() {
+    this.isExpired = this.userService.isExpired();
+    if(this.isExpired) {
+      this.authService.logout();
+    }
+    this.errors = '';
+
+    this.subscriptions.add(this.userService.getDoctors()
+    .subscribe((doctors: Array<DoctorProfile>) => {
+      for(var doctor of doctors) {
+        if(!this.reviewsSubscribed.has(doctor.doctorId)) {
+
+          this.reviewsSubscribed.set(doctor.doctorId,true);
+          this.totalReviews.set(doctor.doctorId,0);
+          this.starsMean.set(doctor.doctorId,0);
+          this.oneStar.set(doctor.doctorId,0);
+          this.twoStars.set(doctor.doctorId,0);
+          this.threeStars.set(doctor.doctorId,0);
+          this.fourStars.set(doctor.doctorId,0);
+          this.fiveStars.set(doctor.doctorId,0);
+          this.width1.set(doctor.doctorId, 0);
+          this.width2.set(doctor.doctorId, 0);
+          this.width3.set(doctor.doctorId, 0);
+          this.width4.set(doctor.doctorId, 0);
+          this.width5.set(doctor.doctorId, 0);
+         }
+
+        } 
+
+    },
+    errors => this.errors = errors
+    ));
   }
 
   generateRatings() {
@@ -262,6 +297,7 @@ export class ReviewsComponent implements OnInit {
       });
 
 
+      this.generateNullRatings();
 
     },
     errors => this.errors = errors
@@ -289,7 +325,7 @@ export class ReviewsComponent implements OnInit {
       this.authService.logout();
     }
     this.errors = '';
-    this.subscriptions.add(this.userService.updateAppointment(appointment.appointmentId, appointment.appointmentIntervalId, appointment.appointmentDate, appointment.doctorId, appointment.patientId, true)
+    this.subscriptions.add(this.userService.updateAppointment(appointment.appointmentId, appointment.appointmentIntervalId, appointment.appointmentDate, appointment.doctorId, appointment.patientId, true, appointment.haveMedicalHistory)
         .subscribe(response => {
 
 
@@ -318,7 +354,7 @@ export class ReviewsComponent implements OnInit {
           for(var appointment of this.appointmentsList) {
             let date = new Date(appointment.appointmentDate);
             date.setHours(10,30,0);
-            if(this.now.getTime()<date.getTime() && appointment.patientId===this.patient.patientId && appointment.haveFeedback==false) 
+            if(this.now.getTime()<=date.getTime() && appointment.patientId===this.patient.patientId && appointment.haveFeedback==false) 
             {
               this.appointmentsListValidated.push(appointment);
             }

@@ -7,6 +7,7 @@ using Core.IRepositories;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace Infrastructure.Repositories.BaseRepositories
 {
     public abstract class ReadOnlyBaseRepository<TEntity> : IReadOnlyRepository<TEntity> where TEntity : class
@@ -19,20 +20,26 @@ namespace Infrastructure.Repositories.BaseRepositories
         }
 
 
-        public async Task<List<TEntity>> GetAllAsync()
-        { //string[] includes in parametru
-            /*var query = DatabaseService.Set<TEntity>().AsQueryable();
+        public async Task<List<TEntity>> GetAllAsync(string[] includes)
+        {  
+
+
+
+            var query = DatabaseService.Set<TEntity>().AsQueryable();
             if (includes != null)
             {
                 foreach (string include in includes)
                 {
-                    query = query.AsNoTracking().Include(include);
+                    //System.Diagnostics.Debug.WriteLine("SomeText", query.ToList());
+                    query = query.Include(include).AsNoTracking();
+                    //System.Diagnostics.Debug.WriteLine("SomeText2", query.ToList());
 
                 }
             }
 
-            return await query.ToListAsync();*/
-            return await DatabaseService.Set<TEntity>().ToListAsync();
+            //System.Diagnostics.Debug.WriteLine(includes[0]);
+            return await query.ToListAsync();
+            //return await DatabaseService.Set<TEntity>().Include("dsdsDdsdd").ToListAsync();
         }
 
         public async Task<PagingResult<TEntity>> GetAllPageAsync(int skip, int take)
@@ -54,6 +61,31 @@ namespace Infrastructure.Repositories.BaseRepositories
                 .Take(take)
                 .ToListAsync();
             return new PagingResult<TEntity>(records, totalRecords);
+        }
+
+
+        ///nu e buna asta...
+        public async Task<List<TEntity>> GetByConditionsAsync(Expression<Func<TEntity, bool>> predicate, string[] includes)
+        {
+
+            var query = DatabaseService.Set<TEntity>().AsQueryable();
+            if (includes != null)
+            {
+                foreach (string include in includes)
+                {
+                   // var query1 = 
+                    //System.Diagnostics.Debug.WriteLine("SomeText", query.ToList());
+                    query = query.Include(include).AsNoTracking();
+                    //System.Diagnostics.Debug.WriteLine("SomeText2", query.ToList());
+
+                }
+            }
+
+            //System.Diagnostics.Debug.WriteLine(includes[0]);
+            return await query.Where(predicate).ToListAsync();
+
+            //return await DatabaseService.Set<TEntity>().Where(predicate)
+                           //.ToListAsync();
         }
 
         public async Task<TEntity> GetByIdAsync(Guid id)

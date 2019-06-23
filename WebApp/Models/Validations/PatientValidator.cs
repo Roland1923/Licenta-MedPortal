@@ -44,13 +44,15 @@ namespace WebApp.Models.Validations
 
         private async Task<bool> NinIsUniqueAsync(string NIN, CancellationToken arg2)
         {
-            List<Patient> patients = await _repository.GetAllAsync();
+            string[] includes = { };
+            List<Patient> patients = await _repository.GetAllAsync(includes);
             return !patients.Any(x => x.NIN == NIN);
         }
 
         private async Task<bool> EmailIsUniqueAsync(string Email, CancellationToken arg2)
         {
-            List<Patient> patients = await _repository.GetAllAsync();
+            string[] includes = { };
+            List<Patient> patients = await _repository.GetAllAsync(includes);
             return !patients.Any(x => x.Email == Email);
         }
     }

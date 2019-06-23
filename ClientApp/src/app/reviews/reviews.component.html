@@ -19,7 +19,8 @@
         <div class="col-md-7 col-12">
           <div class="row">
             <div class="col-auto">
-                <img class="photo" src="assets/img/doctor-avatar2.png">
+                <img class="photo" src="assets/img/doctor-avatar2.png" *ngIf="appointment.doctor.isMale">
+                <img class="photo" src="assets/img/doctor-female-avatar.png" *ngIf="!appointment.doctor.isMale">
             </div>
             <div class="col-auto">
               <h3 class="card-doctor-name">Dr. {{appointment.doctor.firstName}} {{appointment.doctor.lastName}}</h3>
@@ -147,7 +148,8 @@
             <div class="col-md-7 col-12">
               <div class="row">
                 <div class="col-auto">
-                    <img class="photo" src="assets/img/doctor-avatar2.png">
+                    <img class="photo" src="assets/img/doctor-avatar2.png" *ngIf="doctor.isMale">
+                    <img class="photo" src="assets/img/doctor-female-avatar.png" *ngIf="!doctor.isMale">
                 </div>
                 <div class="col-auto">
                   <h3 class="card-doctor-name">Dr. {{doctor.firstName}} {{doctor.lastName}}</h3>
@@ -157,7 +159,6 @@
                   <span class="input-group-addon"> <i class="fa fa-map-marker"></i><div class="details">{{doctor.address}}, {{doctor.city}}</div></span> 
                   <span class="input-group-addon"> <i class="fa fa-envelope"></i><div class="details">{{doctor.email}}</div></span> 
                   <span class="input-group-addon"> <i class="fa fa-phone"></i><div class="details">{{doctor.phoneNumber}}</div></span> 
-                  <span class="input-group-addon"> <i class="fa fa-star"></i><div class="details">3 reviews</div></span> 
                 </div>
               </div>
             </div>

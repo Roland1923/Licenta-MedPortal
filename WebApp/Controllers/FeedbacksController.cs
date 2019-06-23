@@ -6,6 +6,8 @@ using Core.Entities;
 using Core.IRepositories;
 using Infrastructure.Attributes;
 using WebApp.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 
 namespace WebApp.Apis
 {
@@ -26,11 +28,20 @@ namespace WebApp.Apis
         [NoCache]
         [ProducesResponseType(typeof(List<Feedback>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
-        public async Task<ActionResult> Feedbacks()
+        public async Task<ActionResult> Feedbacks([FromHeader(Name = "Authorization")]string value)
         {
+
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(value);
+            var issuer = token.Claims.First(claim => claim.Type == "iss").Value;
+            var audience = token.Claims.First(claim => claim.Type == "aud").Value;
+            if (issuer != "MyIssuer" || audience != "MyAudience")
+            {
+                return Unauthorized();
+            }
             try
             {
-                var feedbacks = await _repository.GetAllAsync();
+                string[] includes = { "Patient" };
+                var feedbacks = await _repository.GetAllAsync(includes);
                 return Ok(feedbacks);
             }
             catch
@@ -89,7 +100,7 @@ namespace WebApp.Apis
                 return BadRequest(ModelState);
             }
 
-            var instance = Feedback.Create(feedback.Description, feedback.PatientId, feedback.DoctorId, feedback.Rating);
+            var instance = Feedback.Create(feedback.Description, feedback.PatientId, feedback.DoctorId, feedback.Rating, feedback.AppointmentDate);
 
             try
             {
@@ -124,7 +135,7 @@ namespace WebApp.Apis
             try
             {
 
-                instance.Update(feedback.Description, feedback.PatientId, feedback.DoctorId, feedback.Rating);
+                instance.Update(feedback.Description, feedback.PatientId, feedback.DoctorId, feedback.Rating, feedback.AppointmentDate);
 
                 var status = await _repository.UpdateAsync(instance);
                 if (!status)
@@ -149,6 +160,28 @@ namespace WebApp.Apis
             try
             {
                 var status = await _repository.DeleteAsync(id);
+                if (!status)
+                {
+                    return BadRequest(new ApiResponse { Status = false });
+                }
+                return Ok(new ApiResponse { Status = true });
+            }
+            catch
+            {
+                return BadRequest(new ApiResponse { Status = false });
+            }
+        }
+
+        // DELETE api/Feedbacks
+        [HttpDelete]
+        // [ValidateAntiForgeryToken]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<ActionResult> DeleteAll()
+        {
+            try
+            {
+                var status = await _repository.DeleteAll();
                 if (!status)
                 {
                     return BadRequest(new ApiResponse { Status = false });

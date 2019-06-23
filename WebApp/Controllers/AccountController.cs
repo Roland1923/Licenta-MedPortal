@@ -40,11 +40,15 @@ namespace WebApp.Apis
         {
           MD5 md5Hash = MD5.Create();
           string passwordHash = PasswordHashMd5.GetMd5Hash(md5Hash, doctorCredentialsModel.Password);
-          string[] includes = {"Appointments","Feedbacks"};
-          var doctorsList = await _repositoryDoctor.GetAllAsync();
+          string doctorDin = PasswordHashMd5.GetMd5Hash(md5Hash, doctorCredentialsModel.DIN);
+
+      
+          string[] includes = { };
+     
+          var doctorsList = await _repositoryDoctor.GetAllAsync(includes);
           foreach (var doctor in doctorsList)
           {
-            if (doctor.DIN == doctorCredentialsModel.DIN && doctor.Password == passwordHash)
+            if (doctor.DIN == doctorDin && doctor.Password == passwordHash)
             {
               var requestAt = DateTime.Now;
               var expiresIn = requestAt + TokenAuthOption.ExpiresSpan;
@@ -93,11 +97,12 @@ namespace WebApp.Apis
         {
           MD5 md5Hash = MD5.Create();
           string passwordHash = PasswordHashMd5.GetMd5Hash(md5Hash, patientCredentialsModel.Password);
-          //string[] includes = { "Appointments", "Feedbacks", "PatientHistories" };
-          var patientList = await _repositoryPatient.GetAllAsync();
+          string patientNin = PasswordHashMd5.GetMd5Hash(md5Hash, patientCredentialsModel.NIN);
+          string[] includes = { };
+          var patientList = await  _repositoryPatient.GetAllAsync(includes);
           foreach (var patient in patientList)
           {
-            if (patient.NIN == patientCredentialsModel.NIN && patient.Password == passwordHash)
+            if (patient.NIN == patientNin && patient.Password == passwordHash)
             {
               var requestAt = DateTime.Now;
               var expiresIn = requestAt + TokenAuthOption.ExpiresSpan;

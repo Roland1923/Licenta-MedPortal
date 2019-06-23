@@ -30,7 +30,8 @@ namespace WebApp.Apis
         {
             try
             {
-                var BloodBanks = await _repository.GetAllAsync();
+                string[] includes = { };
+                var BloodBanks =  await _repository.GetAllAsync(includes);
                 return Ok(BloodBanks);
             }
             catch

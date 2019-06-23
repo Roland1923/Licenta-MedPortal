@@ -42,13 +42,15 @@ namespace WebApp.Models.Validations
 
         private async Task<bool> DinIsUniqueAsync(string DIN, CancellationToken arg2)
         {
-            List<Doctor> doctors = await _repository.GetAllAsync();
+            string[] includes = { };
+            List<Doctor> doctors = await _repository.GetAllAsync(includes);
             return !doctors.Any(x => x.DIN == DIN);
         }
 
         private async Task<bool> EmailIsUniqueAsync(string Email, CancellationToken arg2)
         {
-            List<Doctor> doctors = await _repository.GetAllAsync();
+            string[] includes = { };
+            List<Doctor> doctors = await _repository.GetAllAsync(includes);
             return !doctors.Any(x => x.Email == Email);
         }
     }

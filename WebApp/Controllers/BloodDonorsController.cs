@@ -30,7 +30,8 @@ namespace WebApp.Apis
         {
             try
             {
-                var bloodDonors = await _repository.GetAllAsync();
+                string[] includes = { };
+                var bloodDonors = await _repository.GetAllAsync(includes);
                 return Ok(bloodDonors);
             }
             catch
@@ -89,7 +90,7 @@ namespace WebApp.Apis
                 return BadRequest(ModelState);
             }
 
-            var instance = BloodDonor.Create(bloodDonor.Type, bloodDonor.PatientId);
+            var instance = BloodDonor.Create(bloodDonor.Type, bloodDonor.PatientId, bloodDonor.ApplyDate);
 
             try
             {
@@ -124,7 +125,7 @@ namespace WebApp.Apis
             try
             {
 
-                instance.Update(bloodDonor.Type, bloodDonor.PatientId);
+                instance.Update(bloodDonor.Type, bloodDonor.PatientId, bloodDonor.ApplyDate, bloodDonor.HaveDonated, bloodDonor.PatientConfirmed, bloodDonor.PendingPatientId);
 
                 var status = await _repository.UpdateAsync(instance);
                 if (!status)
@@ -149,6 +150,28 @@ namespace WebApp.Apis
             try
             {
                 var status = await _repository.DeleteAsync(id);
+                if (!status)
+                {
+                    return BadRequest(new ApiResponse { Status = false });
+                }
+                return Ok(new ApiResponse { Status = true });
+            }
+            catch
+            {
+                return BadRequest(new ApiResponse { Status = false });
+            }
+        }
+
+        // DELETE api/BloodDonors
+        [HttpDelete]
+        // [ValidateAntiForgeryToken]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<ActionResult> DeleteAll()
+        {
+            try
+            {
+                var status = await _repository.DeleteAll();
                 if (!status)
                 {
                     return BadRequest(new ApiResponse { Status = false });

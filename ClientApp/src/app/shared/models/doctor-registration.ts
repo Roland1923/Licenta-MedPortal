@@ -12,5 +12,7 @@ export interface DoctorRegistration {
     city : string;
     country : string;
     address : string;
+    isMale : boolean;
+    gender: string;
 }
 

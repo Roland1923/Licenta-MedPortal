@@ -6,6 +6,9 @@ using Core.Entities;
 using Core.IRepositories;
 using Infrastructure.Attributes;
 using WebApp.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using WebApp.Common;
 
 namespace WebApp.Apis
 {
@@ -26,11 +29,19 @@ namespace WebApp.Apis
         [NoCache]
         [ProducesResponseType(typeof(List<PatientHistory>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
-        public async Task<ActionResult> PatientHistories()
+        public async Task<ActionResult> PatientHistories([FromHeader(Name = "Authorization")]string value)
         {
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(value);
+            var issuer = token.Claims.First(claim => claim.Type == "iss").Value;
+            var audience = token.Claims.First(claim => claim.Type == "aud").Value;
+            if (issuer != "MyIssuer" || audience != "MyAudience")
+            {
+                return Unauthorized();
+            }
             try
             {
-                var patientHistories = await _repository.GetAllAsync();
+                string[] includes = { "Patient" };
+                var patientHistories = await _repository.GetAllAsync(includes);
                 return Ok(patientHistories);
             }
             catch
@@ -38,6 +49,7 @@ namespace WebApp.Apis
                 return BadRequest(new ApiResponse { Status = false });
             }
         }
+
 
 
         // GET api/PatientHistories/page/10/10
@@ -89,7 +101,7 @@ namespace WebApp.Apis
                 return BadRequest(ModelState);
             }
 
-            var instance = PatientHistory.Create(patientHistory.PatientId, patientHistory.DoctorId, patientHistory.Prescription, patientHistory.Description, patientHistory.Recommendations, patientHistory.Date);
+            var instance = PatientHistory.Create(patientHistory.PatientId);
 
             try
             {
@@ -112,8 +124,16 @@ namespace WebApp.Apis
         //[ValidateAntiForgeryToken]
         [ProducesResponseType(typeof(ApiResponse), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
-        public async Task<ActionResult> UpdatePatientHistory(Guid id, [FromBody]PatientHistoryModel patientHistory)
+        public async Task<ActionResult> UpdatePatientHistory(Guid id, [FromBody]PatientHistoryModel patientHistory, [FromHeader(Name = "Authorization")]string value)
         {
+
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(value);
+            var issuer = token.Claims.First(claim => claim.Type == "iss").Value;
+            var audience = token.Claims.First(claim => claim.Type == "aud").Value;
+            if (issuer != "MyIssuer" || audience != "MyAudience")
+            {
+                return Unauthorized();
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -124,7 +144,8 @@ namespace WebApp.Apis
             try
             {
 
-                instance.Update(patientHistory.PatientId, patientHistory.DoctorId, patientHistory.Prescription, patientHistory.Description, patientHistory.Recommendations, patientHistory.Date);
+                instance.Update(patientHistory.Smoke, patientHistory.Drink, patientHistory.Gender, patientHistory.Weight, patientHistory.Height,
+                    patientHistory.HealthConditions, patientHistory.Allergies, patientHistory.Consultations, patientHistory.LastVisit);
 
                 var status = await _repository.UpdateAsync(instance);
                 if (!status)
@@ -149,6 +170,28 @@ namespace WebApp.Apis
             try
             {
                 var status = await _repository.DeleteAsync(id);
+                if (!status)
+                {
+                    return BadRequest(new ApiResponse { Status = false });
+                }
+                return Ok(new ApiResponse { Status = true });
+            }
+            catch
+            {
+                return BadRequest(new ApiResponse { Status = false });
+            }
+        }
+
+        // DELETE api/PatientHistories
+        [HttpDelete]
+        // [ValidateAntiForgeryToken]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<ActionResult> DeleteAll()
+        {
+            try
+            {
+                var status = await _repository.DeleteAll();
                 if (!status)
                 {
                     return BadRequest(new ApiResponse { Status = false });

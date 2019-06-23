@@ -1,0 +1,124 @@
+::ng-deep footer{
+    font-size: 16px;  
+    padding: 22px 0;
+    background: #343a40 !important;
+    color: white !important;
+    margin-top: 2%;
+    position: relative;
+    width: 100%;
+    clear: both;
+}
+
+body {
+    min-height: 100vh;
+}
+
+.intro {
+    padding-top: 2vw;
+    padding-bottom: 3vw;
+    text-align: center;
+    margin-left: 8vw;
+    margin-right: 8vw;
+}
+
+.p1 {
+    margin-bottom: 10px;
+}
+
+.input-group-addon {
+    background: white(0, 0, 0, 0.5);
+    color: black;
+    font-weight: bold;
+}
+
+select option {
+    color: black;
+}
+
+select option#undefined {
+    color: #6d6d6d;
+}
+
+
+
+
+
+
+#divshow {
+    padding-top: 1vw;
+    margin-left: 8vw;
+    margin-right: 8vw;
+    border:  1px ridge #e7e7e7;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 15px;
+    width: auto;
+}
+
+.row {
+    margin-bottom: 1vw;
+    align-items: center;
+}
+
+#hr2 {
+    border: .5px ridge #343a40!important;
+}
+
+
+.updateButton {
+    text-align: center;
+    margin-left: 8vw;
+    margin-right: 8vw;
+    padding-bottom: 1vw;
+}
+
+
+@media only screen and (min-width: 1255px) {
+    .updateButton .btn {
+        border: 1px ridge #e7e7e7;
+        margin-top: 2vw;
+        font-size: .7vw;
+        padding: 1.5vh; 
+        font-weight: bold;
+        width: 25%;
+    }
+}
+
+@media only screen and (max-width: 1255px) {
+    .updateButton .btn {
+        border: 1px ridge #e7e7e7;
+        margin-top: 2vw;
+        font-size: 3vw;
+        padding: 1.5vh; 
+        font-weight: bold;
+        width: 100%;
+    }
+}
+
+button:focus, button:active, .active {
+    outline: none !important;
+    box-shadow: none !important;
+    color: white !important;
+    background-color:  #69D18B !important;
+ }
+ 
+ button:not(.active):hover{
+     background-color: rgb(236, 236, 236)!important;
+ }
+
+ button {
+     cursor:pointer;
+ }
+
+ 
+textarea:focus {
+    border-radius: none;
+}
+
+textarea {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 2px dashed rgba(0,0,0,.2);
+    width: 100%;
+}

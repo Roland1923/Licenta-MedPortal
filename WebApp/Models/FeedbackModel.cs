@@ -9,5 +9,7 @@ namespace WebApp.Models
         public Guid PatientId { get; set; }
         public Guid DoctorId { get; set; }
         public int Rating { get; set; }
+        public DateTime ReviewDate { get; set; }
+        public DateTime AppointmentDate { get; set; }
     }
 }

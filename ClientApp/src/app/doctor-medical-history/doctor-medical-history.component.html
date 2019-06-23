@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+
+
+    <div class="intro">
+      <p class="p1">
+          Select a <b><i><span style="color:#343a40">PATIENT</span></i></b> below to view or edit Medical History.
+      </p>
+      <div class="row">
+       
+          <div class="col-sm-4 offset-sm-4">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-user-md"></i></span> 
+              <select class="form-control" [(ngModel)]="appointmentId" (change)="getMedicalHistory(appointmentId)">
+                  <option id="undefined" [ngValue]="undefined" disabled  selected> Select a patient </option>
+       
+                    <option *ngFor="let appointment of titleArray" [value]="appointment.appointmentId">
+ 
+                      {{appointment.patient.firstName }} {{appointment.patient.lastName}} - {{appointment.appointmentDate | date:'yyyy-MM-dd'}} ({{appointment.appointmentInterval.startHour}} to {{appointment.appointmentInterval.endHour}})
+                    </option>
+                
+                  
+              </select>
+          </div><!-- /input-group -->
+        </div>
+
+        </div>
+    </div>
+
+
+    <div *ngIf="patientSelected"  id="divshow" >
+   
+        <p class="p2head">
+          <b>PATIENT INFORMATION</b>
+        </p>
+
+          <hr>
+          <p class="p2">
+              <b>Name: </b>{{medicalHistory.patient.firstName}} {{medicalHistory.patient.lastName}} | <b>Birthdate: </b>{{medicalHistory.patient.birthdate | date:'dd/MM/yyyy'}} |
+               <b>City: </b>{{medicalHistory.patient.city}} | <b>Country: </b>{{medicalHistory.patient.country}} <br> 
+               <b>Gender: </b>{{medicalHistory.gender || "NOT COMPLETED"}} | <b>Smoke: </b>{{medicalHistory.smoke || "NOT COMPLETED"}} | 
+               <b>Drink: </b>{{medicalHistory.drink || "NOT COMPLETED"}} | <b>Weight: </b>{{medicalHistory.weight || "NOT COMPLETED"}} | 
+               <b>Height: </b>{{medicalHistory.height || "NOT COMPLETED"}}
+          </p>
+
+          <hr id="hr2">
+
+
+          <p class="p2head">
+              <b>PATIENT DETAILS</b>
+          </p>
+    
+          <hr>
+
+          <form [formGroup]="medicalHistoryForm" #f="ngForm" (ngSubmit)="updateMedicalHistory(medicalHistoryForm)">
+              <div class="row">
+
+                <div class="col-sm-4 form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-intersex"></i></span> 
+                        <select class="form-control" formControlName="gender">
+                            <option id="undefined" [value]=null disabled  selected> Select gender</option>
+                            <option value="Male">
+                              Male
+                            </option>
+                            <option value="Female">
+                              Female
+                            </option>  
+                        </select>
+                    </div><!-- /input-group -->
+                </div>
+
+                <div class="col-sm-4 form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fas fa-beer"></i></span> 
+                        <select class="form-control" formControlName="drink">
+                            <option id="undefined" [value]=null disabled  selected> Is she/he drinking?</option>
+                            <option value="Yes">
+                              Yes
+                            </option>
+                            <option value="No">
+                              No
+                            </option>  
+                        </select>
+                    </div><!-- /input-group -->
+                </div>
+
+                <div class="col-sm-4 form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fas fa-smoking"></i></span> 
+                        <select class="form-control" formControlName="smoke">
+                            <option id="undefined" [value]=null disabled  selected> Is she/he smoking? </option>
+                            <option value="Yes">
+                              Yes
+                            </option>
+                            <option value="No">
+                              No
+                            </option>  
+                        </select>
+                    </div><!-- /input-group -->
+                </div>
+
+              </div>
+
+              <div class="row">
+
+                  <div class="col-sm-6 form-group">
+                      <div class="input-group">
+                          <span class="input-group-addon"><i class="fas fa-weight"></i></span> 
+                          <select class="form-control" formControlName="weight" >
+                              <option id="undefined" [value]=null disabled  selected> Select weight</option>
+                              <option *ngFor="let weight of weightArray" [value]="weight">
+                                  {{weight}}
+                              </option>
+                          </select>
+                      </div><!-- /input-group -->
+                  </div>
+  
+                  <div class="col-sm-6 form-group">
+                      <div class="input-group">
+                          <span class="input-group-addon"><i class="fas fa-angle-double-up"></i></span> 
+                          <select class="form-control" formControlName="height">
+                              <option id="undefined" [value]=null disabled  selected>Select height</option>
+                              <option *ngFor="let height of heightArray" [value]="height">
+                                  {{height}}
+                              </option>
+                          </select>
+                      </div><!-- /input-group -->
+                  </div>
+
+                </div>
+
+                <hr id="hr2">
+
+
+                <p class="p2head">
+                    <b>ALLERGIES & HEALTH CONDITIONS</b>
+                </p>
+          
+                <hr>
+
+              
+                  <b>Allergies: </b> <div *ngFor="let allergy of allergies">- {{allergy}}</div> <div *ngIf="allergies.length === 0">UNKNOWN</div>  <br>
+                  <b>Health Conditions: </b><div *ngFor="let healthCondition of healthConditions">- {{healthCondition}}</div> <div *ngIf="healthConditions.length === 0">UNKNOWN</div>
+                <hr>
+               
+                <div class="row">
+                   
+                    <div class="col-11 col-11 col-md-4">
+                        <label>Allergy:</label>
+                      <div class="form-group">
+                          <textarea class="form-control" 
+                          rows="2" formControlName="allergies"></textarea>
+                      </div>
+                    </div>
+
+           
+                    <div class="col-11 col-11 col-md-4 offset-4">
+                        <label>Health Condition:</label>
+                        <div class="form-group">
+                            <textarea class="form-control" 
+                            rows="2" formControlName="healthConditions"></textarea>
+                        </div>
+                      </div>
+
+                  </div>
+
+                <hr id="hr2">
+
+
+                <p class="p2head">
+                    <b>CONSULTATIONS</b>
+                </p>
+              
+                <hr>
+                <div *ngFor="let consultation of consultations">- {{consultation}}</div> <div *ngIf="consultations.length === 0">UNKNOWN</div>
+                <hr>
+
+                <div class="row">
+                   
+                    <div class="col-11 col-11 col-md-6 offset-3">
+                        <label>Diagnostic & Treatment Plan</label>
+                        <div class="form-group">
+                            <textarea class="form-control" 
+                            rows="5" formControlName="consultations"></textarea>
+                        </div>
+                      </div>
+
+                  </div>
+
+
+                <div class="updateButton">
+                    <button type="submit" class="btn active btn-primary btn-lg" [disabled]="f.invalid">UPDATE MEDICAL HISTORY</button>
+                </div>
+            </form>
+          
+
+         
+    </div>
+
+    
+    
+
+</body>
+
+</html>

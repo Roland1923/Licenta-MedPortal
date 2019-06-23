@@ -8,34 +8,53 @@ namespace Core.Entities
     {
         [Key]
         public Guid HistoryId { get; private set; }
+
         [ForeignKey("PatientId")]
-        public Patient Patient => null;
+        public Patient Patient { get; private set; }
         public Guid PatientId { get; private set; }
-        [ForeignKey("DoctorId")]
-        public Doctor Doctor => null;
-        public Guid DoctorId { get; private set; }
-        public string Prescription { get; private set; }
-        public string Description { get; private set; }
-        public string Recommendation { get; private set; }
-        public DateTime Date { get; private set; }
+
+        public string Smoke { get; private set; }
+        public string Drink { get; private set; }
+        public string Gender { get; private set; }
+        public string Weight { get; private set; }
+        public string Height { get; private set; }
+        public string HealthConditions { get; private set; }
+        public string Allergies { get; private set; }
+        public string Consultations { get; private set; }
+        public DateTime? LastVisit { get; private set; }
 
         private PatientHistory() { }
 
-        public static PatientHistory Create(Guid patientId, Guid doctorId, string prescription, string description, string recommendation, DateTime date)
+        public static PatientHistory Create(Guid patientId)
         {
-            var instance = new PatientHistory { HistoryId = Guid.NewGuid() };
-            instance.Update(patientId, doctorId, prescription, description, recommendation, date);
+            var instance = new PatientHistory { HistoryId = Guid.NewGuid(), PatientId = patientId };
             return instance;
         }
 
-        public void Update(Guid patientId, Guid doctorId, string prescription, string description, string recommendation, DateTime date)
+        public void Update(string smoke, string drink, string gender, string weight, string height, string healthCondition,
+                            string allergy, string consultation, DateTime? lastVisit)
         {
-            PatientId = patientId;
-            DoctorId = doctorId;
-            Prescription = prescription;
-            Description = description;
-            Recommendation = recommendation;
-            Date = date;
+            Smoke = smoke;
+            Drink = drink;
+            Gender = gender;
+            Weight = weight;
+            Height = height;
+            if(healthCondition!= null)
+            {
+                HealthConditions = HealthConditions + healthCondition + Environment.NewLine;
+            }
+
+            if (allergy != null)
+            {
+                Allergies = Allergies + allergy + Environment.NewLine;
+            }
+
+            if(consultation != null)
+            {
+                Consultations = Consultations + consultation + Environment.NewLine;
+            }
+
+            LastVisit = lastVisit;
         }
     }
 }

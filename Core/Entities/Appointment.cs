@@ -8,28 +8,42 @@ namespace Core.Entities
     {
         [Key]
         public Guid AppointmentId { get; private set; }
+
         public Guid PatientId { get; private set; }
         [ForeignKey("PatientId")]
-        public Patient Patient => null;
+        public Patient Patient { get; private set; }
+
         public Guid DoctorId { get; private set; }
         [ForeignKey("DoctorId")]
-        public Doctor Doctor => null;
+        public Doctor Doctor { get; private set; }
+
         public DateTime AppointmentDate { get; private set; }
 
-        private Appointment() { }
+        public Guid? AppointmentIntervalId { get; private set; }
+        [ForeignKey("AppointmentIntervalId")]
+        public virtual AppointmentInterval AppointmentInterval { get; private set; }
 
-        public static Appointment Create(DateTime appointmentDate, Guid doctorId, Guid patientId)
+        public bool HaveFeedback { get; private set; }
+        public bool HaveMedicalHistory { get; private set; }
+        
+
+        public Appointment() { }
+
+        public static Appointment Create(Guid appointmentIntervalId, DateTime appointmentDate, Guid doctorId, Guid patientId)
         {
-            var instance = new Appointment { AppointmentId = Guid.NewGuid()};
-            instance.Update(appointmentDate, doctorId, patientId);
+            var instance = new Appointment { AppointmentId = Guid.NewGuid() };
+            instance.Update(appointmentIntervalId, appointmentDate, doctorId, patientId, false, false);
             return instance;
         }
 
-        public void Update(DateTime appointmentDate, Guid doctorId, Guid patientId)
+        public void Update(Guid appointmentIntervalId, DateTime appointmentDate, Guid doctorId, Guid patientId, bool haveFeedback, bool haveMedicalHistory)
         {
+            HaveFeedback = haveFeedback;
+            AppointmentIntervalId = appointmentIntervalId;
             AppointmentDate = appointmentDate;
             DoctorId = doctorId;
             PatientId = patientId;
+            HaveMedicalHistory = haveMedicalHistory;
         }
     }
 }

@@ -6,16 +6,18 @@ using Core.Entities;
 using Core.IRepositories;
 using Infrastructure.Attributes;
 using WebApp.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 
 namespace WebApp.Apis
 {
     [Produces("application/json")]
     [Route("api/Appointments")]
-    public class AppointmentsController : Controller
+    public class AppointmentController : Controller
     {
         private readonly IEditableRepository<Appointment> _repository;
         
-        public AppointmentsController(IEditableRepository<Appointment> repository)
+        public AppointmentController(IEditableRepository<Appointment> repository)
         {
             _repository = repository;
         }
@@ -25,12 +27,23 @@ namespace WebApp.Apis
         [NoCache]
         [ProducesResponseType(typeof(List<Appointment>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
-        public async Task<ActionResult> Appointments()
+        public async Task<ActionResult> Appointments([FromHeader(Name = "Authorization")]string value)
         {
+
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(value);
+            var issuer = token.Claims.First(claim => claim.Type == "iss").Value;
+            var audience = token.Claims.First(claim => claim.Type == "aud").Value;
+            if (issuer != "MyIssuer" || audience != "MyAudience")
+            {
+                return Unauthorized();
+            }
             try
             {
-                string[] includes = { "Patient", "Doctor" };
-                var appointments = await _repository.GetAllAsync();
+                string[] includes = { "AppointmentInterval", "Patient", "Doctor" };
+
+                var appointments = await _repository.GetAllAsync(includes);
+
+                //System.Diagnostics.Debug.WriteLine("SomeText", appointments);
                 return Ok(appointments);
             }
             catch
@@ -60,7 +73,7 @@ namespace WebApp.Apis
         }
 
         // GET api/Appointments/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetAppointmentRoute")]
         [NoCache]
         [ProducesResponseType(typeof(Appointment), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
@@ -82,14 +95,23 @@ namespace WebApp.Apis
         //[ValidateAntiForgeryToken]
         [ProducesResponseType(typeof(ApiResponse), 201)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
-        public async Task<ActionResult> CreateAppointment([FromBody]AppointmentModel appointment)
+        public async Task<ActionResult> CreateAppointment([FromBody]AppointmentModel appointment, [FromHeader(Name = "Authorization")]string value)
         {
+
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(value);
+            var issuer = token.Claims.First(claim => claim.Type == "iss").Value;
+            var audience = token.Claims.First(claim => claim.Type == "aud").Value;
+            if (issuer != "MyIssuer" || audience != "MyAudience")
+            {
+                return Unauthorized();
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var instance = Appointment.Create(appointment.AppointmentDate, appointment.DoctorId, appointment.PatientId);
+            var instance = Appointment.Create(appointment.AppointmentIntervalId, appointment.AppointmentDate, appointment.DoctorId, appointment.PatientId);
             
             try
             {
@@ -112,8 +134,17 @@ namespace WebApp.Apis
         //[ValidateAntiForgeryToken]
         [ProducesResponseType(typeof(ApiResponse), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
-        public async Task<ActionResult> UpdateAppointment(Guid id, [FromBody]AppointmentModel appointment)
+        public async Task<ActionResult> UpdateAppointment(Guid id, [FromBody]AppointmentModel appointment, [FromHeader(Name = "Authorization")]string value)
         {
+
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(value);
+            var issuer = token.Claims.First(claim => claim.Type == "iss").Value;
+            var audience = token.Claims.First(claim => claim.Type == "aud").Value;
+            if (issuer != "MyIssuer" || audience != "MyAudience")
+            {
+                return Unauthorized();
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -124,7 +155,7 @@ namespace WebApp.Apis
             try
             {
 
-                instance.Update(appointment.AppointmentDate, appointment.DoctorId, appointment.PatientId);
+                instance.Update(appointment.AppointmentIntervalId, appointment.AppointmentDate, appointment.DoctorId, appointment.PatientId, appointment.HaveFeedback, appointment.HaveMedicalHistory);
 
                 var status = await _repository.UpdateAsync(instance);
                 if (!status)
@@ -144,11 +175,42 @@ namespace WebApp.Apis
        // [ValidateAntiForgeryToken]
         [ProducesResponseType(typeof(ApiResponse), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
-        public async Task<ActionResult> DeleteAppointment(Guid id)
+        public async Task<ActionResult> DeleteAppointment(Guid id, [FromHeader(Name = "Authorization")]string value)
         {
+
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(value);
+            var issuer = token.Claims.First(claim => claim.Type == "iss").Value;
+            var audience = token.Claims.First(claim => claim.Type == "aud").Value;
+            if (issuer != "MyIssuer" || audience != "MyAudience")
+            {
+                return Unauthorized();
+            }
             try
             {
                 var status = await _repository.DeleteAsync(id);
+                if (!status)
+                {
+                    return BadRequest(new ApiResponse { Status = false });
+                }
+                return Ok(new ApiResponse { Status = true });
+            }
+            catch
+            {
+                return BadRequest(new ApiResponse { Status = false });
+            }
+        }
+
+
+        // DELETE api/Appointments
+        [HttpDelete]
+        // [ValidateAntiForgeryToken]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<ActionResult> DeleteAll()
+        {
+            try
+            {
+                var status = await _repository.DeleteAll();
                 if (!status)
                 {
                     return BadRequest(new ApiResponse { Status = false });

@@ -10,11 +10,12 @@ namespace WebApp.Models.Validations
             RuleFor(c => c.AppointmentDate).NotNull().WithMessage("Trebuie sa specificati o data").Must(BeAValidDate);
             RuleFor(c => c.PatientId).NotNull();
             RuleFor(c => c.DoctorId).NotNull();
+            RuleFor(c => c.HaveFeedback).NotNull();
         }
 
         private bool BeAValidDate(DateTime date)
         {
-            return date>DateTime.Now;
+            return date>=DateTime.Now;
         }
     }
 }

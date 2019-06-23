@@ -86,7 +86,7 @@ export class DoctorAppointmentsComponent implements OnInit {
     var now = new Date();
     this.time.hours=now.getHours();
     this.time.minutes=now.getMinutes();
-    now.setHours(6,0,0,0);
+    now.setHours(20,15,0);
 
     this.appointmentsList = [];
     this.appointmentsListValidated = [];
@@ -108,7 +108,7 @@ export class DoctorAppointmentsComponent implements OnInit {
               this.time1InMinutesForTime2 = this.getTimeAsNumberOfMinutes(appointment.appointmentInterval.startHour.toString());
 
 
-              if(this.time1InMinutesForTime1 > this.time1InMinutesForTime2) {
+              if(this.time1InMinutesForTime1 < this.time1InMinutesForTime2 && now.getTime() == appDate.getTime()) {
                 appointmentGood = false; //de fapt sa nu fi trecut ora de inceput
               }
 

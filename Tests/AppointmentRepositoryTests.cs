@@ -15,15 +15,18 @@ namespace Tests.IntegrationTests
             {
                 //Arrange
                 var repository = new AppointmentRepository(ctx);
+                
                 var patient = Patient.Create("1234", "Roland", "Iordache", "roland.iordache96@gmail.com", "asfdsdssd", "Iasi", "Romania", new DateTime(1996, 02, 10), "0746524459", null);
-                var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu");
-                var appointment = Appointment.Create(new DateTime(1996, 02, 10), doctor.DoctorId, patient.PatientId);
+                var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu", true);
+                var appointmentInterval = AppointmentInterval.Create(3, new TimeSpan(0,10,0,0), new TimeSpan(0, 11, 0, 0), doctor.DoctorId);
+                var appointment = Appointment.Create(appointmentInterval.AppointmentIntervalId, new DateTime(1996, 02, 10), doctor.DoctorId, patient.PatientId);
 
                 //Act
                 await repository.AddAsync(appointment);
 
                 //Assert
-                Assert.AreEqual(repository.GetAllAsync().Result.Count, 1);
+                string[] includes = { };
+                Assert.AreEqual(repository.GetAllAsync(includes).Result.Count, 1);
             });
         }
 
@@ -35,15 +38,17 @@ namespace Tests.IntegrationTests
                 //Arrange
                 var repository = new AppointmentRepository(ctx);
                 var patient = Patient.Create("1234", "Roland", "Iordache", "roland.iordache96@gmail.com", "asfdsdssd", "Iasi", "Romania", new DateTime(1996, 02, 10), "0746524459", null);
-                var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu");
-                var appointment = Appointment.Create(new DateTime(1996, 02, 10), doctor.DoctorId, patient.PatientId);
+              var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu", true);
+                var appointmentInterval = AppointmentInterval.Create(3, new TimeSpan(0, 10, 0, 0), new TimeSpan(0, 11, 0, 0), doctor.DoctorId);
+                var appointment = Appointment.Create(appointmentInterval.AppointmentIntervalId, new DateTime(1996, 02, 10), doctor.DoctorId, patient.PatientId);
                 await repository.AddAsync(appointment);
 
                 //Act
                 await repository.DeleteAsync(appointment.PatientId);
 
                 //Assert
-                Assert.AreEqual(repository.GetAllAsync().Result.Count, 0);
+                string[] includes = { };
+                Assert.AreEqual(repository.GetAllAsync(includes).Result.Count, 0);
             });
         }
 
@@ -56,13 +61,17 @@ namespace Tests.IntegrationTests
                 var repository = new AppointmentRepository(ctx);
                 var patient = Patient.Create("1234", "Roland", "Iordache", "roland.iordache96@gmail.com", "asfdsdssd", "Iasi", "Romania", new DateTime(1996, 02, 10), "0746524459", null);
                 var patient2 = Patient.Create("1234", "Roland", "Iordache2", "roland.iordache96@gmail.com", "asfdsdssd", "Iasi", "Romania", new DateTime(1996, 02, 10), "0746524459", null);
-                var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu");
-                var appointment = Appointment.Create(new DateTime(1996, 02, 10), doctor.DoctorId, patient.PatientId);
+              var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu", true);
+          
+                var appointmentInterval = AppointmentInterval.Create(3, new TimeSpan(0, 10, 0, 0), new TimeSpan(0, 11, 0, 0), doctor.DoctorId);
+                var appointment = Appointment.Create(appointmentInterval.AppointmentIntervalId, new DateTime(1996, 02, 10), doctor.DoctorId, patient.PatientId);
+   
+
 
                 await repository.AddAsync(appointment);
 
                 var appointmentPatient = appointment.Patient;
-                appointment.Update(new DateTime(1996, 02, 10), doctor.DoctorId, patient2.PatientId);
+                appointment.Update(appointmentInterval.AppointmentIntervalId, new DateTime(1996, 02, 10), doctor.DoctorId, patient2.PatientId, appointment.HaveFeedback, appointment.HaveMedicalHistory);
 
                 //Act
                 await repository.UpdateAsync(appointment);
@@ -80,8 +89,9 @@ namespace Tests.IntegrationTests
                 //Arrange
                 var repository = new AppointmentRepository(ctx);
                 var patient = Patient.Create("1234", "Roland", "Iordache", "roland.iordache96@gmail.com", "asfdsdssd", "Iasi", "Romania", new DateTime(1996, 02, 10), "0746524459", null);
-                var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu");
-                var appointment = Appointment.Create(new DateTime(1996, 02, 10), doctor.DoctorId, patient.PatientId);
+              var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu", true);
+                var appointmentInterval = AppointmentInterval.Create(3, new TimeSpan(0, 10, 0, 0), new TimeSpan(0, 11, 0, 0), doctor.DoctorId);
+                var appointment = Appointment.Create(appointmentInterval.AppointmentIntervalId, new DateTime(1996, 02, 10), doctor.DoctorId, patient.PatientId);
                 await repository.AddAsync(appointment);
 
                 //Act
@@ -100,12 +110,14 @@ namespace Tests.IntegrationTests
                 //Arrange
                 var repository = new AppointmentRepository(ctx);
                 var patient = Patient.Create("1234", "Roland", "Iordache", "roland.iordache96@gmail.com", "asfdsdssd", "Iasi", "Romania", new DateTime(1996, 02, 10), "0746524459", null);
-                var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu");
-                var appointment = Appointment.Create(new DateTime(1996, 02, 10), doctor.DoctorId, patient.PatientId);
+              var doctor = Doctor.Create("1234", "Mircea", "Cartarescu", "mircea.cartarescu@gmail.com", "parola", "0746524459", "blasdadsadsada", "Cardiologie", "Sf. Spiridon", "Iasi", "Romania", "Str. Vasile Lupu", true);
+                var appointmentInterval = AppointmentInterval.Create(3, new TimeSpan(0, 10, 0, 0), new TimeSpan(0, 11, 0, 0), doctor.DoctorId);
+                var appointment = Appointment.Create(appointmentInterval.AppointmentIntervalId, new DateTime(1996, 02, 10), doctor.DoctorId, patient.PatientId);
                 await repository.AddAsync(appointment);
 
                 //Act
-                var count = repository.GetAllAsync().Result.Count;
+                string[] includes = { };
+                var count = repository.GetAllAsync(includes).Result.Count;
 
                 //Assert
                 Assert.AreEqual(count, 1);

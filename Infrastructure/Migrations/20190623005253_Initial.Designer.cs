@@ -11,7 +11,7 @@ using System;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseService))]
-    [Migration("20190415232644_Initial")]
+    [Migration("20190623005253_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,17 +28,45 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime>("AppointmentDate");
 
+                    b.Property<Guid?>("AppointmentIntervalId");
+
                     b.Property<Guid>("DoctorId");
+
+                    b.Property<bool>("HaveFeedback");
+
+                    b.Property<bool>("HaveMedicalHistory");
 
                     b.Property<Guid>("PatientId");
 
                     b.HasKey("AppointmentId");
+
+                    b.HasIndex("AppointmentIntervalId");
 
                     b.HasIndex("DoctorId");
 
                     b.HasIndex("PatientId");
 
                     b.ToTable("Appointments");
+                });
+
+            modelBuilder.Entity("Core.Entities.AppointmentInterval", b =>
+                {
+                    b.Property<Guid>("AppointmentIntervalId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Day");
+
+                    b.Property<Guid>("DoctorId");
+
+                    b.Property<TimeSpan>("EndHour");
+
+                    b.Property<TimeSpan>("StartHour");
+
+                    b.HasKey("AppointmentIntervalId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.ToTable("AppointmentIntervals");
                 });
 
             modelBuilder.Entity("Core.Entities.BloodDonor", b =>
@@ -76,6 +104,8 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Hospital");
 
+                    b.Property<bool>("IsMale");
+
                     b.Property<string>("LastName");
 
                     b.Property<string>("Password");
@@ -94,6 +124,8 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("FeedbackId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("AppointmentDate");
+
                     b.Property<string>("Description");
 
                     b.Property<Guid>("DoctorId");
@@ -101,6 +133,8 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("PatientId");
 
                     b.Property<int>("Rating");
+
+                    b.Property<DateTime>("ReviewDate");
 
                     b.HasKey("FeedbackId");
 
@@ -120,11 +154,17 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("City");
 
+                    b.Property<string>("Country");
+
                     b.Property<string>("Email");
 
                     b.Property<string>("FirstName");
 
+                    b.Property<Guid>("HistoryId");
+
                     b.Property<string>("LastName");
+
+                    b.Property<string>("NIN");
 
                     b.Property<string>("Password");
 
@@ -140,35 +180,56 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("HistoryId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Date");
+                    b.Property<string>("Allergies");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Consultations");
 
-                    b.Property<Guid>("DoctorId");
+                    b.Property<string>("Drink");
+
+                    b.Property<string>("Gender");
+
+                    b.Property<string>("HealthConditions");
+
+                    b.Property<string>("Height");
+
+                    b.Property<DateTime?>("LastVisit");
 
                     b.Property<Guid>("PatientId");
 
-                    b.Property<string>("Prescription");
+                    b.Property<string>("Smoke");
 
-                    b.Property<string>("Recommendation");
+                    b.Property<string>("Weight");
 
                     b.HasKey("HistoryId");
 
-                    b.HasIndex("PatientId");
+                    b.HasIndex("PatientId")
+                        .IsUnique();
 
                     b.ToTable("PatientHistories");
                 });
 
             modelBuilder.Entity("Core.Entities.Appointment", b =>
                 {
-                    b.HasOne("Core.Entities.Doctor")
+                    b.HasOne("Core.Entities.AppointmentInterval", "AppointmentInterval")
+                        .WithMany("Appointments")
+                        .HasForeignKey("AppointmentIntervalId");
+
+                    b.HasOne("Core.Entities.Doctor", "Doctor")
                         .WithMany("Appointments")
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Core.Entities.Patient")
+                    b.HasOne("Core.Entities.Patient", "Patient")
                         .WithMany("Appointments")
                         .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Core.Entities.AppointmentInterval", b =>
+                {
+                    b.HasOne("Core.Entities.Doctor")
+                        .WithMany("AppointmentIntervals")
+                        .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -179,7 +240,7 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Core.Entities.Patient")
+                    b.HasOne("Core.Entities.Patient", "Patient")
                         .WithMany("Feedbacks")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -187,9 +248,9 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Entities.PatientHistory", b =>
                 {
-                    b.HasOne("Core.Entities.Patient")
-                        .WithMany("PatientHistories")
-                        .HasForeignKey("PatientId")
+                    b.HasOne("Core.Entities.Patient", "Patient")
+                        .WithOne("PatientHistory")
+                        .HasForeignKey("Core.Entities.PatientHistory", "PatientId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

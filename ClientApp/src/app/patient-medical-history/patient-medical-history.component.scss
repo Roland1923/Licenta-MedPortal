@@ -10,7 +10,29 @@
     clear: both;
 }
 
-.container1 {
-    margin-left: 8%;
-    margin-right: 8%;
+body {
+    min-height: 100vh;
+}
+
+#divshow {
+    margin-left: 8vw;
+    margin-right: 8vw;
+    border:  1px ridge #e7e7e7;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 15px;
+    width: auto;
+    padding-top: 1.5vw;
+    padding-bottom: 3vw;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+.row {
+    margin-bottom: 1vw;
+    align-items: center;
+}
+
+#hr2 {
+    border: .5px ridge #343a40!important;
 }

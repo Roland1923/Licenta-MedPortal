@@ -8,5 +8,6 @@ namespace Core.IRepositories
         Task<T> AddAsync(T entity);
         Task<bool> DeleteAsync(Guid id);
         Task<bool> UpdateAsync(T entity);
+        Task<bool> DeleteAll();
     }
 }

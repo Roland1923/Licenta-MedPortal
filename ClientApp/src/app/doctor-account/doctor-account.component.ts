@@ -11,6 +11,8 @@ import { NgForm } from '@angular/forms';
 import { AppointmentInterval } from '../shared/models/appointment-interval';
 
 import { Time } from '@angular/common';
+import { AuthService } from '../shared/services/auth.service';
+import { Feedback } from '../shared/models/feedback.interface';
 
 declare var $: any;
 
@@ -43,9 +45,12 @@ export class DoctorAccountComponent implements OnInit {
   startHour: Time;
   endHour: Time;
   showErrorHoursInterval: boolean = false;
+  reviewsLoaded: boolean = false;
+  allReviews: Array<Feedback>;
+
 
   toggleShow(nr) {
-    this.buttonsClicked = [false, false, false,false];
+    this.buttonsClicked = [false, false, false,false, false];
     this.buttonsClicked[nr]=true;
   }
 
@@ -63,7 +68,7 @@ export class DoctorAccountComponent implements OnInit {
       }
     }
 
-  constructor(private router: Router, private userService: UserService, private formBuilder: FormBuilder) {
+  constructor(private router: Router, private authService: AuthService, private userService: UserService, private formBuilder: FormBuilder) {
     this.disponibilities = new Array<AppointmentInterval>();
    }
 
@@ -177,10 +182,42 @@ export class DoctorAccountComponent implements OnInit {
   }
 }
 
+generateReviews(doctorId: string) {
+  this.isExpired = this.userService.isExpired();
+  if(this.isExpired) {
+    this.authService.logout();
+  }
+  this.errors = '';
+  this.allReviews = [];
+  
+  this.subscriptions.add(this.userService.getReviews()
+    .subscribe(
+        result => {
+           this.reviewsLoaded = true;
+              for(let review of result){
+                if(review.doctorId==doctorId) {
+                  this.allReviews.push(review);
+                }
+              }
+              this.allReviews.sort(function(a,b){
+                if(b.reviewDate < a.reviewDate) {
+                  return 1;
+                }
+                else if(b.reviewDate > a.reviewDate) {
+                  return -1
+                }
+                return 0;
+              });
+
+        },
+        errors => this.errors = errors));
+}
+
   private getDoctor() {
     this.subscriptions.add(this.userService.getDoctor(this.doctorId)
     .subscribe((doctor: DoctorProfile) => {
         this.doctor = doctor;
+        this.generateReviews(this.doctor.doctorId);
         this.email = doctor.email;
         this.password = doctor.password;
         this.doctorEditForm.controls['lastName'].setValue(doctor.lastName);
@@ -402,7 +439,7 @@ export class DoctorAccountComponent implements OnInit {
 
     deleteDisponibility(id: string) {
       this.errors = '';
-  
+      
       this.subscriptions.add(this.userService.deleteDisponibility(id)
           .subscribe(() => {
             this.getAppointmentIntervals();

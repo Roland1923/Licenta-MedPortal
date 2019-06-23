@@ -11,6 +11,7 @@ import { AuthService } from '../shared/services/auth.service';
 import { Appointment } from '../shared/models/appointment';
 import { Time } from '@angular/common';
 import { Feedback } from '../shared/models/feedback.interface';
+import { DoctorProfile } from '../shared/models/doctor-profile';
 
 
 @Component({
@@ -306,7 +307,7 @@ export class PatientAccountComponent implements OnInit {
 
       });
 
-
+      this.generateNullRatings();
 
     },
     errors => this.errors = errors
@@ -315,7 +316,39 @@ export class PatientAccountComponent implements OnInit {
   }
 
 
+  generateNullRatings() {
+    this.isExpired = this.userService.isExpired();
+    if(this.isExpired) {
+      this.authService.logout();
+    }
+    this.errors = '';
 
+    this.subscriptions.add(this.userService.getDoctors()
+    .subscribe((doctors: Array<DoctorProfile>) => {
+      for(var doctor of doctors) {
+        if(!this.reviewsSubscribed.has(doctor.doctorId)) {
+
+          this.reviewsSubscribed.set(doctor.doctorId,true);
+          this.totalReviews.set(doctor.doctorId,0);
+          this.starsMean.set(doctor.doctorId,0);
+          this.oneStar.set(doctor.doctorId,0);
+          this.twoStars.set(doctor.doctorId,0);
+          this.threeStars.set(doctor.doctorId,0);
+          this.fourStars.set(doctor.doctorId,0);
+          this.fiveStars.set(doctor.doctorId,0);
+          this.width1.set(doctor.doctorId, 0);
+          this.width2.set(doctor.doctorId, 0);
+          this.width3.set(doctor.doctorId, 0);
+          this.width4.set(doctor.doctorId, 0);
+          this.width5.set(doctor.doctorId, 0);
+         }
+
+        } 
+
+    },
+    errors => this.errors = errors
+    ));
+  }
 
 
   listAppointments() {

@@ -62,6 +62,7 @@ namespace WebApp
             services.AddTransient<IEditableRepository<Doctor>, DoctorRepository>();
             services.AddTransient<IEditableRepository<PatientHistory>, PatientHistoryRepository>();
             services.AddTransient<IEditableRepository<Appointment>, AppointmentRepository>();
+            services.AddTransient<IEditableRepository<AppointmentInterval>, AppointmentIntervalRepository>();
             services.AddTransient<IEditableRepository<Feedback>, FeedbackRepository>();
             services.AddTransient<IEditableRepository<BloodDonor>, BloodDonorRepository>();
 
@@ -86,6 +87,7 @@ namespace WebApp
             services.AddTransient<IValidator<PatientModel>, PatientValidator>();
             services.AddTransient<IValidator<FeedbackModel>, FeedbackValidator>();
             services.AddTransient<IValidator<PatientHistoryModel>, PatientHistoryValidator>();
+            services.AddTransient<IValidator<AppointmentIntervalModel>, AppointmentIntervalValidator>();
 
             // Register the Swagger generator, defining one or more Swagger documents
             services.AddSwaggerGen(c =>

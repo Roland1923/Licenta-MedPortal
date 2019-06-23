@@ -21,7 +21,8 @@ namespace Tests.IntegrationTests
                 await repository.AddAsync(patient);
 
                 //Assert
-                Assert.AreEqual(repository.GetAllAsync().Result.Count, 1);
+                string[] includes = { };
+                Assert.AreEqual(repository.GetAllAsync(includes).Result.Count, 1);
             });
         }
 
@@ -38,7 +39,8 @@ namespace Tests.IntegrationTests
                 await repository.DeleteAsync(patient.PatientId);
 
                 //Assert
-                Assert.AreEqual(repository.GetAllAsync().Result.Count, 0);
+                string[] includes = { };
+                Assert.AreEqual(repository.GetAllAsync(includes).Result.Count, 1);
             });
         }
 
@@ -88,11 +90,13 @@ namespace Tests.IntegrationTests
                 //Arrange
                 var repository = new PatientRepository(ctx);
                 var patient = Patient.Create("1234", "Roland", "Iordache", "roland.iordache96@gmail.com", "asfdsdssd", "Iasi", "Romania", new DateTime(1996, 02, 10), "0746524459", null);
-                BloodDonor bloodDonor = BloodDonor.Create("A2", patient.PatientId);
+                BloodDonor bloodDonor = BloodDonor.Create("A2", patient.PatientId, new DateTime());
                 await repository.AddAsync(patient);
 
                 //Act
-                var count = repository.GetAllAsync().Result.Count;
+                string[] includes = { };
+
+                var count =  repository.GetAllAsync(includes).Result.Count;
 
                 //Assert
                 Assert.AreEqual(count, 1);

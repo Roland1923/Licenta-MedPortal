@@ -9,6 +9,8 @@ using Core.IRepositories;
 using Infrastructure.Attributes;
 using WebApp.Common;
 using WebApp.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 
 namespace WebApp.Apis
 {
@@ -30,11 +32,11 @@ namespace WebApp.Apis
         [ProducesResponseType(typeof(List<Doctor>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
         public async Task<ActionResult> Doctors()
-        {
+        { 
             try
             {
-              string[] includes = { "Appointments", "Feedbacks" };
-              var doctors = await _repository.GetAllAsync();
+                string[] includes = {  };
+                var doctors = await _repository.GetAllAsync(includes);
               return Ok(doctors);
             }
             catch
@@ -49,8 +51,17 @@ namespace WebApp.Apis
         [NoCache]
         [ProducesResponseType(typeof(List<Doctor>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
-        public async Task<ActionResult> DoctorsNamePage([FromBody]DoctorFilterModel filter, int skip, int take)
+        public async Task<ActionResult> DoctorsNamePage([FromBody]DoctorFilterModel filter, int skip, int take, [FromHeader(Name = "Authorization")]string value)
         {
+
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(value);
+            var issuer = token.Claims.First(claim => claim.Type == "iss").Value;
+            var audience = token.Claims.First(claim => claim.Type == "aud").Value;
+            if (issuer != "MyIssuer" && audience != "MyAudience")
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var pagingResult = await _repository.GetByFilter(FilterDelegate(filter.Name, filter.Hospital, filter.Speciality, filter.City), skip, take);
@@ -69,8 +80,17 @@ namespace WebApp.Apis
         [NoCache]
         [ProducesResponseType(typeof(Doctor), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
-        public async Task<ActionResult> Doctors(Guid id)
+        public async Task<ActionResult> Doctors(Guid id, [FromHeader(Name = "Authorization")]string value)
         {
+
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(value);
+            var issuer = token.Claims.First(claim => claim.Type == "iss").Value;
+            var audience = token.Claims.First(claim => claim.Type == "aud").Value;
+            if (issuer != "MyIssuer" || audience != "MyAudience")
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var doctor = await _repository.GetByIdAsync(id);
@@ -97,8 +117,9 @@ namespace WebApp.Apis
 
             MD5 md5Hash = MD5.Create();
             string passwordHash = PasswordHashMd5.GetMd5Hash(md5Hash, doctor.Password);
+            string dinHash = PasswordHashMd5.GetMd5Hash(md5Hash, doctor.DIN);
 
-            var instance = Doctor.Create(doctor.DIN, doctor.FirstName, doctor.LastName, doctor.Email, passwordHash, doctor.PhoneNumber, doctor.Description, doctor.Speciality, doctor.Hospital, doctor.City, doctor.Country, doctor.Address);
+            var instance = Doctor.Create(dinHash, doctor.FirstName, doctor.LastName, doctor.Email, passwordHash, doctor.PhoneNumber, doctor.Description, doctor.Speciality, doctor.Hospital, doctor.City, doctor.Country, doctor.Address, doctor.IsMale);
 
             try
             {
@@ -119,10 +140,20 @@ namespace WebApp.Apis
         // PUT api/Doctors/5
         [HttpPut("{id}")]
         //[ValidateAntiForgeryToken]
+
         [ProducesResponseType(typeof(ApiResponse), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
-        public async Task<ActionResult> UpdateDoctor(Guid id, [FromBody]DoctorModel doctor)
+        public async Task<ActionResult> UpdateDoctor(Guid id, [FromBody]DoctorModel doctor, [FromHeader(Name = "Authorization")]string value)
         {
+
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(value);
+            var issuer = token.Claims.First(claim => claim.Type == "iss").Value;
+            var audience = token.Claims.First(claim => claim.Type == "aud").Value;
+            if (issuer != "MyIssuer" || audience != "MyAudience")
+            {
+                return Unauthorized();
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -136,7 +167,7 @@ namespace WebApp.Apis
             try
             {
 
-                instance.Update(doctor.DIN, doctor.FirstName, doctor.LastName, doctor.Email, passwordHash, doctor.PhoneNumber, doctor.Description,doctor.Speciality, doctor.Hospital, doctor.City, doctor.Country, doctor.Address);
+                instance.Update(doctor.DIN, doctor.FirstName, doctor.LastName, doctor.Email, passwordHash, doctor.PhoneNumber, doctor.Description,doctor.Speciality, doctor.Hospital, doctor.City, doctor.Country, doctor.Address, doctor.IsMale);
 
                 var status = await _repository.UpdateAsync(instance);
                 if (!status)
@@ -161,6 +192,28 @@ namespace WebApp.Apis
             try
             {
                 var status = await _repository.DeleteAsync(id);
+                if (!status)
+                {
+                    return BadRequest(new ApiResponse { Status = false });
+                }
+                return Ok(new ApiResponse { Status = true });
+            }
+            catch
+            {
+                return BadRequest(new ApiResponse { Status = false });
+            }
+        }
+
+        // DELETE api/Doctors
+        [HttpDelete]
+        // [ValidateAntiForgeryToken]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<ActionResult> DeleteAll()
+        {
+            try
+            {
+                var status = await _repository.DeleteAll();
                 if (!status)
                 {
                     return BadRequest(new ApiResponse { Status = false });
@@ -231,7 +284,6 @@ namespace WebApp.Apis
 
             if (name == "" && hospital == "" && speciality == "" && city != "")
                 return x => x.City.Contains(city);
-
 
             return x => x.LastName.Contains(name) || x.FirstName.Contains(name);
 

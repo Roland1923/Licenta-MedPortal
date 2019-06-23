@@ -73,7 +73,7 @@
         font-size: .7vw;
         padding: 2vh; 
         font-weight: bold;
-        width: 25%;
+        width: 20%;
     }
 }
 
@@ -118,6 +118,25 @@ button:focus, button:active, .active {
 
 .row {
     margin-bottom: 1vw;
+    align-items: center;
+}
+
+.row.mx-3 {
+    margin-bottom: 4px;
+}
+
+.reviewRating {
+    width: 45px;
+    height: 27px;
+    border-radius: 27px;
+    background-color: #69D18B;
+    font-size: 16px;
+    padding: 4px 0;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    line-height: 1.25;
+    display: block;
 }
 
 #hr2 {
@@ -269,7 +288,17 @@ button {
         width: 40%;
     }
 }
+.searchCard {
+    background-color: white;
+    padding: 12px;
+    margin-top: 10px;
 
+    border: 1px solid #dbdbdb;
+    box-shadow: 2px 2px 2px #dbdbdb;
+    margin-left: 25px;
+    margin-right: 25px;
+    border-radius: 13px;
+}
 .button2, .button2:focus, .button2:active {
     outline: none !important;
     box-shadow: none !important;

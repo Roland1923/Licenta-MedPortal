@@ -1,0 +1,156 @@
+::ng-deep footer{
+    font-size: 16px;  
+    padding: 22px 0;
+    background: #343a40 !important;
+    color: white !important;
+    margin-top: 200px;
+    position: relative;
+    width: 100%;
+    clear: both;
+}
+
+body {
+    min-height: 100vh;
+}
+
+.mb-5 {
+    margin-bottom: 3rem;
+}
+
+.container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-top: 2vw;
+}
+
+.stat-box-header {
+    font-size: 3vw;
+    color: #69D18B;
+    font-weight: 500;
+}
+
+
+
+.stat-box-text {
+    margin-bottom: 40px;
+    font-size: 17px;
+    font-weight: bolder;
+    font-style: italic;
+    color: #4a4a4a;
+}
+
+.row {
+    text-align:center;
+}
+
+
+
+
+
+.panel-title:hover {
+    background: rgb(134, 223, 163);
+}
+
+.panel-title {
+    outline: none;
+    color: #fefefe;
+    background: #69D18B;
+    cursor: pointer;
+    font-size: 1.4em;
+    font-weight: bold;
+
+    padding: 10px 20px;
+    position: relative;
+    display: block;
+    border-radius: 10px;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+
+#toggle-content {
+    background: #F7F7F7;
+    margin-top: -6px;
+    padding: 15px 20px;
+}
+
+#toggle-content1 {
+    background: #F7F7F7;
+    margin-top: -6px;
+    padding: 15px 20px;
+}
+
+#toggle-content2 {
+    background: #F7F7F7;
+    margin-top: -6px;
+    padding: 15px 20px;
+}
+
+.details {
+    padding-top: 2vw;
+    padding-bottom: 3vw;
+    margin-left: 8vw;
+    margin-right: 8vw;
+    margin-bottom: 20px;
+}
+
+.panel-default {
+    margin-bottom: 3px;
+}
+
+
+
+.quote {
+    background: #ce00bd;
+    padding: 70px 0 50px;
+    color: #fcfcfc;
+    margin-bottom: 19px;
+}
+
+.container1 {
+    margin-left: 8vw;
+    margin-right: 8vw;
+}
+
+.alignright {
+    text-align: right;
+}
+.aligncenter {
+    text-align: center;
+}
+blockquote.large {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.1em;
+}
+
+blockquote cite {
+    display: block;
+    font-size: 12px;
+}
+
+.fas {
+    font-size: 10em;
+    display: inline;
+    width: auto;
+    height: auto;
+    line-height: normal;
+    vertical-align: baseline;
+    background-image: none;
+    background-position: 0% 0%;
+    background-repeat: repeat;
+    margin-top: 0;
+}
+
+
+blockquote.large:before {
+    color: #eee;
+    opacity: 0.6;
+    font-size: 64px;
+    font-family: FontAwesome;
+    content: "\f10d";
+    margin-right: 20px;
+}

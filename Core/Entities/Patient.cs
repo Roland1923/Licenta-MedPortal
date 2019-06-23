@@ -19,11 +19,17 @@ namespace Core.Entities
         public DateTime Birthdate { get; private set; }
         public string PhoneNumber { get; private set; }
         [ForeignKey("BloodDonorId")]
-        public BloodDonor BloodDonor => null;
-        public Guid? BloodDonorId => null;
-        public List<Appointment> Appointments => null;
-        public List<PatientHistory> PatientHistories => null;
-        public List<Feedback> Feedbacks => null;
+        public BloodDonor BloodDonor { get; private set; }
+        public Guid? BloodDonorId { get; private set; }
+
+        
+        [ForeignKey("HistoryId")]
+        public PatientHistory PatientHistory { get; private set; }
+        public Guid HistoryId { get; private set; }
+
+        public List<Appointment> Appointments { get; private set; }
+        
+        public List<Feedback> Feedbacks { get; private set; }
 
         private Patient() { }
 
